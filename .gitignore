@@ -1,0 +1,17 @@
+node_modules/
+dist/
+coverage/
+
+# 测试产物
+test-results/
+playwright-report/
+content-report.json
+
+# 日志与本地文件
+*.log
+*.local
+.DS_Store
+
+# 编辑器
+.idea/
+.vscode/

@@ -1,0 +1,8 @@
+{
+  "contentManifestVersion": "1.0.0",
+  "gameVersion": "idle-realms-1.0.0 (baseline: Melvor Idle v1.3.1 rule set)",
+  "rulesVersion": "rules-2026.10",
+  "xpCurveVersion": "standard-rs-curve-v1",
+  "offlineRulesVersion": 1,
+  "expansions": ["base", "toth", "aod", "ita"]
+}

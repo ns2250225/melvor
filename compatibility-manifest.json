@@ -1,0 +1,54 @@
+{
+  "manifestVersion": "1.0.0",
+  "targetGame": {
+    "name": "Melvor Idle",
+    "baselineVersion": "1.3.1",
+    "note": "本项目复刻目标版本的机制体系与内容结构；全部名称、数值、图标与文本为原创重制（合法素材原则），不复制原作商业资产。"
+  },
+  "expansions": [
+    { "id": "base", "name": "基础游戏", "included": true },
+    { "id": "toth", "name": "Throne of the Herald", "included": true, "dependsOn": ["base"] },
+    { "id": "aod", "name": "Atlas of Discovery", "included": true, "dependsOn": ["base"] },
+    { "id": "ita", "name": "Into the Abyss", "included": true, "dependsOn": ["base"] }
+  ],
+  "contentInventory": {
+    "source": "运行 npm run validate:content 生成 content-report.json，记录技能、物品、怪物、区域、副本、配方等的完整清单与计数",
+    "skills": ["attack", "strength", "defence", "hitpoints", "ranged", "magic", "prayer", "slayer", "woodcutting", "fishing", "firemaking", "cooking", "mining", "smithing", "thieving", "farming", "fletching", "crafting", "runecrafting", "herblore", "agility", "summoning", "astrology", "township", "cartography", "archaeology", "corruption", "harvesting"]
+  },
+  "rules": {
+    "rulesVersion": "rules-2026.10",
+    "xpCurve": { "id": "standard-rs-curve-v1", "formula": "xp(L) = floor( sum_{x=1}^{L-1} floor(x + 300 * 2^(x/7)) / 4 )", "checkpoints": { "99": 13034431, "120": 104273167 } },
+    "abyssalXpCurve": { "id": "abyssal-curve-v1", "maxLevel": 60, "note": "深渊曲线为本项目定义的独立曲线（未与原作逐项核验）" },
+    "levelCaps": { "base": 99, "toth": "99→106→113→120 via 使者启示 I-III", "mastery": 99, "abyssal": "20→40→60 via 深渊启迪" },
+    "mastery": { "poolCapPerAction": 500000, "poolShare": 0.25, "checkpoints": [0.1, 0.25, 0.5, 0.95], "formula": "((totalMasteryLevels/totalActions) + masteryLevel*(totalActions/10)) * intervalSeconds * 0.5" },
+    "combat": {
+      "tickMs": 50,
+      "accuracy": "effectiveLevel(level+9+style) * (bonus+64)",
+      "hitChance": "acc<eva ? 0.5*acc/eva : 1-0.5*eva/acc",
+      "meleeMaxHit": "floor(10 * (1.3 + effStr/10 + strBonus/80 + effStr*strBonus/640))",
+      "damageRoll": "uniform integer [1, maxHit]",
+      "damageReductionCap": 95,
+      "triangle": "melee>ranged>magic>melee; standard vs hardcore multipliers in src/game/combat/stats.ts",
+      "xp": { "style": 0.4, "hitpoints": 0.133, "slayerOnTask": "monster max HP / 10" }
+    }
+  },
+  "offline": {
+    "offlineRulesVersion": 1,
+    "maxOfflineMs": 86400000,
+    "method": "Web Worker 逐 tick（50ms）重放模拟，与在线规则共享同一引擎；随机数状态随存档保存",
+    "clockRollback": "系统时间早于最后结算时间：不发放离线收益，重置结算时间并提示",
+    "clockJump": "超过上限时截断至上限并在报告中标记"
+  },
+  "saveCompatibility": {
+    "schemaVersion": 3,
+    "migrations": ["1→2: 增加深渊状态与技能树", "2→3: 增加制图/考古与城镇任务状态"],
+    "unknownVersionPolicy": "拒绝覆盖未知（更高）版本存档"
+  },
+  "verifiedDifferences": [
+    "全部内容名称、图标、数值为原创重制，并非原作数据逐项拷贝",
+    "离线上限采用 24 小时（与目标版本一致）",
+    "城镇结算间隔 5 分钟，自动结算（原作可手动累积使用）",
+    "深渊经验曲线为自定义曲线"
+  ],
+  "testBaselines": ["src/tests/xp.test.ts", "src/tests/rng.test.ts", "src/tests/combat.test.ts", "src/tests/offline.test.ts", "src/tests/content.test.ts", "src/tests/save.test.ts"]
+}
