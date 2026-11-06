@@ -70,18 +70,18 @@ const SIZE: Record<string, string> = { tiny: '微型', small: '小型', medium: 
 // ---------------------------------------------------------------- 完成度
 const comp = computed(() => { void store.frame; return completion(g.value); });
 const compRows = computed(() => [
-  ['📦 物品', comp.value.items, `${itemsFoundCount.value} / ${allItems.length}`],
-  ['👹 怪物', comp.value.monsters, `${monKnown.value} / ${allMonsters.length}`],
-  ['🐾 宠物', comp.value.pets, `${petsOwned.value} / ${allPets.length}`],
-  ['📈 技能（按 99 级计）', comp.value.skills, ''],
-  ['🎖️ 掌握度', comp.value.mastery, ''],
-  ['🏰 副本', comp.value.dungeons, `${dungeonsDone.value} / ${allDungeons.length}`],
+  ['[[box]] 物品', comp.value.items, `${itemsFoundCount.value} / ${allItems.length}`],
+  ['[[ogre]] 怪物', comp.value.monsters, `${monKnown.value} / ${allMonsters.length}`],
+  ['[[paw]] 宠物', comp.value.pets, `${petsOwned.value} / ${allPets.length}`],
+  ['[[trend]] 技能（按 99 级计）', comp.value.skills, ''],
+  ['[[medal]] 掌握度', comp.value.mastery, ''],
+  ['[[castle]] 副本', comp.value.dungeons, `${dungeonsDone.value} / ${allDungeons.length}`],
 ] as [string, number, string][]);
 </script>
 
 <template>
   <div>
-    <div class="page-title"><span class="icon">📖</span><h2>图鉴</h2><span class="muted">总完成度 {{ pct(comp.total, 2) }}</span></div>
+    <div class="page-title"><span class="icon"><Icon name="book" /></span><h2>图鉴</h2><span class="muted">总完成度 {{ pct(comp.total, 2) }}</span></div>
     <div class="tabs">
       <button v-for="[t, label] in TABS" :key="t" :class="{ on: tab === t }" @click="tab = t">{{ label }}</button>
     </div>
@@ -123,7 +123,7 @@ const compRows = computed(() => [
       <div class="cards sm">
         <div v-for="m in monsters.slice(0, monLimit)" :key="m.id" class="card">
           <div class="row nowrap">
-            <span class="micon" :class="{ sil: !s.monsterKills[m.id] }">{{ m.icon }}</span>
+            <span class="micon" :class="{ sil: !s.monsterKills[m.id] }"><Icon :name="m.icon" :seed="m.id" /></span>
             <div class="grow">
               <div class="bold small">{{ s.monsterKills[m.id] ? m.name : '???' }}</div>
               <div class="tiny muted">
@@ -147,7 +147,7 @@ const compRows = computed(() => [
       </div>
       <ProgressBar :value="petsOwned / Math.max(1, allPets.length)" color="var(--good)" />
       <div class="row mt">
-        <span v-for="p in allPets" :key="p.id" class="pet" :class="{ sil: !s.pets[p.id] }" :title="s.pets[p.id] ? p.name : '???'">{{ p.icon }}</span>
+        <span v-for="p in allPets" :key="p.id" class="pet" :class="{ sil: !s.pets[p.id] }" :title="s.pets[p.id] ? p.name : '???'"><Icon :name="p.icon" :seed="p.id" /></span>
       </div>
     </div>
 
@@ -159,7 +159,7 @@ const compRows = computed(() => [
           <thead><tr><th>副本</th><th>领域</th><th>扩展</th><th>敌人数</th><th class="right">通关次数</th></tr></thead>
           <tbody>
             <tr v-for="d in allDungeons" :key="d.id">
-              <td>{{ d.icon }} {{ d.name }} <span v-if="d.isEndgame" class="tag gold">终局</span></td>
+              <td><Icon :name="d.icon" :seed="d.id" /> {{ d.name }} <span v-if="d.isEndgame" class="tag gold">终局</span></td>
               <td :class="{ abyss: d.realm === 'abyssal' }">{{ d.realm === 'abyssal' ? '深渊' : '梅尔沃' }}</td>
               <td class="small muted">{{ EXPANSION_NAMES[d.expansion] }}</td>
               <td>{{ d.monsters.length }}</td>
@@ -180,7 +180,7 @@ const compRows = computed(() => [
       <div class="cards mt">
         <div v-for="p in allPois" :key="p.id" class="card" :class="{ locked: !poiDiscovered.has(p.id) }">
           <div class="row nowrap">
-            <span class="micon" :class="{ sil: !poiDiscovered.has(p.id) }">{{ p.icon }}</span>
+            <span class="micon" :class="{ sil: !poiDiscovered.has(p.id) }"><Icon :name="p.icon" :seed="p.id" /></span>
             <div class="grow">
               <div class="bold small">{{ poiDiscovered.has(p.id) ? p.name : '未发现的兴趣点' }}</div>
               <div class="tiny muted">{{ POI_KIND[p.kind] ?? p.kind }} · 坐标 ({{ p.hex[0] }}, {{ p.hex[1] }})</div>
@@ -219,7 +219,7 @@ const compRows = computed(() => [
       <ProgressBar :value="comp.total / 100" color="var(--accent2)" :height="14" />
       <div class="small muted mt">总完成度为以下六项的平均值。</div>
       <div v-for="[label, v, detail] in compRows" :key="label" class="col mt" style="gap: 4px">
-        <div class="row between"><span>{{ label }}</span><span>{{ detail }} <b>{{ pct(v, 2) }}</b></span></div>
+        <div class="row between"><IconText :text="label" /><span>{{ detail }} <b>{{ pct(v, 2) }}</b></span></div>
         <ProgressBar :value="v / 100" :height="8" />
       </div>
       <div class="small muted mt">角色创建于 {{ fmtDate(s.player.createdAt) }}</div>

@@ -29,7 +29,7 @@ function sourceLink(sourceType: string, sourceId?: string) {
 
 <template>
   <div>
-    <div class="page-title"><span class="icon">🐾</span><h2>宠物</h2><span class="muted">{{ owned }} / {{ all.length }}（{{ pct((owned / Math.max(1, all.length)) * 100) }}）</span></div>
+    <div class="page-title"><span class="icon"><Icon name="paw" /></span><h2>宠物</h2><span class="muted">{{ owned }} / {{ all.length }}（{{ pct((owned / Math.max(1, all.length)) * 100) }}）</span></div>
     <ProgressBar class="mb" :value="owned / Math.max(1, all.length)" color="var(--good)" :height="10" />
     <p class="small muted">宠物在对应活动中随机获得，获得后其加成永久生效，无需装备。</p>
     <div class="tabs">
@@ -41,7 +41,7 @@ function sourceLink(sourceType: string, sourceId?: string) {
     <div class="cards">
       <div v-for="x in list" :key="x.p.id" class="card" :class="{ active: !!x.t }">
         <div class="row nowrap">
-          <span class="picon" :class="{ dim: !x.t }">{{ x.p.icon }}</span>
+          <span class="picon" :class="{ dim: !x.t }"><Icon :name="x.p.icon" :seed="x.p.id" /></span>
           <div class="grow">
             <div class="bold">{{ x.t ? x.p.name : '未知宠物' }}</div>
             <div class="tiny muted">{{ TYPE[x.p.sourceType] ?? x.p.sourceType }}<template v-if="sourceLink(x.p.sourceType, x.p.sourceId)"> · {{ sourceLink(x.p.sourceType, x.p.sourceId) }}</template></div>

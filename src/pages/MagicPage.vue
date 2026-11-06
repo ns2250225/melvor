@@ -23,7 +23,7 @@ const s = computed(() => g.value.state);
 type Tab = 'combat' | 'curse' | 'aura' | 'alt';
 const tab = ref<Tab>('combat');
 const TABS: { id: Tab; name: string }[] = [
-  { id: 'combat', name: '🔥 战斗法术' }, { id: 'curse', name: '🙈 诅咒' }, { id: 'aura', name: '🌟 光环' }, { id: 'alt', name: '🪙 替代魔法' },
+  { id: 'combat', name: '[[fire]] 战斗法术' }, { id: 'curse', name: '[[monkey]] 诅咒' }, { id: 'aura', name: '[[glow_star]] 光环' }, { id: 'alt', name: '[[coin]] 替代魔法' },
 ];
 const BOOK_NAMES: Record<SpellBook, string> = { standard: '标准法术', ancient: '远古法术', archaic: '古老法术', abyssal: '深渊法术', curse: '诅咒', aura: '光环', alt: '替代魔法' };
 const COMBAT_BOOKS: SpellBook[] = ['standard', 'ancient', 'archaic', 'abyssal'];
@@ -87,7 +87,7 @@ const alchGp = (id: string) => Math.floor((C.items[id]?.sellPrice ?? 0) * (alt.v
     <SkillHeader skill="magic" />
 
     <div class="tabs mt">
-      <button v-for="t in TABS" :key="t.id" :class="{ on: tab === t.id }" @click="tab = t.id">{{ t.name }}</button>
+      <button v-for="t in TABS" :key="t.id" :class="{ on: tab === t.id }" @click="tab = t.id"><IconText :text="t.name" /></button>
     </div>
 
     <!-- ================================================================ 战斗法术 -->
@@ -104,7 +104,7 @@ const alchGp = (id: string) => Math.floor((C.items[id]?.sellPrice ?? 0) * (alt.v
           <div class="cards">
             <div v-for="sp in spellsOf(book)" :key="sp.id" class="card" :class="{ active: isSelected(sp), locked: !!lockReason(sp) }">
               <div class="row between">
-                <b>{{ sp.icon }} {{ sp.name }}</b>
+                <b><Icon :name="sp.icon" :seed="sp.id" /> {{ sp.name }}</b>
                 <span v-if="EXPANSION_SHORT[sp.expansion]" class="tag abyss">{{ EXPANSION_SHORT[sp.expansion] }}</span>
               </div>
               <div class="small">魔法 {{ sp.level }} 级 · 基础最大伤害 <b>{{ sp.maxHit ?? 0 }}</b></div>
@@ -123,7 +123,7 @@ const alchGp = (id: string) => Math.floor((C.items[id]?.sellPrice ?? 0) * (alt.v
           </div>
         </div>
       </template>
-      <div v-if="!g.inAbyss() && spellsOf('abyssal').length" class="muted small mt">🔒 深渊法术在开启深渊之门后显示。</div>
+      <div v-if="!g.inAbyss() && spellsOf('abyssal').length" class="muted small mt"><Icon name="lock" /> 深渊法术在开启深渊之门后显示。</div>
     </template>
 
     <!-- ================================================================ 诅咒 / 光环 -->
@@ -136,7 +136,7 @@ const alchGp = (id: string) => Math.floor((C.items[id]?.sellPrice ?? 0) * (alt.v
       <div class="cards">
         <div v-for="sp in spellsOf(tab)" :key="sp.id" class="card" :class="{ active: isSelected(sp), locked: !!lockReason(sp) }">
           <div class="row between">
-            <b>{{ sp.icon }} {{ sp.name }}</b>
+            <b><Icon :name="sp.icon" :seed="sp.id" /> {{ sp.name }}</b>
             <span v-if="EXPANSION_SHORT[sp.expansion]" class="tag abyss">{{ EXPANSION_SHORT[sp.expansion] }}</span>
           </div>
           <div class="small">魔法 {{ sp.level }} 级</div>
@@ -159,7 +159,7 @@ const alchGp = (id: string) => Math.floor((C.items[id]?.sellPrice ?? 0) * (alt.v
     <template v-else>
       <div v-if="active" class="panel mb">
         <div class="row between">
-          <b>{{ C.spells[active.actionId]?.icon }} 正在施放：{{ C.spells[active.actionId]?.name }}<span v-if="active.target" class="muted">（{{ C.items[active.target]?.name }}）</span></b>
+          <b><Icon :name="C.spells[active.actionId]?.icon" :seed="active.actionId" /> 正在施放：{{ C.spells[active.actionId]?.name }}<span v-if="active.target" class="muted">（{{ C.items[active.target]?.name }}）</span></b>
           <button class="danger small" @click="stopAlt">停止</button>
         </div>
         <ProgressBar :value="activeProgress" color="var(--xp)" :height="10" class="mt" />
@@ -170,13 +170,13 @@ const alchGp = (id: string) => Math.floor((C.items[id]?.sellPrice ?? 0) * (alt.v
           <h3>法术</h3>
           <div class="col">
             <button v-for="sp in altSpells" :key="sp.id" class="altbtn" :class="{ primary: alt?.id === sp.id }" :disabled="magicLevel < sp.level" @click="pickAlt(sp.id)">
-              <span>{{ sp.icon }} {{ sp.name }}</span><span class="tiny">Lv {{ sp.level }}</span>
+              <span><Icon :name="sp.icon" :seed="sp.id" /> {{ sp.name }}</span><span class="tiny">Lv {{ sp.level }}</span>
             </button>
           </div>
         </div>
         <div v-if="alt" class="panel">
           <div class="row between">
-            <h3>{{ alt.icon }} {{ alt.name }}</h3>
+            <h3><Icon :name="alt.icon" :seed="alt.id" /> {{ alt.name }}</h3>
             <span v-if="EXPANSION_SHORT[alt.expansion]" class="tag abyss">{{ EXPANSION_SHORT[alt.expansion] }}</span>
           </div>
           <div class="small muted">{{ alt.description }}</div>

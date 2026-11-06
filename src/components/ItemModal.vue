@@ -58,10 +58,10 @@ function toggleLock() { g.value.state.bankLocked[id.value] = !locked.value; stor
         <div class="small muted">拥有：<b>{{ full(owned) }}</b> · 售价：<span class="gold">{{ it.noSell ? '不可出售' : fmt(g.sellPrice(id)) + ' 金币' }}</span></div>
       </div>
     </div>
-    <div v-if="it.healsFor" class="mt small">❤️ 恢复 <b>{{ it.healsFor }}</b> 点生命</div>
-    <div v-if="it.prayerPoints" class="mt small">🙏 埋葬获得 <b>{{ it.prayerPoints }}</b> 祈祷点</div>
-    <div v-if="it.soulPoints" class="mt small abyss">⚱️ 获得 <b>{{ it.soulPoints }}</b> 灵魂点</div>
-    <div v-if="it.potion" class="mt small">🧪 {{ it.potion.skill === 'combat' ? '战斗' : C.skills[it.potion.skill].name }}药水 · {{ it.potion.charges }} 次充能</div>
+    <div v-if="it.healsFor" class="mt small"><Icon name="heart" /> 恢复 <b>{{ it.healsFor }}</b> 点生命</div>
+    <div v-if="it.prayerPoints" class="mt small"><Icon name="pray" /> 埋葬获得 <b>{{ it.prayerPoints }}</b> 祈祷点</div>
+    <div v-if="it.soulPoints" class="mt small abyss"><Icon name="urn" /> 获得 <b>{{ it.soulPoints }}</b> 灵魂点</div>
+    <div v-if="it.potion" class="mt small"><Icon name="potion" /> {{ it.potion.skill === 'combat' ? '战斗' : C.skills[it.potion.skill].name }}药水 · {{ it.potion.charges }} 次充能</div>
     <template v-if="it.equipment">
       <div class="sep" />
       <div class="kv">
@@ -100,7 +100,7 @@ function toggleLock() { g.value.state.bankLocked[id.value] = !locked.value; stor
         <button v-if="it.artifact && !g.state.archaeology.museum[id]" @click="store.act(() => donateArtifact(g, id))">捐赠博物馆</button>
         <button v-if="!it.noSell" :disabled="locked" @click="sell(false)">出售 {{ amount() }}</button>
         <button v-if="!it.noSell" :class="{ danger: confirmSell }" :disabled="locked" @click="sell(true)">{{ confirmSell ? '确认出售？' : '全部出售' }}</button>
-        <button class="ghost" @click="toggleLock">{{ locked ? '🔒 已锁定' : '🔓 锁定' }}</button>
+        <button class="ghost" @click="toggleLock"><template v-if="locked"><Icon name="lock" /> 已锁定</template><template v-else><Icon name="unlock" /> 锁定</template></button>
       </template>
       <span v-else class="muted small">银行中没有该物品</span>
     </template>

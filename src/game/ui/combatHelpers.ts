@@ -7,12 +7,12 @@ export const SLOT_NAMES: Record<EquipSlot, string> = {
   weapon: '武器', shield: '副手', quiver: '箭袋', passive: '被动', summon1: '召唤 1', summon2: '召唤 2', consumable: '消耗品', gem: '宝石',
 };
 export const SLOT_ICONS: Record<EquipSlot, string> = {
-  helmet: '⛑️', body: '🥋', legs: '👖', boots: '🥾', gloves: '🧤', cape: '🧣', amulet: '📿', ring: '💍',
-  weapon: '⚔️', shield: '🛡️', quiver: '🏹', passive: '✨', summon1: '🐾', summon2: '🐾', consumable: '🧪', gem: '💎',
+  helmet: 'rescue_helm', body: 'gi', legs: 'trousers', boots: 'boots', gloves: 'gloves', cape: 'scarf', amulet: 'beads', ring: 'ring',
+  weapon: 'swords', shield: 'shield', quiver: 'bow', passive: 'sparkles', summon1: 'paw', summon2: 'paw', consumable: 'potion', gem: 'gem',
 };
 
 export const ATTACK_TYPE_NAMES: Record<AttackType, string> = { melee: '近战', ranged: '远程', magic: '魔法' };
-export const ATTACK_TYPE_ICONS: Record<AttackType, string> = { melee: '⚔️', ranged: '🏹', magic: '🪄' };
+export const ATTACK_TYPE_ICONS: Record<AttackType, string> = { melee: 'swords', ranged: 'bow', magic: 'wand' };
 
 export const MOD_NAMES: Record<string, string> = {
   gpGlobal: '全局金币', maxHit: '最大伤害', accuracy: '命中', summonChargePreservation: '召唤充能节省', slayerCoins: '猎杀币',
@@ -78,8 +78,8 @@ export function specialAttacksOf(ids: string[] | undefined): SpecialAttackDef[] 
 }
 
 export const CURRENCY_LABELS: Record<string, string> = {
-  gp: '🪙 金币', slayerCoins: '💀 猎杀币', abyssalPieces: '🟣 深渊碎片', abyssalSlayerCoins: '🟪 深渊猎杀币',
-  prayerPoints: '🙏 祈祷点', soulPoints: '⚱️ 灵魂点',
+  gp: '[[coin]] 金币', slayerCoins: '[[skull]] 猎杀币', abyssalPieces: '[[abyssal_piece]] 深渊碎片', abyssalSlayerCoins: '[[abyssal_coin]] 深渊猎杀币',
+  prayerPoints: '[[pray]] 祈祷点', soulPoints: '[[urn]] 灵魂点',
 };
 
 export const EXPANSION_SHORT: Record<string, string> = { base: '', toth: 'TotH', aod: 'AoD', ita: 'ItA' };

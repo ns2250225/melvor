@@ -31,7 +31,7 @@ export function checkAchievements(g: Game) {
     if (p.cur < p.target) continue;
     s.achievements[a.id] = s.clock;
     grantReward(g, a.reward, 'achievement');
-    g.notify(`达成成就：${a.name}`, 'success', '🏆');
+    g.notify(`达成成就：${a.name}`, 'success', 'trophy');
     g.events.emit('achievementCompleted', { achievementId: a.id });
   }
 }

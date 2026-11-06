@@ -114,6 +114,6 @@ export function createMap(g: Game, siteId: string, tier: number): string | null 
   g.addXp('cartography', 20 * tier * (1 + site.level / 20));
   if (site.abyssalLevel) g.addAbyssalXp('cartography', 100 * tier);
   g.skillStat('cartography', 'mapsCreated');
-  g.notify(`制作了「${site.name}」${t.name}`, 'success', '🗺️');
+  g.notify(`制作了「${site.name}」${t.name}`, 'success', 'map');
   return null;
 }

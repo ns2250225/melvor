@@ -18,7 +18,7 @@ export function questStatus(g: Game, id: string): QuestStatus {
 export function startQuest(g: Game, id: string): string | null {
   if (questStatus(g, id) !== 'available') return '任务不可接取';
   g.state.quests[id] = { status: 'active', progress: C.quests[id].objectives.map(() => 0), startedAt: g.state.clock };
-  g.notify(`接受任务：${C.quests[id].name}`, 'info', '📜');
+  g.notify(`接受任务：${C.quests[id].name}`, 'info', 'scroll');
   return null;
 }
 
@@ -74,7 +74,7 @@ export function completeQuest(g: Game, id: string): string | null {
   g.state.quests[id].status = 'completed';
   grantReward(g, q.rewards, 'quest');
   g.stat('questsCompleted');
-  g.notify(`任务完成：${q.name}`, 'success', '📜');
+  g.notify(`任务完成：${q.name}`, 'success', 'scroll');
   g.events.emit('questCompleted', { questId: id });
   return null;
 }

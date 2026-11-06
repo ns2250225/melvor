@@ -42,7 +42,7 @@ function catCount(c: string) {
 
 <template>
   <div>
-    <div class="page-title"><span class="icon">🏆</span><h2>成就</h2><span class="muted">{{ total.done }} / {{ total.total }}</span></div>
+    <div class="page-title"><span class="icon"><Icon name="trophy" /></span><h2>成就</h2><span class="muted">{{ total.done }} / {{ total.total }}</span></div>
     <ProgressBar class="mb" :value="total.done / Math.max(1, total.total)" color="var(--accent2)" :height="10" :label="`${((total.done / Math.max(1, total.total)) * 100).toFixed(1)}%`" />
     <div class="tabs">
       <button v-for="c in categories" :key="c" :class="{ on: cat === c }" @click="cat = c">{{ c }} <span class="tiny">{{ catCount(c) }}</span></button>
@@ -57,7 +57,7 @@ function catCount(c: string) {
     <div class="cards">
       <div v-for="x in list" :key="x.a.id" class="card" :class="{ active: !!x.t }">
         <div class="row nowrap">
-          <span class="aicon" :class="{ dim: !x.t }">{{ x.hidden ? '❔' : x.a.icon }}</span>
+          <span class="aicon" :class="{ dim: !x.t }"><Icon :name="x.hidden ? 'unknown' : x.a.icon" /></span>
           <div class="grow">
             <div class="bold">{{ x.hidden ? '???' : x.a.name }}</div>
             <div class="tiny muted">{{ x.a.category }}</div>
@@ -75,7 +75,7 @@ function catCount(c: string) {
         </template>
         <template v-if="x.a.reward && !x.hidden">
           <div class="row tiny">
-            <span v-for="(r, i) in rewardParts(x.a.reward)" :key="i" class="tag">{{ r }}</span>
+            <span v-for="(r, i) in rewardParts(x.a.reward)" :key="i" class="tag"><IconText :text="r" /></span>
           </div>
           <ItemList v-if="x.a.reward.items?.length" :items="x.a.reward.items" :size="26" />
         </template>

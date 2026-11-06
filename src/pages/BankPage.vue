@@ -91,12 +91,12 @@ const recent = computed(() => s.value.recent.items);
 <template>
   <div>
     <div class="page-title">
-      <span class="icon">🏦</span>
+      <span class="icon"><Icon name="bank" /></span>
       <div class="grow">
         <h2>银行</h2>
         <div class="muted small">点击物品查看详情、出售、装备或使用</div>
       </div>
-      <span class="tag gold">🪙 {{ fmt(s.currencies.gp) }}</span>
+      <span class="tag gold"><Icon name="coin" /> {{ fmt(s.currencies.gp) }}</span>
     </div>
 
     <div class="panel">
@@ -108,7 +108,7 @@ const recent = computed(() => s.value.recent.items);
           </div>
           <ProgressBar :value="cap ? used / cap : 0" :color="used >= cap ? 'var(--bad)' : 'var(--accent)'" :height="8" />
         </div>
-        <button class="small" @click="store.go('shop')">🏦 银行扩容</button>
+        <button class="small" @click="store.go('shop')"><Icon name="bank" /> 银行扩容</button>
       </div>
       <div v-if="used >= cap" class="small bad mt">银行已满！新物品将无法入库（战利品会留在战利品栏）。</div>
     </div>
@@ -128,7 +128,7 @@ const recent = computed(() => s.value.recent.items);
         <select v-model="sort">
           <option v-for="o in SORTS" :key="o.id" :value="o.id">排序：{{ o.name }}</option>
         </select>
-        <button :class="{ primary: selling }" @click="toggleSelling">{{ selling ? '退出批量出售' : '💰 批量出售' }}</button>
+        <button :class="{ primary: selling }" @click="toggleSelling"><template v-if="selling">退出批量出售</template><template v-else><Icon name="moneybag" /> 批量出售</template></button>
       </div>
       <div v-if="selling" class="sellbar row between mt">
         <span class="small">已选 <b>{{ pickedIds.length }}</b> 种 · 合计 <span class="gold">{{ fmt(pickedValue) }}</span> 金币 <span class="muted tiny">（出售全部数量，锁定物品不可选）</span></span>
@@ -144,8 +144,8 @@ const recent = computed(() => s.value.recent.items);
       <div class="grid-items mt">
         <div v-for="id in visible" :key="id" class="tile" :class="{ picked: selling && picked[id], nosell: selling && !sellable(id) }" @click.capture="onTile(id, $event)">
           <ItemIcon :id="id" :qty="s.bank[id]" :size="48" :clickable="!selling" />
-          <span v-if="s.bankLocked[id]" class="lock">🔒</span>
-          <span v-if="selling && picked[id]" class="check">✔</span>
+          <span v-if="s.bankLocked[id]" class="lock"><Icon name="lock" /></span>
+          <span v-if="selling && picked[id]" class="check">✓</span>
         </div>
       </div>
       <div v-if="filtered.length > limit" class="row mt" style="justify-content: center">

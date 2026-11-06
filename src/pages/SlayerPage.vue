@@ -50,15 +50,15 @@ const hiddenAbyssAreas = computed(() => (g.value.inAbyss() ? 0 : Object.values(C
 
     <div class="panel">
       <div class="row between">
-        <h3>💀 当前猎杀任务</h3>
+        <h3><Icon name="skull" /> 当前猎杀任务</h3>
         <div class="row">
-          <span class="tag">💀 猎杀币 {{ fmt(s.currencies.slayerCoins) }}</span>
-          <span v-if="g.inAbyss()" class="tag abyss">🟪 深渊猎杀币 {{ fmt(s.currencies.abyssalSlayerCoins) }}</span>
+          <span class="tag"><Icon name="skull" /> 猎杀币 {{ fmt(s.currencies.slayerCoins) }}</span>
+          <span v-if="g.inAbyss()" class="tag abyss"><Icon name="abyssal_coin" /> 深渊猎杀币 {{ fmt(s.currencies.abyssalSlayerCoins) }}</span>
         </div>
       </div>
       <template v-if="task && taskMonster">
         <div class="row nowrap mt">
-          <span class="bigicon">{{ taskMonster.icon }}</span>
+          <span class="bigicon"><Icon :name="taskMonster.icon" :seed="taskMonster.id" /></span>
           <div class="grow">
             <div class="bold">{{ taskMonster.name }} <span class="muted small">Lv {{ taskMonster.level }} · {{ ATTACK_TYPE_NAMES[taskMonster.attackType] }}</span></div>
             <div class="small">
@@ -71,24 +71,24 @@ const hiddenAbyssAreas = computed(() => (g.value.inAbyss() ? 0 : Object.values(C
           </div>
         </div>
         <div class="row mt">
-          <button class="primary" :disabled="onTarget" @click="goTarget">🎯 前往目标</button>
-          <button v-if="taskTier" :disabled="!!tierError(taskTier)" :title="tierError(taskTier) ?? ''" @click="assign(taskTier)">🔄 重新分配（{{ taskTier.cost ? `${fmt(taskTier.cost)} ${curName(taskTier)}` : '免费' }}）</button>
+          <button class="primary" :disabled="onTarget" @click="goTarget"><Icon name="target" /> 前往目标</button>
+          <button v-if="taskTier" :disabled="!!tierError(taskTier)" :title="tierError(taskTier) ?? ''" @click="assign(taskTier)"><Icon name="refresh" /> 重新分配（{{ taskTier.cost ? `${fmt(taskTier.cost)} ${curName(taskTier)}` : '免费' }}）</button>
         </div>
       </template>
       <div v-else class="empty">暂无猎杀任务，从下方选择档位接取任务</div>
       <div class="sep" />
       <div class="row between">
         <div class="small">
-          <b>🤖 自动猎杀</b>
+          <b><Icon name="robot" /> 自动猎杀</b>
           <span class="muted">：任务完成后自动接取同档位新任务并前往目标</span>
         </div>
         <label v-if="hasAuto" class="row small"><input type="checkbox" :checked="s.slayer.autoSlayer" @change="toggleAuto" /> 启用</label>
-        <button v-else class="small" @click="store.go('shop')">🔒 在商店购买（{{ fmt(C.shop['auto_slayer']?.cost.slayerCoins ?? 0) }} 猎杀币）</button>
+        <button v-else class="small" @click="store.go('shop')"><Icon name="lock" /> 在商店购买（{{ fmt(C.shop['auto_slayer']?.cost.slayerCoins ?? 0) }} 猎杀币）</button>
       </div>
     </div>
 
     <div class="panel">
-      <h3>📋 任务档位</h3>
+      <h3><Icon name="clipboard" /> 任务档位</h3>
       <div class="cards">
         <div v-for="{ t, cands, err } in tiers" :key="t.id" class="card" :class="{ locked: (t.realm === 'abyssal' && !g.inAbyss()) || g.level('slayer') < t.slayerLevel, active: task?.tier === t.id }">
           <div class="row between">
@@ -103,7 +103,7 @@ const hiddenAbyssAreas = computed(() => (g.value.inAbyss() ? 0 : Object.values(C
             <span>可选目标</span><span :class="cands.length ? '' : 'bad'">{{ cands.length }} 种</span>
           </div>
           <div v-if="cands.length" class="row tiny">
-            <span v-for="m in cands.slice(0, 8)" :key="m" class="tag">{{ C.monsters[m]?.icon }} {{ C.monsters[m]?.name }}</span>
+            <span v-for="m in cands.slice(0, 8)" :key="m" class="tag"><Icon :name="C.monsters[m]?.icon" :seed="m" /> {{ C.monsters[m]?.name }}</span>
             <span v-if="cands.length > 8" class="muted">等 {{ cands.length }} 种</span>
           </div>
           <button class="primary" :disabled="!!err || !cands.length" @click="assign(t)">{{ task ? '接取任务（替换当前）' : '接取任务' }}</button>
@@ -115,14 +115,14 @@ const hiddenAbyssAreas = computed(() => (g.value.inAbyss() ? 0 : Object.values(C
 
     <div class="panel">
       <div class="row between">
-        <h3>🗺️ 猎杀区域</h3>
+        <h3><Icon name="map" /> 猎杀区域</h3>
         <button class="small" @click="store.go('combat')">前往战斗页面</button>
       </div>
       <div class="muted small mb">在猎杀区域击杀任意怪物都可获得猎杀经验（非任务目标为一半）。部分区域需要装备特定物品才能进入。</div>
       <div class="cards lg">
         <div v-for="{ a, err } in slayerAreas" :key="a.id" class="card" :class="{ locked: !!err }">
           <div class="row between">
-            <b>{{ a.icon }} {{ a.name }}</b>
+            <b><Icon :name="a.icon" :seed="a.id" /> {{ a.name }}</b>
             <span v-if="EXPANSION_SHORT[a.expansion]" class="tag abyss">{{ EXPANSION_SHORT[a.expansion] }}</span>
           </div>
           <Requirements :reqs="a.requirements" />
@@ -132,13 +132,13 @@ const hiddenAbyssAreas = computed(() => (g.value.inAbyss() ? 0 : Object.values(C
           </div>
           <div v-if="a.areaEffect" class="small warn">区域效果：{{ a.areaEffect.description }}</div>
           <div class="row tiny">
-            <span v-for="m in a.monsters" :key="m" class="tag">{{ C.monsters[m]?.icon }} {{ C.monsters[m]?.name }} Lv{{ C.monsters[m]?.level }} · 击杀 {{ full(s.monsterKills[m] || 0) }}</span>
+            <span v-for="m in a.monsters" :key="m" class="tag"><Icon :name="C.monsters[m]?.icon" :seed="m" /> {{ C.monsters[m]?.name }} Lv{{ C.monsters[m]?.level }} · 击杀 {{ full(s.monsterKills[m] || 0) }}</span>
           </div>
           <div v-if="err" class="tiny bad">{{ err }}</div>
           <button class="small" @click="store.go('combat')">前往战斗</button>
         </div>
       </div>
-      <div v-if="hiddenAbyssAreas" class="muted small mt">🔒 另有 {{ hiddenAbyssAreas }} 个深渊猎杀区域，开启深渊之门后显示。</div>
+      <div v-if="hiddenAbyssAreas" class="muted small mt"><Icon name="lock" /> 另有 {{ hiddenAbyssAreas }} 个深渊猎杀区域，开启深渊之门后显示。</div>
     </div>
   </div>
 </template>

@@ -39,16 +39,16 @@ const STAT_LABELS: Record<string, string> = { actions: '完成动作', timeSpent
   <div class="panel skill-header">
     <div class="row between">
       <div class="row">
-        <span class="sicon" :style="{ background: def.color + '33' }">{{ def.icon }}</span>
+        <span class="sicon" :style="{ background: def.color + '33' }"><Icon :name="def.icon" :seed="def.id" /></span>
         <div>
           <h2>{{ def.name }}</h2>
           <div class="muted small">{{ def.description }}</div>
         </div>
       </div>
       <div class="row">
-        <button class="small" @click="showStats = true">📊 统计</button>
+        <button class="small" @click="showStats = true"><Icon name="chart" /> 统计</button>
         <button v-if="potionsInBank.length || potion" class="small" @click="showPotions = true">
-          🧪 {{ potion ? `${C.items[potion.itemId].name}（${potion.charges}）` : '使用药水' }}
+          <Icon name="potion" /> {{ potion ? `${C.items[potion.itemId].name}（${potion.charges}）` : '使用药水' }}
         </button>
       </div>
     </div>

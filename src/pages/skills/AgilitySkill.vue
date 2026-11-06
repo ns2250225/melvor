@@ -64,19 +64,19 @@ function stop() { store.act(() => { g.value.stopAction(); return null; }); }
     <div class="panel">
       <div class="row between">
         <div>
-          <h3>🏃 障碍路线</h3>
-          <div class="small muted">共 {{ course.length }} 个障碍 · 一圈 {{ fmtSec(courseTime) }} · {{ fmt(courseXp) }} XP · 🪙 {{ fmt(courseGp) }}</div>
+          <h3><Icon name="runner" /> 障碍路线</h3>
+          <div class="small muted">共 {{ course.length }} 个障碍 · 一圈 {{ fmtSec(courseTime) }} · {{ fmt(courseXp) }} XP · <Icon name="coin" /> {{ fmt(courseGp) }}</div>
         </div>
         <button v-if="running" class="danger" @click="stop">停止</button>
         <button v-else class="primary" :disabled="!course.length" @click="startCourse">开始跑酷</button>
       </div>
       <div v-if="!course.length" class="muted small mt">尚未建造任何障碍。在下方选择障碍位建造障碍后即可开始。</div>
       <div v-else class="row mt course">
-        <span v-for="(id, i) in course" :key="id" class="tag" :class="{ good: running && id === currentId }">{{ i + 1 }}. {{ C.obstacles[id].icon }} {{ C.obstacles[id].name }}</span>
+        <span v-for="(id, i) in course" :key="id" class="tag" :class="{ good: running && id === currentId }">{{ i + 1 }}. <Icon :name="C.obstacles[id]?.icon" :seed="id" /> {{ C.obstacles[id].name }}</span>
       </div>
       <template v-if="running && currentId">
         <div class="row between small mt">
-          <span>当前障碍：<b>{{ C.obstacles[currentId].icon }} {{ C.obstacles[currentId].name }}</b></span>
+          <span>当前障碍：<b><Icon :name="C.obstacles[currentId]?.icon" :seed="currentId" /> {{ C.obstacles[currentId].name }}</b></span>
           <span class="muted">{{ fmtSec(running.interval) }}</span>
         </div>
         <ProgressBar :value="running.interval ? running.progress / running.interval : 0" :height="8" />
@@ -89,10 +89,10 @@ function stop() { store.act(() => { g.value.stopAction(); return null; }); }
         <div class="row between">
           <div>
             <b>{{ slotName(slot) }}</b>
-            <span v-if="!unlocked(slot)" class="tag bad">🔒 {{ slotReq(slot) }}</span>
+            <span v-if="!unlocked(slot)" class="tag bad"><Icon name="lock" /> {{ slotReq(slot) }}</span>
             <div v-if="built(slot)" class="small">
-              {{ built(slot)!.icon }} {{ built(slot)!.name }}
-              <span v-if="built(slot)!.interval" class="muted tiny">· {{ fmtSec(obsInterval(built(slot)!)) }} · {{ built(slot)!.xp }} XP · 🪙{{ built(slot)!.gp }}</span>
+              <Icon :name="built(slot)!.icon" /> {{ built(slot)!.name }}
+              <span v-if="built(slot)!.interval" class="muted tiny">· {{ fmtSec(obsInterval(built(slot)!)) }} · {{ built(slot)!.xp }} XP · <Icon name="coin" />{{ built(slot)!.gp }}</span>
             </div>
             <div v-else class="small muted">空</div>
             <div v-if="built(slot)" class="row tiny">
@@ -109,16 +109,16 @@ function stop() { store.act(() => { g.value.stopAction(); return null; }); }
         <div v-if="open === slot && unlocked(slot)" class="cards mt">
           <div v-for="o in obstaclesFor(slot)" :key="o.id" class="card" :class="{ active: built(slot)?.id === o.id, locked: !!obsLock(o) }">
             <div class="row between nowrap">
-              <b>{{ o.icon }} {{ o.name }}</b>
+              <b><Icon :name="o.icon" :seed="o.id" /> {{ o.name }}</b>
               <span class="tiny muted">Lv {{ o.level }}<span v-if="o.abyssalLevel" class="abyss"> · 深渊 {{ o.abyssalLevel }}</span></span>
             </div>
-            <div v-if="o.interval" class="tiny muted">{{ fmtSec(obsInterval(o)) }} · {{ o.xp }} XP · 🪙{{ o.gp }} · 已建造 {{ s.agility.buildCounts[o.id] || 0 }} 次</div>
+            <div v-if="o.interval" class="tiny muted">{{ fmtSec(obsInterval(o)) }} · {{ o.xp }} XP · <Icon name="coin" />{{ o.gp }} · 已建造 {{ s.agility.buildCounts[o.id] || 0 }} 次</div>
             <div class="row tiny">
               <span v-for="d in describeMods(o.modifiers)" :key="d" class="tag">{{ d }}</span>
             </div>
-            <div class="small muted">费用 <span :class="s.currencies.gp >= cost(o).gp ? 'gold' : 'bad'">🪙 {{ full(cost(o).gp) }}</span></div>
+            <div class="small muted">费用 <span :class="s.currencies.gp >= cost(o).gp ? 'gold' : 'bad'"><Icon name="coin" /> {{ full(cost(o).gp) }}</span></div>
             <ItemList :items="cost(o).items" check :size="26" />
-            <div v-if="obsLock(o)" class="bad tiny">🔒 {{ obsLock(o) }}</div>
+            <div v-if="obsLock(o)" class="bad tiny"><Icon name="lock" /> {{ obsLock(o) }}</div>
             <span v-if="built(slot)?.id === o.id" class="tag good">已建造</span>
             <button v-else class="primary small" :disabled="!!obsLock(o) || !canAfford(o)" @click="store.act(() => buildObstacle(g, o.id))">建造</button>
           </div>

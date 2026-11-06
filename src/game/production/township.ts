@@ -201,7 +201,7 @@ export function completeTask(g: Game, taskId: string): string | null {
   if (task.reward.xp) g.addXp('township', task.reward.xp);
   for (const i of task.reward.items ?? []) g.addItem(i.id, i.qty, 'townshipTask');
   for (const [r, v] of Object.entries(task.reward.resources ?? {})) t.resources[r] = Math.min(t.storage, (t.resources[r] || 0) + v);
-  g.notify(`完成城镇任务：${task.name}`, 'success', '🏘️');
+  g.notify(`完成城镇任务：${task.name}`, 'success', 'village');
   return null;
 }
 

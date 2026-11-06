@@ -33,7 +33,7 @@ test('新玩家完整流程', async ({ page }) => {
   // 13-14. 清理测试角色并导入验证
   await page.evaluate(() => indexedDB.deleteDatabase('idle-realms'));
   await page.reload();
-  await page.getByRole('button', { name: '📥 导入存档' }).click();
+  await page.getByRole('button', { name: '导入存档' }).click();
   await page.locator('textarea').fill(exported);
   await page.getByRole('button', { name: '导入为新角色' }).click();
   await expect(page.getByText('E2E测试')).toBeVisible();

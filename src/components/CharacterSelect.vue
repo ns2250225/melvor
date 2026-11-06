@@ -36,7 +36,7 @@ function onFile(e: Event) {
 <template>
   <div class="select">
     <div class="hero">
-      <div class="logo">⚔️</div>
+      <div class="logo"><Icon name="swords" /></div>
       <h1>Idle Realms · 放置王国</h1>
       <div class="muted">纯前端离线放置 RPG —— 28 项技能、自动战斗、副本、扩展与终局。所有数据保存在本地浏览器。</div>
     </div>
@@ -54,7 +54,7 @@ function onFile(e: Event) {
             <ConfirmButton label="删除" confirm-text="确认删除？" small @confirm="store.deleteCharacter(c.slot)" />
           </div>
         </div>
-        <button class="mt" @click="showImport = !showImport">📥 导入存档</button>
+        <button class="mt" @click="showImport = !showImport"><Icon name="import" /> 导入存档</button>
         <div v-if="showImport" class="col mt">
           <input type="file" accept=".txt,.json,.save" @change="onFile" />
           <textarea v-model="importText" placeholder="粘贴导出的存档文本" />

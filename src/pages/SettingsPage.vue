@@ -51,16 +51,16 @@ function mb(n: number) { return `${(n / 1024 / 1024).toFixed(n < 1024 * 1024 * 1
 
 <template>
   <div>
-    <div class="page-title"><span class="icon">⚙️</span><h2>设置</h2></div>
+    <div class="page-title"><span class="icon"><Icon name="gear" /></span><h2>设置</h2></div>
 
     <div class="panel">
       <h3>界面</h3>
       <div class="row">
         <span class="lbl">主题</span>
         <div class="tabs" style="margin: 0">
-          <button :class="{ on: st.theme === 'dark' }" @click="set('theme', 'dark')">🌙 深色</button>
-          <button :class="{ on: st.theme === 'light' }" @click="set('theme', 'light')">☀️ 浅色</button>
-          <button :class="{ on: st.theme === 'auto' }" @click="set('theme', 'auto')">🖥️ 跟随系统</button>
+          <button :class="{ on: st.theme === 'dark' }" @click="set('theme', 'dark')"><Icon name="moon" /> 深色</button>
+          <button :class="{ on: st.theme === 'light' }" @click="set('theme', 'light')"><Icon name="sun" /> 浅色</button>
+          <button :class="{ on: st.theme === 'auto' }" @click="set('theme', 'auto')"><Icon name="monitor" /> 跟随系统</button>
         </div>
       </div>
     </div>
@@ -101,7 +101,7 @@ function mb(n: number) { return `${(n / 1024 / 1024).toFixed(n < 1024 * 1024 * 1
       </div>
       <div v-if="!standalone" class="tiny muted mt">可通过浏览器菜单「安装应用 / 添加到主屏幕」将游戏安装为 PWA，支持离线游玩。</div>
       <div class="row mt">
-        <button @click="store.go('saves')">💾 存档管理</button>
+        <button @click="store.go('saves')"><Icon name="save" /> 存档管理</button>
         <button v-if="persisted === false" @click="requestPersist">申请持久化存储</button>
         <button @click="store.exitToMenu()">返回角色列表</button>
       </div>

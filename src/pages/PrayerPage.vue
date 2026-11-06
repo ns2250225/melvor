@@ -28,9 +28,9 @@ function bury(id: string, all: boolean) {
 const gainMult = computed(() => { void store.frame; return 1 + g.value.mods.get('prayerPointsGain') / 100; });
 
 const BOOKS: { id: PrayerDef['book']; name: string; note: string }[] = [
-  { id: 'normal', name: '🙏 普通祈祷', note: '消耗祈祷点' },
-  { id: 'unholy', name: '😈 亵渎祈祷（Throne of the Herald）', note: '消耗祈祷点，需要通关「使者之门」' },
-  { id: 'abyssal', name: '🌀 深渊祈祷（Into the Abyss）', note: '消耗灵魂点，需要深渊祈祷等级' },
+  { id: 'normal', name: '[[pray]] 普通祈祷', note: '消耗祈祷点' },
+  { id: 'unholy', name: '[[imp]] 亵渎祈祷（Throne of the Herald）', note: '消耗祈祷点，需要通关「使者之门」' },
+  { id: 'abyssal', name: '[[vortex]] 深渊祈祷（Into the Abyss）', note: '消耗灵魂点，需要深渊祈祷等级' },
 ];
 const prayersOf = (book: PrayerDef['book']) => Object.values(C.prayers).filter((p) => p.book === book).sort((a, b) => a.level - b.level);
 function lockReason(p: PrayerDef): string | null {
@@ -56,10 +56,10 @@ const activeCost = computed(() => {
 
     <div class="top">
       <div class="panel">
-        <h3>✨ 点数</h3>
+        <h3><Icon name="sparkles" /> 点数</h3>
         <div class="kv">
-          <span>🙏 祈祷点</span><span class="bold">{{ fmt(s.currencies.prayerPoints) }}</span>
-          <span>⚱️ 灵魂点</span><span class="bold abyss">{{ g.inAbyss() ? fmt(s.currencies.soulPoints) : '🔒 需要开启深渊之门' }}</span>
+          <span><Icon name="pray" /> 祈祷点</span><span class="bold">{{ fmt(s.currencies.prayerPoints) }}</span>
+          <span><Icon name="urn" /> 灵魂点</span><span class="bold abyss"><template v-if="g.inAbyss()">{{ fmt(s.currencies.soulPoints) }}</template><template v-else><Icon name="lock" /> 需要开启深渊之门</template></span>
           <span>已启用</span><span>{{ s.prayers.length }} / 3</span>
           <span>每次攻击消耗</span><span>玩家攻击 {{ activeCost.pp }} · 敌人攻击 {{ activeCost.pe }}</span>
           <span v-if="gainMult !== 1">点数获取</span><span v-if="gainMult !== 1" class="good">×{{ gainMult.toFixed(2) }}</span>
@@ -69,7 +69,7 @@ const activeCost = computed(() => {
 
       <div class="panel">
         <div class="row between">
-          <h3>🦴 埋葬骨头</h3>
+          <h3><Icon name="bone" /> 埋葬骨头</h3>
           <label class="row small">数量 <input v-model.number="buryQty" type="number" min="1" style="width: 90px" /></label>
         </div>
         <div class="bones">
@@ -92,13 +92,13 @@ const activeCost = computed(() => {
 
     <div v-for="b in BOOKS" :key="b.id" class="panel">
       <div class="row between">
-        <h3>{{ b.name }}</h3>
+        <h3><IconText :text="b.name" /></h3>
         <span class="small muted">{{ b.note }}</span>
       </div>
       <div class="cards">
         <div v-for="p in prayersOf(b.id)" :key="p.id" class="card" :class="{ active: isOn(p), locked: !!lockReason(p) }">
           <div class="row between">
-            <b>{{ p.icon }} {{ p.name }}</b>
+            <b><Icon :name="p.icon" :seed="p.id" /> {{ p.name }}</b>
             <div class="row">
               <span v-if="isProtect(p)" class="tag">守护</span>
               <span v-if="EXPANSION_SHORT[p.expansion]" class="tag abyss">{{ EXPANSION_SHORT[p.expansion] }}</span>
@@ -110,7 +110,7 @@ const activeCost = computed(() => {
           <div class="tiny">消耗：玩家攻击 <b>{{ p.pointsPerPlayer }}</b> · 敌人攻击 <b>{{ p.pointsPerEnemy }}</b> {{ p.book === 'abyssal' ? '灵魂点' : '祈祷点' }}</div>
           <Requirements :reqs="p.requirements" />
           <button :class="isOn(p) ? 'good' : 'primary'" :disabled="!isOn(p) && !!lockReason(p)" @click="toggle(p)">
-            {{ isOn(p) ? '✔ 已启用（点击关闭）' : lockReason(p) ?? '启用' }}
+            {{ isOn(p) ? '✓ 已启用（点击关闭）' : lockReason(p) ?? '启用' }}
           </button>
         </div>
       </div>

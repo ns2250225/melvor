@@ -6,7 +6,7 @@ import type { ExpansionId, Realm, Requirement } from '@/game/core/types';
 // --------------------------------------------------------------------------- 伐木
 for (const l of LOGS) {
   addAction({
-    id: `wc_${l.id}`, skill: 'woodcutting', name: l.id === 'normal' ? '普通树' : `${l.name.replace('木', '')}树`, icon: '🌳',
+    id: `wc_${l.id}`, skill: 'woodcutting', name: l.id === 'normal' ? '普通树' : `${l.name.replace('木', '')}树`, icon: 'tree',
     level: l.level, abyssalLevel: l.abyssal, realm: l.realm, interval: l.interval, xp: l.xp, abyssalXp: l.abyssal ? Math.round(l.xp * 0.6) : undefined,
     inputs: [], outputs: [{ id: logId(l.id), qty: 1 }],
     extraDrops: [{ id: 'bird_nest', chance: 0.005 }],
@@ -27,17 +27,17 @@ addDropTable({ id: 'dt_bird_nest', rolls: 1, entries: [
 // --------------------------------------------------------------------------- 钓鱼
 export interface FishingAreaDef { id: string; name: string; icon: string; junkChance: number; specialChance: number; specialTable: string; requirements: Requirement[]; realm: Realm; expansion: ExpansionId }
 export const FISHING_AREAS: FishingAreaDef[] = [
-  { id: 'shallows', name: '浅滩', icon: '🏖️', junkChance: 0.2, specialChance: 0.005, specialTable: 'dt_fish_special', requirements: [], realm: 'melvor', expansion: 'base' },
-  { id: 'river', name: '林间河流', icon: '🏞️', junkChance: 0.15, specialChance: 0.01, specialTable: 'dt_fish_special', requirements: [], realm: 'melvor', expansion: 'base' },
-  { id: 'coast', name: '礁石海岸', icon: '🌊', junkChance: 0.1, specialChance: 0.01, specialTable: 'dt_fish_special', requirements: [], realm: 'melvor', expansion: 'base' },
-  { id: 'deep', name: '深海渔场', icon: '🐋', junkChance: 0.05, specialChance: 0.015, specialTable: 'dt_fish_special', requirements: [{ type: 'skill', skill: 'fishing', level: 60 }], realm: 'melvor', expansion: 'base' },
-  { id: 'cave', name: '幽暗洞穴湖', icon: '🕳️', junkChance: 0.05, specialChance: 0.02, specialTable: 'dt_fish_special', requirements: [{ type: 'dungeon', id: 'dg_frozen_cove' }], realm: 'melvor', expansion: 'base' },
-  { id: 'glacier', name: '永冻冰河', icon: '🧊', junkChance: 0.03, specialChance: 0.02, specialTable: 'dt_fish_glacier', requirements: [{ type: 'skill', skill: 'fishing', level: 100 }], realm: 'melvor', expansion: 'toth' },
-  { id: 'abyss_sea', name: '深渊之海', icon: '🌑', junkChance: 0.02, specialChance: 0.02, specialTable: 'dt_fish_abyss', requirements: [{ type: 'realm', realm: 'abyssal' }], realm: 'abyssal', expansion: 'ita' },
+  { id: 'shallows', name: '浅滩', icon: 'beach', junkChance: 0.2, specialChance: 0.005, specialTable: 'dt_fish_special', requirements: [], realm: 'melvor', expansion: 'base' },
+  { id: 'river', name: '林间河流', icon: 'park', junkChance: 0.15, specialChance: 0.01, specialTable: 'dt_fish_special', requirements: [], realm: 'melvor', expansion: 'base' },
+  { id: 'coast', name: '礁石海岸', icon: 'wave', junkChance: 0.1, specialChance: 0.01, specialTable: 'dt_fish_special', requirements: [], realm: 'melvor', expansion: 'base' },
+  { id: 'deep', name: '深海渔场', icon: 'whale', junkChance: 0.05, specialChance: 0.015, specialTable: 'dt_fish_special', requirements: [{ type: 'skill', skill: 'fishing', level: 60 }], realm: 'melvor', expansion: 'base' },
+  { id: 'cave', name: '幽暗洞穴湖', icon: 'hole', junkChance: 0.05, specialChance: 0.02, specialTable: 'dt_fish_special', requirements: [{ type: 'dungeon', id: 'dg_frozen_cove' }], realm: 'melvor', expansion: 'base' },
+  { id: 'glacier', name: '永冻冰河', icon: 'ice', junkChance: 0.03, specialChance: 0.02, specialTable: 'dt_fish_glacier', requirements: [{ type: 'skill', skill: 'fishing', level: 100 }], realm: 'melvor', expansion: 'toth' },
+  { id: 'abyss_sea', name: '深渊之海', icon: 'new_moon', junkChance: 0.02, specialChance: 0.02, specialTable: 'dt_fish_abyss', requirements: [{ type: 'realm', realm: 'abyssal' }], realm: 'abyssal', expansion: 'ita' },
 ];
 for (const f of FISH) {
   addAction({
-    id: `fish_${f.id}`, skill: 'fishing', name: f.name, icon: '🐟', category: f.area,
+    id: `fish_${f.id}`, skill: 'fishing', name: f.name, icon: 'fish', category: f.area,
     level: f.level, abyssalLevel: f.abyssal, realm: f.realm, interval: f.min, intervalMax: f.max, xp: f.xp, abyssalXp: f.abyssal ? Math.round(f.xp * 0.6) : undefined,
     inputs: [], outputs: [{ id: rawFishId(f.id), qty: 1 }], expansion: f.exp,
   });
@@ -71,7 +71,7 @@ addDropTable({ id: 'dt_gem_pouch', entries: GEMS.filter((g) => g.weight > 0).map
 // --------------------------------------------------------------------------- 采矿
 for (const o of ORES) {
   addAction({
-    id: `mine_${o.id}`, skill: 'mining', name: o.isEssence ? `${o.name}矿脉` : `${o.name}`, icon: o.isEssence ? '💠' : '⛰️',
+    id: `mine_${o.id}`, skill: 'mining', name: o.isEssence ? `${o.name}矿脉` : `${o.name}`, icon: o.isEssence ? 'diamond' : 'mountain',
     level: o.level, abyssalLevel: o.abyssal, realm: o.realm, interval: o.interval, xp: o.xp, abyssalXp: o.abyssal ? Math.round(o.xp * 0.6) : undefined,
     inputs: [], outputs: [{ id: oreId(o.id), qty: 1 }],
     data: { rockHp: o.rockHp, respawn: o.respawn, isEssence: !!o.isEssence },
@@ -84,64 +84,64 @@ for (const o of ORES) {
 // --------------------------------------------------------------------------- 偷窃
 interface NpcCfg { id: string; name: string; icon: string; level: number; abyssal?: number; perception: number; xp: number; maxHit: number; gp: number; area: string; table: [string, number, number, number][]; unique: { id: string; name: string; icon: string; chance: number; desc: string; equip?: any }; exp: ExpansionId; realm: Realm }
 export const THIEVING_AREAS = [
-  { id: 'village', name: '宁静村庄', icon: '🏡', unique: { id: 'lucky_clover', chance: 1 / 4000 }, exp: 'base' as ExpansionId },
-  { id: 'market', name: '繁华集市', icon: '🏪', unique: { id: 'merchants_ledger', chance: 1 / 4000 }, exp: 'base' as ExpansionId },
-  { id: 'castle', name: '王城', icon: '🏰', unique: { id: 'royal_signet', chance: 1 / 5000 }, exp: 'base' as ExpansionId },
-  { id: 'towers', name: '法师之塔', icon: '🗼', unique: { id: 'arcane_lens', chance: 1 / 5000 }, exp: 'base' as ExpansionId },
-  { id: 'heraldry', name: '使者圣殿', icon: '⛪', unique: { id: 'herald_relic', chance: 1 / 6000 }, exp: 'toth' as ExpansionId },
-  { id: 'abyss_bazaar', name: '深渊黑市', icon: '🌒', unique: { id: 'void_charm', chance: 1 / 6000 }, exp: 'ita' as ExpansionId },
+  { id: 'village', name: '宁静村庄', icon: 'cottage', unique: { id: 'lucky_clover', chance: 1 / 4000 }, exp: 'base' as ExpansionId },
+  { id: 'market', name: '繁华集市', icon: 'store', unique: { id: 'merchants_ledger', chance: 1 / 4000 }, exp: 'base' as ExpansionId },
+  { id: 'castle', name: '王城', icon: 'castle', unique: { id: 'royal_signet', chance: 1 / 5000 }, exp: 'base' as ExpansionId },
+  { id: 'towers', name: '法师之塔', icon: 'tower', unique: { id: 'arcane_lens', chance: 1 / 5000 }, exp: 'base' as ExpansionId },
+  { id: 'heraldry', name: '使者圣殿', icon: 'church', unique: { id: 'herald_relic', chance: 1 / 6000 }, exp: 'toth' as ExpansionId },
+  { id: 'abyss_bazaar', name: '深渊黑市', icon: 'crescent', unique: { id: 'void_charm', chance: 1 / 6000 }, exp: 'ita' as ExpansionId },
 ];
-addItem({ id: 'lucky_clover', name: '幸运四叶草', type: 'equipment', icon: '☘️', color: '#27ae60', sellPrice: 2000, category: '装备', rarity: 2, description: '全局金币 +3%，稀有掉落几率 +5%',
+addItem({ id: 'lucky_clover', name: '幸运四叶草', type: 'equipment', icon: 'shamrock', color: '#27ae60', sellPrice: 2000, category: '装备', rarity: 2, description: '全局金币 +3%，稀有掉落几率 +5%',
   equipment: { slot: 'passive', requirements: [], stats: {}, modifiers: { gpGlobal: 3, rareDropChance: 5 } } });
-addItem({ id: 'merchants_ledger', name: '商人账本', type: 'equipment', icon: '📒', color: '#d4ac0d', sellPrice: 3000, category: '装备', rarity: 2, description: '出售物品价格 +5%',
+addItem({ id: 'merchants_ledger', name: '商人账本', type: 'equipment', icon: 'ledger', color: '#d4ac0d', sellPrice: 3000, category: '装备', rarity: 2, description: '出售物品价格 +5%',
   equipment: { slot: 'passive', requirements: [], stats: {}, modifiers: { sellPrice: 5 } } });
-addItem({ id: 'royal_signet', name: '王室印戒', type: 'equipment', icon: '💍', color: '#f1c40f', sellPrice: 8000, category: '装备', rarity: 2, description: '偷窃金币 +15%，潜行 +40',
+addItem({ id: 'royal_signet', name: '王室印戒', type: 'equipment', icon: 'ring', color: '#f1c40f', sellPrice: 8000, category: '装备', rarity: 2, description: '偷窃金币 +15%，潜行 +40',
   equipment: { slot: 'ring', requirements: [{ skill: 'thieving', level: 45 }], stats: { magicDefence: 5 }, modifiers: { 'gpGlobal:thieving': 15, thievingStealth: 40 } } });
-addItem({ id: 'arcane_lens', name: '奥术透镜', type: 'equipment', icon: '🔍', color: '#5dade2', sellPrice: 9000, category: '装备', rarity: 2, description: '符文节省 +10%，魔法命中 +5%',
+addItem({ id: 'arcane_lens', name: '奥术透镜', type: 'equipment', icon: 'search', color: '#5dade2', sellPrice: 9000, category: '装备', rarity: 2, description: '符文节省 +10%，魔法命中 +5%',
   equipment: { slot: 'passive', requirements: [], stats: {}, modifiers: { runePreservation: 10, magicAccuracy: 5 } } });
-addItem({ id: 'herald_relic', name: '使者圣物', type: 'equipment', icon: '🏺', color: '#f5b041', sellPrice: 20000, category: '装备', expansion: 'toth', rarity: 3, description: '全技能经验 +4%',
+addItem({ id: 'herald_relic', name: '使者圣物', type: 'equipment', icon: 'amphora', color: '#f5b041', sellPrice: 20000, category: '装备', expansion: 'toth', rarity: 3, description: '全技能经验 +4%',
   equipment: { slot: 'passive', requirements: [], stats: {}, modifiers: { skillXP: 4 } } });
-addItem({ id: 'void_charm', name: '虚空护符', type: 'equipment', icon: '🧿', color: '#6c3483', sellPrice: 40000, category: '装备', expansion: 'ita', rarity: 3, description: '深渊经验 +6%，深渊抗性 +3',
+addItem({ id: 'void_charm', name: '虚空护符', type: 'equipment', icon: 'charm', color: '#6c3483', sellPrice: 40000, category: '装备', expansion: 'ita', rarity: 3, description: '深渊经验 +6%，深渊抗性 +3',
   equipment: { slot: 'amulet', realm: 'abyssal', requirements: [{ skill: 'thieving', level: 99 }], stats: { abyssalResistance: 3, magicAttack: 20 }, modifiers: { abyssalXP: 6 } } });
 
 const NPCS: NpcCfg[] = [
-  { id: 'farmer', name: '农夫', icon: '👨‍🌾', level: 1, perception: 10, xp: 5, maxHit: 10, gp: 10, area: 'village', exp: 'base', realm: 'melvor',
-    table: [['seed_potato', 1, 4, 30], ['seed_onion', 1, 4, 25], ['seed_cabbage', 1, 3, 20], ['seed_wheat', 1, 3, 15], ['seed_tomato', 1, 2, 10]], unique: { id: 'farmers_hat', name: '农夫草帽', icon: '👒', chance: 1 / 500, desc: '农业经验 +5%', equip: { slot: 'helmet', mods: { 'skillXP:farming': 5 } } } },
-  { id: 'villager', name: '村民', icon: '🧑', level: 5, perception: 20, xp: 8, maxHit: 15, gp: 25, area: 'village', exp: 'base', realm: 'melvor',
-    table: [['egg', 1, 3, 30], ['milk', 1, 2, 25], ['bread', 1, 2, 20], ['feather', 5, 15, 25]], unique: { id: 'villager_scarf', name: '村民围巾', icon: '🧣', chance: 1 / 500, desc: '偷窃耗时 -3%', equip: { slot: 'cape', mods: { 'skillInterval:thieving': -3 } } } },
-  { id: 'fisher', name: '渔夫', icon: '🎣', level: 12, perception: 35, xp: 12, maxHit: 25, gp: 40, area: 'village', exp: 'base', realm: 'melvor',
-    table: [['raw_trout', 1, 3, 40], ['raw_salmon', 1, 2, 30], ['feather', 10, 30, 30]], unique: { id: 'old_fishing_hat', name: '老渔夫帽', icon: '🎩', chance: 1 / 600, desc: '钓鱼特殊物品几率 +2%', equip: { slot: 'helmet', mods: { fishingSpecialChance: 2 } } } },
-  { id: 'pickpocket', name: '扒手', icon: '🦹', level: 20, perception: 55, xp: 18, maxHit: 35, gp: 70, area: 'market', exp: 'base', realm: 'melvor',
-    table: [['coin_pouch', 1, 1, 40], [gemId('topaz'), 1, 1, 10], ['rune_mind', 5, 20, 30], ['rune_body', 3, 10, 20]], unique: { id: 'thief_mask', name: '盗贼面罩', icon: '🎭', chance: 1 / 800, desc: '潜行 +20', equip: { slot: 'helmet', mods: { thievingStealth: 20 } } } },
-  { id: 'guard', name: '集市卫兵', icon: '💂', level: 30, perception: 80, xp: 26, maxHit: 50, gp: 100, area: 'market', exp: 'base', realm: 'melvor',
-    table: [['bar_iron', 1, 3, 30], ['bar_steel', 1, 2, 25], ['steel_arrows', 5, 20, 25], ['food_lobster', 1, 2, 20]], unique: { id: 'guard_badge', name: '卫兵徽章', icon: '📛', chance: 1 / 800, desc: '伤害减免 +1%', equip: { slot: 'passive', mods: { damageReductionFlat: 1 } } } },
-  { id: 'merchant', name: '商人', icon: '🧔', level: 40, perception: 110, xp: 35, maxHit: 45, gp: 200, area: 'market', exp: 'base', realm: 'melvor',
-    table: [['coin_pouch', 1, 3, 40], ['gem_pouch', 1, 1, 15], [gemId('sapphire'), 1, 1, 15], ['leather', 2, 6, 30]], unique: { id: 'merchant_purse', name: '商人钱囊', icon: '👛', chance: 1 / 1000, desc: '全局金币 +2%', equip: { slot: 'passive', mods: { gpGlobal: 2 } } } },
-  { id: 'knight', name: '骑士', icon: '🤺', level: 50, perception: 150, xp: 45, maxHit: 80, gp: 260, area: 'castle', exp: 'base', realm: 'melvor',
-    table: [['bar_mithril', 1, 3, 30], ['mithril_arrows', 5, 20, 25], ['food_swordfish', 1, 2, 25], [gemId('ruby'), 1, 1, 20]], unique: { id: 'knight_sigil', name: '骑士纹章', icon: '🛡️', chance: 1 / 1000, desc: '近战命中 +4%', equip: { slot: 'passive', mods: { meleeAccuracy: 4 } } } },
-  { id: 'wizard', name: '巫师', icon: '🧙', level: 55, perception: 170, xp: 52, maxHit: 70, gp: 220, area: 'towers', exp: 'base', realm: 'melvor',
-    table: [['rune_chaos', 5, 25, 30], ['rune_nature', 5, 20, 25], ['rune_death', 3, 12, 20], ['rune_blood', 2, 8, 15], ['rune_essence', 20, 60, 10]], unique: { id: 'wizard_tome', name: '巫师典籍', icon: '📕', chance: 1 / 1000, desc: '魔法最大伤害 +3%', equip: { slot: 'passive', mods: { magicMaxHit: 3 } } } },
-  { id: 'priest', name: '牧师', icon: '⛪', level: 60, perception: 200, xp: 60, maxHit: 60, gp: 240, area: 'towers', exp: 'base', realm: 'melvor',
-    table: [['herb_sack', 1, 1, 30], ['seed_starherb', 1, 2, 15], ['seed_ghostcap', 1, 2, 20], ['big_bones', 3, 8, 25], ['dragon_bones', 1, 3, 10]], unique: { id: 'priest_rosary', name: '牧师念珠', icon: '📿', chance: 1 / 1200, desc: '祈祷点节省 +10%', equip: { slot: 'passive', mods: { prayerPreservation: 10 } } } },
-  { id: 'noble', name: '贵族', icon: '🤴', level: 70, perception: 260, xp: 75, maxHit: 90, gp: 500, area: 'castle', exp: 'base', realm: 'melvor',
-    table: [['gem_pouch', 1, 2, 30], [gemId('emerald'), 1, 1, 20], [gemId('diamond'), 1, 1, 10], ['coin_pouch', 2, 5, 40]], unique: { id: 'noble_monocle', name: '贵族单片镜', icon: '🧐', chance: 1 / 1500, desc: '稀有掉落几率 +5%', equip: { slot: 'helmet', mods: { rareDropChance: 5 } } } },
-  { id: 'royal_guard', name: '王室侍卫', icon: '👮', level: 80, perception: 320, xp: 90, maxHit: 130, gp: 600, area: 'castle', exp: 'base', realm: 'melvor',
-    table: [['bar_rune', 1, 2, 30], ['rune_arrows', 5, 15, 25], ['food_shark', 1, 3, 25], ['bar_adamant', 1, 3, 20]], unique: { id: 'royal_cape', name: '王室披风', icon: '🧣', chance: 1 / 2000, desc: '全部伤害 +3%', equip: { slot: 'cape', mods: { maxHit: 3 } } } },
-  { id: 'dragon_scholar', name: '龙族学者', icon: '🐲', level: 90, perception: 400, xp: 115, maxHit: 150, gp: 900, area: 'towers', exp: 'base', realm: 'melvor',
-    table: [['hide_black', 1, 2, 25], ['dragon_bones', 2, 5, 30], ['rune_ancient', 3, 10, 25], ['ore_dragonite', 1, 2, 20]], unique: { id: 'dragon_codex', name: '龙语法典', icon: '📘', chance: 1 / 2500, desc: '对龙类伤害 +5%（全部伤害 +2%）、魔法命中 +5%', equip: { slot: 'passive', mods: { maxHit: 2, magicAccuracy: 5 } } } },
-  { id: 'herald_priest', name: '使者祭司', icon: '🧝', level: 105, perception: 550, xp: 160, maxHit: 220, gp: 1500, area: 'heraldry', exp: 'toth', realm: 'melvor',
-    table: [['herb_heraldbloom', 1, 2, 30], ['seed_heraldbloom', 1, 1, 15], ['rune_havoc', 5, 15, 30], ['ore_starfall', 1, 3, 25]], unique: { id: 'herald_vestment', name: '使者圣袍', icon: '🥻', chance: 1 / 3000, desc: '全技能掌握度经验 +5%', equip: { slot: 'body', mods: { masteryXP: 5 } } } },
-  { id: 'sky_warden', name: '天穹守卫', icon: '🦅', level: 115, perception: 680, xp: 200, maxHit: 280, gp: 2200, area: 'heraldry', exp: 'toth', realm: 'melvor',
-    table: [['bar_starfall', 1, 2, 35], ['ore_celestium', 1, 2, 25], [gemId('onyx'), 1, 1, 10], ['elder_bones', 1, 3, 30]], unique: { id: 'warden_wings', name: '守卫之翼', icon: '🪽', chance: 1 / 3500, desc: '技能耗时 -2%', equip: { slot: 'cape', mods: { skillInterval: -2 } } } },
-  { id: 'abyss_wanderer', name: '深渊流浪者', icon: '🧟', level: 99, abyssal: 1, perception: 800, xp: 260, maxHit: 350, gp: 0, area: 'abyss_bazaar', exp: 'ita', realm: 'abyssal',
-    table: [['abyssal_shard', 1, 3, 40], ['rune_void', 5, 15, 30], ['void_ashes', 1, 2, 30]], unique: { id: 'wanderer_hood', name: '流浪者兜帽', icon: '🥷', chance: 1 / 4000, desc: '深渊潜行 +50', equip: { slot: 'helmet', mods: { thievingStealth: 50 } } } },
-  { id: 'void_trader', name: '虚空商人', icon: '🧞', level: 99, abyssal: 20, perception: 1000, xp: 360, maxHit: 450, gp: 0, area: 'abyss_bazaar', exp: 'ita', realm: 'abyssal',
-    table: [['ore_void', 1, 3, 35], ['bar_void', 1, 2, 25], [gemId('voidgem'), 1, 1, 5], ['abyssal_shard', 2, 5, 35]], unique: { id: 'trader_scale', name: '虚空天平', icon: '⚖️', chance: 1 / 5000, desc: '深渊碎片获取 +10%', equip: { slot: 'passive', mods: { abyssalPieces: 10 } } } },
-  { id: 'corrupt_noble', name: '腐化贵族', icon: '🧛', level: 99, abyssal: 40, perception: 1250, xp: 480, maxHit: 600, gp: 0, area: 'abyss_bazaar', exp: 'ita', realm: 'abyssal',
-    table: [['bar_abyssal', 1, 2, 30], ['abyssal_ashes', 1, 2, 30], ['rune_abyssal', 5, 15, 40]], unique: { id: 'noble_bloodgem', name: '血色宝珠', icon: '🩸', chance: 1 / 6000, desc: '生命偷取 +2%', equip: { slot: 'gem', mods: { lifesteal: 2 } } } },
+  { id: 'farmer', name: '农夫', icon: 'farmhand', level: 1, perception: 10, xp: 5, maxHit: 10, gp: 10, area: 'village', exp: 'base', realm: 'melvor',
+    table: [['seed_potato', 1, 4, 30], ['seed_onion', 1, 4, 25], ['seed_cabbage', 1, 3, 20], ['seed_wheat', 1, 3, 15], ['seed_tomato', 1, 2, 10]], unique: { id: 'farmers_hat', name: '农夫草帽', icon: 'sun_hat', chance: 1 / 500, desc: '农业经验 +5%', equip: { slot: 'helmet', mods: { 'skillXP:farming': 5 } } } },
+  { id: 'villager', name: '村民', icon: 'person', level: 5, perception: 20, xp: 8, maxHit: 15, gp: 25, area: 'village', exp: 'base', realm: 'melvor',
+    table: [['egg', 1, 3, 30], ['milk', 1, 2, 25], ['bread', 1, 2, 20], ['feather', 5, 15, 25]], unique: { id: 'villager_scarf', name: '村民围巾', icon: 'scarf', chance: 1 / 500, desc: '偷窃耗时 -3%', equip: { slot: 'cape', mods: { 'skillInterval:thieving': -3 } } } },
+  { id: 'fisher', name: '渔夫', icon: 'fishing_rod', level: 12, perception: 35, xp: 12, maxHit: 25, gp: 40, area: 'village', exp: 'base', realm: 'melvor',
+    table: [['raw_trout', 1, 3, 40], ['raw_salmon', 1, 2, 30], ['feather', 10, 30, 30]], unique: { id: 'old_fishing_hat', name: '老渔夫帽', icon: 'top_hat', chance: 1 / 600, desc: '钓鱼特殊物品几率 +2%', equip: { slot: 'helmet', mods: { fishingSpecialChance: 2 } } } },
+  { id: 'pickpocket', name: '扒手', icon: 'villain', level: 20, perception: 55, xp: 18, maxHit: 35, gp: 70, area: 'market', exp: 'base', realm: 'melvor',
+    table: [['coin_pouch', 1, 1, 40], [gemId('topaz'), 1, 1, 10], ['rune_mind', 5, 20, 30], ['rune_body', 3, 10, 20]], unique: { id: 'thief_mask', name: '盗贼面罩', icon: 'masks', chance: 1 / 800, desc: '潜行 +20', equip: { slot: 'helmet', mods: { thievingStealth: 20 } } } },
+  { id: 'guard', name: '集市卫兵', icon: 'guard', level: 30, perception: 80, xp: 26, maxHit: 50, gp: 100, area: 'market', exp: 'base', realm: 'melvor',
+    table: [['bar_iron', 1, 3, 30], ['bar_steel', 1, 2, 25], ['steel_arrows', 5, 20, 25], ['food_lobster', 1, 2, 20]], unique: { id: 'guard_badge', name: '卫兵徽章', icon: 'badge', chance: 1 / 800, desc: '伤害减免 +1%', equip: { slot: 'passive', mods: { damageReductionFlat: 1 } } } },
+  { id: 'merchant', name: '商人', icon: 'bearded', level: 40, perception: 110, xp: 35, maxHit: 45, gp: 200, area: 'market', exp: 'base', realm: 'melvor',
+    table: [['coin_pouch', 1, 3, 40], ['gem_pouch', 1, 1, 15], [gemId('sapphire'), 1, 1, 15], ['leather', 2, 6, 30]], unique: { id: 'merchant_purse', name: '商人钱囊', icon: 'purse', chance: 1 / 1000, desc: '全局金币 +2%', equip: { slot: 'passive', mods: { gpGlobal: 2 } } } },
+  { id: 'knight', name: '骑士', icon: 'fencer', level: 50, perception: 150, xp: 45, maxHit: 80, gp: 260, area: 'castle', exp: 'base', realm: 'melvor',
+    table: [['bar_mithril', 1, 3, 30], ['mithril_arrows', 5, 20, 25], ['food_swordfish', 1, 2, 25], [gemId('ruby'), 1, 1, 20]], unique: { id: 'knight_sigil', name: '骑士纹章', icon: 'shield', chance: 1 / 1000, desc: '近战命中 +4%', equip: { slot: 'passive', mods: { meleeAccuracy: 4 } } } },
+  { id: 'wizard', name: '巫师', icon: 'wizard', level: 55, perception: 170, xp: 52, maxHit: 70, gp: 220, area: 'towers', exp: 'base', realm: 'melvor',
+    table: [['rune_chaos', 5, 25, 30], ['rune_nature', 5, 20, 25], ['rune_death', 3, 12, 20], ['rune_blood', 2, 8, 15], ['rune_essence', 20, 60, 10]], unique: { id: 'wizard_tome', name: '巫师典籍', icon: 'red_book', chance: 1 / 1000, desc: '魔法最大伤害 +3%', equip: { slot: 'passive', mods: { magicMaxHit: 3 } } } },
+  { id: 'priest', name: '牧师', icon: 'church', level: 60, perception: 200, xp: 60, maxHit: 60, gp: 240, area: 'towers', exp: 'base', realm: 'melvor',
+    table: [['herb_sack', 1, 1, 30], ['seed_starherb', 1, 2, 15], ['seed_ghostcap', 1, 2, 20], ['big_bones', 3, 8, 25], ['dragon_bones', 1, 3, 10]], unique: { id: 'priest_rosary', name: '牧师念珠', icon: 'beads', chance: 1 / 1200, desc: '祈祷点节省 +10%', equip: { slot: 'passive', mods: { prayerPreservation: 10 } } } },
+  { id: 'noble', name: '贵族', icon: 'prince', level: 70, perception: 260, xp: 75, maxHit: 90, gp: 500, area: 'castle', exp: 'base', realm: 'melvor',
+    table: [['gem_pouch', 1, 2, 30], [gemId('emerald'), 1, 1, 20], [gemId('diamond'), 1, 1, 10], ['coin_pouch', 2, 5, 40]], unique: { id: 'noble_monocle', name: '贵族单片镜', icon: 'monocle', chance: 1 / 1500, desc: '稀有掉落几率 +5%', equip: { slot: 'helmet', mods: { rareDropChance: 5 } } } },
+  { id: 'royal_guard', name: '王室侍卫', icon: 'officer', level: 80, perception: 320, xp: 90, maxHit: 130, gp: 600, area: 'castle', exp: 'base', realm: 'melvor',
+    table: [['bar_rune', 1, 2, 30], ['rune_arrows', 5, 15, 25], ['food_shark', 1, 3, 25], ['bar_adamant', 1, 3, 20]], unique: { id: 'royal_cape', name: '王室披风', icon: 'scarf', chance: 1 / 2000, desc: '全部伤害 +3%', equip: { slot: 'cape', mods: { maxHit: 3 } } } },
+  { id: 'dragon_scholar', name: '龙族学者', icon: 'dragon_head', level: 90, perception: 400, xp: 115, maxHit: 150, gp: 900, area: 'towers', exp: 'base', realm: 'melvor',
+    table: [['hide_black', 1, 2, 25], ['dragon_bones', 2, 5, 30], ['rune_ancient', 3, 10, 25], ['ore_dragonite', 1, 2, 20]], unique: { id: 'dragon_codex', name: '龙语法典', icon: 'blue_book', chance: 1 / 2500, desc: '对龙类伤害 +5%（全部伤害 +2%）、魔法命中 +5%', equip: { slot: 'passive', mods: { maxHit: 2, magicAccuracy: 5 } } } },
+  { id: 'herald_priest', name: '使者祭司', icon: 'elf', level: 105, perception: 550, xp: 160, maxHit: 220, gp: 1500, area: 'heraldry', exp: 'toth', realm: 'melvor',
+    table: [['herb_heraldbloom', 1, 2, 30], ['seed_heraldbloom', 1, 1, 15], ['rune_havoc', 5, 15, 30], ['ore_starfall', 1, 3, 25]], unique: { id: 'herald_vestment', name: '使者圣袍', icon: 'robe', chance: 1 / 3000, desc: '全技能掌握度经验 +5%', equip: { slot: 'body', mods: { masteryXP: 5 } } } },
+  { id: 'sky_warden', name: '天穹守卫', icon: 'eagle', level: 115, perception: 680, xp: 200, maxHit: 280, gp: 2200, area: 'heraldry', exp: 'toth', realm: 'melvor',
+    table: [['bar_starfall', 1, 2, 35], ['ore_celestium', 1, 2, 25], [gemId('onyx'), 1, 1, 10], ['elder_bones', 1, 3, 30]], unique: { id: 'warden_wings', name: '守卫之翼', icon: 'wing', chance: 1 / 3500, desc: '技能耗时 -2%', equip: { slot: 'cape', mods: { skillInterval: -2 } } } },
+  { id: 'abyss_wanderer', name: '深渊流浪者', icon: 'zombie', level: 99, abyssal: 1, perception: 800, xp: 260, maxHit: 350, gp: 0, area: 'abyss_bazaar', exp: 'ita', realm: 'abyssal',
+    table: [['abyssal_shard', 1, 3, 40], ['rune_void', 5, 15, 30], ['void_ashes', 1, 2, 30]], unique: { id: 'wanderer_hood', name: '流浪者兜帽', icon: 'ninja', chance: 1 / 4000, desc: '深渊潜行 +50', equip: { slot: 'helmet', mods: { thievingStealth: 50 } } } },
+  { id: 'void_trader', name: '虚空商人', icon: 'genie', level: 99, abyssal: 20, perception: 1000, xp: 360, maxHit: 450, gp: 0, area: 'abyss_bazaar', exp: 'ita', realm: 'abyssal',
+    table: [['ore_void', 1, 3, 35], ['bar_void', 1, 2, 25], [gemId('voidgem'), 1, 1, 5], ['abyssal_shard', 2, 5, 35]], unique: { id: 'trader_scale', name: '虚空天平', icon: 'scales', chance: 1 / 5000, desc: '深渊碎片获取 +10%', equip: { slot: 'passive', mods: { abyssalPieces: 10 } } } },
+  { id: 'corrupt_noble', name: '腐化贵族', icon: 'vampire', level: 99, abyssal: 40, perception: 1250, xp: 480, maxHit: 600, gp: 0, area: 'abyss_bazaar', exp: 'ita', realm: 'abyssal',
+    table: [['bar_abyssal', 1, 2, 30], ['abyssal_ashes', 1, 2, 30], ['rune_abyssal', 5, 15, 40]], unique: { id: 'noble_bloodgem', name: '血色宝珠', icon: 'blood', chance: 1 / 6000, desc: '生命偷取 +2%', equip: { slot: 'gem', mods: { lifesteal: 2 } } } },
 ];
 
-addItem({ id: 'bread', name: '面包', type: 'food', icon: '🍞', sellPrice: 6, category: '食物', healsFor: 60 });
+addItem({ id: 'bread', name: '面包', type: 'food', icon: 'bread', sellPrice: 6, category: '食物', healsFor: 60 });
 
 for (const n of NPCS) {
   const u = n.unique;
@@ -169,7 +169,7 @@ const VEINS = [
 ];
 for (const v of VEINS) {
   addAction({
-    id: `harvest_${v.id}`, skill: 'harvesting', name: v.name, icon: '🌾', level: v.level, realm: 'abyssal',
+    id: `harvest_${v.id}`, skill: 'harvesting', name: v.name, icon: 'wheat', level: v.level, realm: 'abyssal',
     interval: 3000, xp: v.xp, inputs: [], outputs: [{ id: v.items[0][0] as string, qty: v.items[0][1] as number }],
     data: { maxIntensity: 10000, rare: { id: v.items[1][0], weight: v.items[1][1] } }, expansion: 'ita',
     requirements: [{ type: 'realm', realm: 'abyssal' }],

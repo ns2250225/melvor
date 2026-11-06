@@ -68,7 +68,7 @@ const gloves = computed(() => Object.entries(s.value.glovesCharges).filter(([, v
 <template>
   <div>
     <div class="page-title">
-      <span class="icon">🛡️</span>
+      <span class="icon"><Icon name="shield" /></span>
       <div class="grow">
         <h2>装备</h2>
         <div class="muted small">战斗等级 <b>{{ cbLevel }}</b> · 攻击方式 {{ ATTACK_TYPE_NAMES[derived.attackType] }}<span v-if="inDungeon" class="warn"> · 副本中无法更换装备</span></div>
@@ -77,7 +77,7 @@ const gloves = computed(() => Object.entries(s.value.glovesCharges).filter(([, v
 
     <div class="tabs">
       <button v-for="i in 3" :key="i" :class="{ on: s.activeSet === i - 1 }" :disabled="i - 1 >= setCount" @click="store.act(() => switchSet(g, i - 1))">
-        {{ i - 1 >= setCount ? '🔒 ' : '' }}方案 {{ i }}
+        <Icon v-if="i - 1 >= setCount" name="lock" /> 方案 {{ i }}
       </button>
       <button v-if="setCount < 3" class="ghost small" @click="store.go('shop')">在商店解锁更多方案</button>
     </div>
@@ -89,7 +89,7 @@ const gloves = computed(() => Object.entries(s.value.glovesCharges).filter(([, v
           <div v-for="slot in EQUIP_SLOTS" :key="slot" class="slot" :class="{ on: selected === slot }" @click="selected = slot">
             <div class="tiny muted">{{ SLOT_NAMES[slot] }}</div>
             <ItemIcon v-if="set[slot]" :id="set[slot]!.id" :qty="isStackableSlot(slot) ? set[slot]!.qty : null" :size="44" />
-            <div v-else class="emptyslot">{{ SLOT_ICONS[slot] }}</div>
+            <div v-else class="emptyslot"><Icon :name="SLOT_ICONS[slot]" /></div>
             <div class="tiny name">{{ set[slot] ? C.items[set[slot]!.id]?.name : '空' }}</div>
             <button v-if="set[slot]" class="small ghost" :disabled="inDungeon" @click.stop="doUnequip(slot)">卸下</button>
           </div>
@@ -98,7 +98,7 @@ const gloves = computed(() => Object.entries(s.value.glovesCharges).filter(([, v
 
       <div class="panel">
         <div class="row between">
-          <h3>{{ SLOT_ICONS[selected] }} 选择{{ SLOT_NAMES[selected] }}</h3>
+          <h3><Icon :name="SLOT_ICONS[selected]" /> 选择{{ SLOT_NAMES[selected] }}</h3>
           <span class="small muted">{{ candidates.length }} 件可用</span>
         </div>
         <input v-model="search" placeholder="搜索装备" class="full mb" />
@@ -119,7 +119,7 @@ const gloves = computed(() => Object.entries(s.value.glovesCharges).filter(([, v
 
     <div class="layout">
       <div class="panel">
-        <h3>📊 装备属性</h3>
+        <h3><Icon name="chart" /> 装备属性</h3>
         <div class="kv">
           <template v-for="k in STAT_KEYS" :key="k">
             <template v-if="gear[k]">
@@ -131,7 +131,7 @@ const gloves = computed(() => Object.entries(s.value.glovesCharges).filter(([, v
         <div v-if="!STAT_KEYS.some((k) => gear[k])" class="muted small">未装备任何提供属性的物品</div>
       </div>
       <div class="panel">
-        <h3>⚔️ 战斗属性</h3>
+        <h3><Icon name="swords" /> 战斗属性</h3>
         <div class="kv">
           <span>战斗等级</span><span>{{ cbLevel }}</span>
           <span>最大生命</span><span>{{ full(derived.maxHp) }}</span>
@@ -147,13 +147,13 @@ const gloves = computed(() => Object.entries(s.value.glovesCharges).filter(([, v
           <span v-if="derived.summonMaxHit">召唤兽最大伤害</span><span v-if="derived.summonMaxHit">{{ derived.summonMaxHit }}</span>
           <span v-if="derived.spell">战斗法术</span><span v-if="derived.spell">{{ derived.spell.name }}</span>
         </div>
-        <div v-if="derived.problem" class="bad small mt">⚠ {{ derived.problem }}</div>
+        <div v-if="derived.problem" class="bad small mt"><Icon name="warning" /> {{ derived.problem }}</div>
       </div>
     </div>
 
     <div class="panel">
       <div class="row between">
-        <h3>✨ 生效中的修饰符（{{ sources.length }} 个来源）</h3>
+        <h3><Icon name="sparkles" /> 生效中的修饰符（{{ sources.length }} 个来源）</h3>
         <button v-if="sources.length > 8" class="small ghost" @click="showAllSources = !showAllSources">{{ showAllSources ? '收起' : '展开全部' }}</button>
       </div>
       <div v-if="!sources.length" class="muted small">暂无修饰符</div>
@@ -167,10 +167,10 @@ const gloves = computed(() => Object.entries(s.value.glovesCharges).filter(([, v
 
     <div class="layout">
       <div class="panel">
-        <h3>🍖 食物栏</h3>
+        <h3><Icon name="meat" /> 食物栏</h3>
         <div class="row">
           <div v-for="i in 3" :key="i" class="foodslot" :class="{ on: s.selectedFood === i - 1, locked: i > foodCount }" @click="i <= foodCount && selectFood(i - 1)">
-            <template v-if="i > foodCount"><span class="tiny muted">🔒 未解锁</span></template>
+            <template v-if="i > foodCount"><span class="tiny muted"><Icon name="lock" /> 未解锁</span></template>
             <template v-else-if="s.food[i - 1]">
               <ItemIcon :id="s.food[i - 1]!.id" :qty="s.food[i - 1]!.qty" :size="36" />
               <div class="tiny">+{{ foodHeal(g, s.food[i - 1]!.id) }}</div>
@@ -197,14 +197,14 @@ const gloves = computed(() => Object.entries(s.value.glovesCharges).filter(([, v
       </div>
 
       <div class="panel">
-        <h3>🧪 生效药水</h3>
+        <h3><Icon name="potion" /> 生效药水</h3>
         <div v-if="!potions.length" class="muted small">没有生效中的药水（在银行中点击药水使用）</div>
         <div v-for="[k, p] in potions" :key="k" class="prow row nowrap">
           <ItemIcon :id="p.itemId" :size="32" />
           <div class="grow small">{{ C.items[p.itemId]?.name }} <span class="muted tiny">（{{ potionKeyName(k) }}）剩余 {{ p.charges }} 次</span></div>
           <button class="small" @click="store.act(() => removePotion(g, k))">移除</button>
         </div>
-        <h3 class="mt">🧤 手套充能</h3>
+        <h3 class="mt"><Icon name="gloves" /> 手套充能</h3>
         <div v-if="!gloves.length" class="muted small">没有充能手套</div>
         <div v-for="[id, n] in gloves" :key="id" class="prow row nowrap">
           <ItemIcon :id="id" :size="32" />

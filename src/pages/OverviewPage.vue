@@ -106,7 +106,7 @@ const logColor: Record<string, string> = { player: 'var(--good)', enemy: 'var(--
 
 <template>
   <div class="overview">
-    <div class="page-title"><span class="icon">🏠</span><h2>总览</h2></div>
+    <div class="page-title"><span class="icon"><Icon name="home" /></span><h2>总览</h2></div>
 
     <div class="cards lg">
       <div class="card">
@@ -139,7 +139,7 @@ const logColor: Record<string, string> = { player: 'var(--good)', enemy: 'var(--
         <h3>货币与银行</h3>
         <div class="kv">
           <template v-for="[k, v] in currencies" :key="k">
-            <span>{{ CURRENCY_LABELS[k] ?? k }}</span><span class="bold" :class="{ gold: k === 'gp', abyss: k.startsWith('abyssal') }">{{ fmt(v) }}</span>
+            <IconText :text="CURRENCY_LABELS[k] ?? k" /><span class="bold" :class="{ gold: k === 'gp', abyss: k.startsWith('abyssal') }">{{ fmt(v) }}</span>
           </template>
         </div>
         <div class="small muted mt">银行空间 {{ g.bankUsed() }} / {{ g.bankCapacity() }}</div>
@@ -160,7 +160,7 @@ const logColor: Record<string, string> = { player: 'var(--good)', enemy: 'var(--
         <h3>最近升级</h3>
         <div v-if="s.recent.levels.length" class="col small">
           <div v-for="(l, i) in s.recent.levels" :key="i" class="row between">
-            <span>{{ C.skills[l.skill]?.icon }} {{ C.skills[l.skill]?.name }}<span v-if="l.abyssal" class="abyss">（深渊）</span></span>
+            <span><Icon :name="C.skills[l.skill]?.icon" :seed="l.skill" /> {{ C.skills[l.skill]?.name }}<span v-if="l.abyssal" class="abyss">（深渊）</span></span>
             <span class="bold" :class="{ abyss: l.abyssal }">Lv.{{ l.level }}</span>
           </div>
         </div>
@@ -186,7 +186,7 @@ const logColor: Record<string, string> = { player: 'var(--good)', enemy: 'var(--
         <div class="row between"><h3>猎杀任务</h3><button class="small" @click="store.go('slayer')">前往</button></div>
         <template v-if="slayer">
           <div class="row">
-            <span style="font-size: 24px">{{ C.monsters[slayer.monsterId]?.icon }}</span>
+            <span style="font-size: 24px"><Icon :name="C.monsters[slayer.monsterId]?.icon" :seed="slayer.monsterId" /></span>
             <div class="grow">
               <div class="bold" :class="{ abyss: slayer.realm === 'abyssal' }">{{ C.monsters[slayer.monsterId]?.name }}</div>
               <div class="small muted">剩余 {{ slayer.remaining }} / {{ slayer.total }}</div>
@@ -197,7 +197,7 @@ const logColor: Record<string, string> = { player: 'var(--good)', enemy: 'var(--
         <div v-else class="small muted">当前没有猎杀任务</div>
       </div>
       <div class="card">
-        <div class="row between"><h3>🌱 农业</h3><button class="small" @click="store.go('skill', 'farming')">前往</button></div>
+        <div class="row between"><h3><Icon name="sprout" /> 农业</h3><button class="small" @click="store.go('skill', 'farming')">前往</button></div>
         <div class="kv">
           <span>可收获</span><span :class="{ good: farming.ready > 0 }" class="bold">{{ farming.ready }}</span>
           <span>生长中</span><span>{{ farming.growing }}</span>
@@ -206,12 +206,12 @@ const logColor: Record<string, string> = { player: 'var(--good)', enemy: 'var(--
         </div>
       </div>
       <div class="card">
-        <div class="row between"><h3>🏘️ 城镇</h3><button class="small" @click="store.go('skill', 'township')">前往</button></div>
+        <div class="row between"><h3><Icon name="village" /> 城镇</h3><button class="small" @click="store.go('skill', 'township')">前往</button></div>
         <div class="kv">
           <span>城镇等级</span><span>{{ town.level }}</span>
           <span>人口</span><span>{{ fmt(town.t.population) }}</span>
           <span>幸福 / 健康</span><span>{{ fmt(town.t.happiness) }} / {{ fmt(town.t.health) }}</span>
-          <span>季节</span><span>{{ town.season.icon }} {{ town.season.name }}</span>
+          <span>季节</span><span><Icon :name="town.season.icon" :seed="town.season.id" /> {{ town.season.name }}</span>
           <span>信仰</span><span>{{ town.deity?.name ?? '无' }}</span>
         </div>
         <div v-if="town.res.length" class="row small">
@@ -244,7 +244,7 @@ const logColor: Record<string, string> = { player: 'var(--good)', enemy: 'var(--
       <div class="skill-grid">
         <div v-for="sk in skills" :key="sk.id" class="card clickable skill" :class="{ locked: !sk.st.unlocked }" @click="gotoSkill(sk.id)">
           <div class="row nowrap">
-            <span class="sicon">{{ sk.def.icon }}</span>
+            <span class="sicon"><Icon :name="sk.def.icon" :seed="sk.def.id" /></span>
             <div class="grow">
               <div class="row between nowrap">
                 <span class="small bold name">{{ sk.def.name }}</span>

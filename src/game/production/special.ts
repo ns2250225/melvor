@@ -112,7 +112,7 @@ export function donateArtifact(g: Game, itemId: string): string | null {
       if (m.reward.gp) g.addGp(m.reward.gp, 'museum');
       for (const r of m.reward.items ?? []) g.addItem(r.id, r.qty, 'museum');
       if (m.pet) g.unlockPet(m.pet);
-      g.notify(`博物馆里程碑：${m.count} 件藏品`, 'success', '🏛️');
+      g.notify(`博物馆里程碑：${m.count} 件藏品`, 'success', 'temple');
     }
   }
   return null;
@@ -176,7 +176,7 @@ export function lightBonfire(g: Game, actionId: string): string | null {
   if (!g.removeItem(logs, n, 'bonfire')) return `需要 ${n} 个${C.items[logs].name}`;
   g.state.bonfire = { endsAt: g.state.clock + (a.data?.bonfireDuration ?? 600000), bonus: a.data?.bonfireBonus ?? 5, logsBurnt: 0 };
   g.addXp('firemaking', a.xp * 2);
-  g.notify(`篝火点燃：生火经验 +${g.state.bonfire.bonus}%`, 'success', '🔥');
+  g.notify(`篝火点燃：生火经验 +${g.state.bonfire.bonus}%`, 'success', 'fire');
   return null;
 }
 

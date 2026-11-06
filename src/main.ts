@@ -1,6 +1,8 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
+import GameIcon from './components/GameIcon.vue';
+import IconText from './components/IconText.vue';
 import './assets/main.css';
 import '@/content';
 import { useGameStore } from './stores/game';
@@ -13,6 +15,8 @@ try {
 const app = createApp(App);
 const pinia = createPinia();
 app.use(pinia);
+app.component('Icon', GameIcon);
+app.component('IconText', IconText);
 app.mount('#app');
 document.getElementById('splash')?.remove();
 

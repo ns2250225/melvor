@@ -18,9 +18,9 @@ const g = computed(() => store.game!);
 const s = computed(() => g.value.state);
 
 const TYPES = [
-  { id: 'allotment' as const, name: '菜地', icon: '🌱' },
-  { id: 'herb' as const, name: '草药地', icon: '🌿' },
-  { id: 'tree' as const, name: '果树地', icon: '🌳' },
+  { id: 'allotment' as const, name: '菜地', icon: 'sprout' },
+  { id: 'herb' as const, name: '草药地', icon: 'herb' },
+  { id: 'tree' as const, name: '果树地', icon: 'tree' },
 ];
 const tab = ref<'allotment' | 'herb' | 'tree'>('allotment');
 const plots = computed(() => FARMING_PLOTS.filter((p) => p.type === tab.value));
@@ -57,7 +57,7 @@ function gt(c: FarmingCropDef) { void store.frame; return growTime(g.value, c.id
         <div class="small muted">
           作物会随游戏时间（包括离线）成长。堆肥每份 +20% 收获成功率（最多 3 份），奇异粘液保证收获并使产量翻倍。
         </div>
-        <button class="primary" :disabled="!readyCount" @click="store.act(() => { harvestAndReplantAll(g); return null; })">🌾 收获全部并补种（{{ readyCount }}）</button>
+        <button class="primary" :disabled="!readyCount" @click="store.act(() => { harvestAndReplantAll(g); return null; })"><Icon name="wheat" /> 收获全部并补种（{{ readyCount }}）</button>
       </div>
       <div class="row small mt">
         <span class="row nowrap"><ItemIcon id="compost" :size="22" /> 堆肥 {{ full(g.qty('compost')) }}</span>
@@ -66,7 +66,7 @@ function gt(c: FarmingCropDef) { void store.frame; return growTime(g.value, c.id
     </div>
 
     <div class="tabs mt">
-      <button v-for="t in TYPES" :key="t.id" :class="{ on: tab === t.id }" @click="tab = t.id">{{ t.icon }} {{ t.name }}</button>
+      <button v-for="t in TYPES" :key="t.id" :class="{ on: tab === t.id }" @click="tab = t.id"><Icon :name="t.icon" :seed="t.id" /> {{ t.name }}</button>
     </div>
 
     <div class="cards">
@@ -74,19 +74,19 @@ function gt(c: FarmingCropDef) { void store.frame; return growTime(g.value, c.id
         <div class="row between">
           <b>{{ TYPES.find((t) => t.id === def.type)?.name }} #{{ i + 1 }}</b>
           <span class="tag" :class="{ good: status(def.id).state === 'ready' }">
-            {{ { locked: '🔒 未解锁', empty: '空闲', growing: '成长中', ready: '可收获' }[status(def.id).state] }}
+            <IconText :text="{ locked: '[[lock]] 未解锁', empty: '空闲', growing: '成长中', ready: '可收获' }[status(def.id).state]" />
           </span>
         </div>
 
         <template v-if="status(def.id).state === 'locked'">
           <div class="small">需要农业 <b :class="g.level('farming') >= def.level ? 'good' : 'bad'">{{ def.level }}</b> 级</div>
-          <div class="small">解锁费用 <span class="gold">🪙 {{ full(def.cost) }}</span></div>
+          <div class="small">解锁费用 <span class="gold"><Icon name="coin" /> {{ full(def.cost) }}</span></div>
           <button class="primary small" :disabled="g.level('farming') < def.level || s.currencies.gp < def.cost" @click="store.act(() => unlockPlot(g, def.id))">解锁地块</button>
         </template>
 
         <template v-else-if="status(def.id).state === 'empty'">
           <div class="muted small">地块空闲，选择种子进行种植。</div>
-          <button class="primary small" @click="choosing = def.id">🌱 种植</button>
+          <button class="primary small" @click="choosing = def.id"><Icon name="sprout" /> 种植</button>
         </template>
 
         <template v-else-if="cropOf(def.id)">
@@ -101,7 +101,7 @@ function gt(c: FarmingCropDef) { void store.frame; return growTime(g.value, c.id
             <ProgressBar :value="status(def.id).progress" color="var(--good)" :height="8" />
             <div class="tiny muted">剩余 {{ fmtMs(status(def.id).remaining) }}</div>
           </template>
-          <button v-else class="good small" @click="store.act(() => harvest(g, def.id))">🌾 收获</button>
+          <button v-else class="good small" @click="store.act(() => harvest(g, def.id))"><Icon name="wheat" /> 收获</button>
           <MasteryBar :action-id="cropOf(def.id)!.id" />
         </template>
 

@@ -20,17 +20,17 @@ const affordable = computed(() => g.value.state.currencies.gp >= cost.value);
 <template>
   <div class="panel locked-skill">
     <div class="page-title">
-      <span class="icon">{{ def.icon }}</span>
+      <span class="icon"><Icon :name="def.icon" :seed="def.id" /></span>
       <div>
-        <h2>{{ def.name }} <span class="tag">🔒 未解锁</span></h2>
+        <h2>{{ def.name }} <span class="tag"><Icon name="lock" /> 未解锁</span></h2>
         <div class="muted small">{{ def.description }}</div>
       </div>
     </div>
     <p>冒险模式下，技能需要使用金币逐个解锁。每解锁一个技能，下一个技能的价格都会提高。</p>
     <div class="kv mb">
       <span>已解锁技能</span><span>{{ unlockedCount }} / {{ C.skillOrder.length }}</span>
-      <span>解锁价格</span><span class="gold">🪙 {{ full(cost) }}</span>
-      <span>当前金币</span><span :class="affordable ? 'good' : 'bad'">🪙 {{ full(g.state.currencies.gp) }}</span>
+      <span>解锁价格</span><span class="gold"><Icon name="coin" /> {{ full(cost) }}</span>
+      <span>当前金币</span><span :class="affordable ? 'good' : 'bad'"><Icon name="coin" /> {{ full(g.state.currencies.gp) }}</span>
     </div>
     <button class="primary" :disabled="!affordable" @click="store.act(() => unlockSkill(g, skill))">解锁{{ def.name }}</button>
   </div>

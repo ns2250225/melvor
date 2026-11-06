@@ -10,14 +10,14 @@ import ProgressBar from './ProgressBar.vue';
 
 const store = useGameStore();
 const r = computed(() => store.offline.report);
-const CUR: Record<string, string> = { gp: '🪙 金币', slayerCoins: '💀 猎杀币', abyssalPieces: '🟣 深渊碎片', abyssalSlayerCoins: '🟪 深渊猎杀币', prayerPoints: '🙏 祈祷点', soulPoints: '⚱️ 灵魂点' };
+const CUR: Record<string, string> = { gp: '[[coin]] 金币', slayerCoins: '[[skull]] 猎杀币', abyssalPieces: '[[abyssal_piece]] 深渊碎片', abyssalSlayerCoins: '[[abyssal_coin]] 深渊猎杀币', prayerPoints: '[[pray]] 祈祷点', soulPoints: '[[urn]] 灵魂点' };
 </script>
 
 <template>
   <Teleport to="body">
     <div v-if="store.offline.running && store.offline.total > 0" class="overlay">
       <div class="panel box">
-        <h3>⏳ 正在结算离线进度…</h3>
+        <h3><Icon name="hourglass" /> 正在结算离线进度…</h3>
         <div class="muted small mb">已模拟 {{ fmtMs(store.offline.done) }} / {{ fmtMs(store.offline.total) }}（Web Worker 后台计算）</div>
         <ProgressBar :value="store.offline.done / store.offline.total" :height="12" color="var(--good)" />
         <div class="row mt"><button @click="store.cancelOffline()">取消（剩余时间不结算）</button></div>
@@ -42,7 +42,7 @@ const CUR: Record<string, string> = { gp: '🪙 金币', slayerCoins: '💀 猎�
       <table>
         <tr><th>技能</th><th>经验</th><th>等级</th></tr>
         <tr v-for="x in r.xp" :key="x.skill">
-          <td>{{ C.skills[x.skill].icon }} {{ C.skills[x.skill].name }}</td>
+          <td><Icon :name="C.skills[x.skill]?.icon" :seed="x.skill" /> {{ C.skills[x.skill].name }}</td>
           <td>+{{ fmt(x.xp) }}<span v-if="x.abyssalXp" class="abyss"> · +{{ fmt(x.abyssalXp) }} AXP</span></td>
           <td>{{ x.fromLevel }}<span v-if="x.levelsGained" class="good"> → {{ x.toLevel }}（+{{ x.levelsGained }}）</span><span v-if="x.abyssalLevelsGained" class="abyss"> 深渊 +{{ x.abyssalLevelsGained }}</span></td>
         </tr>
@@ -52,7 +52,7 @@ const CUR: Record<string, string> = { gp: '🪙 金币', slayerCoins: '💀 猎�
       <b>掌握度提升：</b><span v-for="m in r.mastery" :key="m.skill" class="tag">{{ C.skills[m.skill].name }} +{{ m.levels }} 级</span>
     </div>
     <div v-if="Object.keys(r.currencies).length" class="row mt">
-      <span v-for="(v, k) in r.currencies" :key="k" class="tag" :class="v > 0 ? 'good' : 'bad'">{{ CUR[k] ?? k }} {{ v > 0 ? '+' : '' }}{{ fmt(v) }}</span>
+      <span v-for="(v, k) in r.currencies" :key="k" class="tag" :class="v > 0 ? 'good' : 'bad'"><IconText :text="CUR[k] ?? k" /> {{ v > 0 ? '+' : '' }}{{ fmt(v) }}</span>
     </div>
     <div v-if="r.itemsGained.length" class="mt">
       <h4>获得物品</h4>
@@ -65,7 +65,7 @@ const CUR: Record<string, string> = { gp: '🪙 金币', slayerCoins: '💀 猎�
     <div v-if="r.dungeons.length" class="mt small"><b>副本通关：</b><span v-for="d in r.dungeons" :key="d.id" class="tag">{{ C.dungeons[d.id].name }} ×{{ d.count }}</span></div>
     <div v-if="r.quests.length" class="mt small"><b>完成任务：</b><span v-for="q in r.quests" :key="q" class="tag good">{{ C.quests[q].name }}</span></div>
     <div v-if="r.achievements.length" class="mt small"><b>达成成就：</b><span v-for="a in r.achievements" :key="a" class="tag good">{{ C.achievements[a].name }}</span></div>
-    <div v-if="r.pets.length" class="mt small"><b>获得宠物：</b><span v-for="p in r.pets" :key="p" class="tag good">{{ C.pets[p].icon }} {{ C.pets[p].name }}</span></div>
+    <div v-if="r.pets.length" class="mt small"><b>获得宠物：</b><span v-for="p in r.pets" :key="p" class="tag good"><Icon :name="C.pets[p]?.icon" :seed="p" /> {{ C.pets[p].name }}</span></div>
     <template #footer><button class="primary" @click="store.offline.report = null">继续游戏</button></template>
   </Modal>
 </template>

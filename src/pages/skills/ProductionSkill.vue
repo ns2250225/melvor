@@ -216,7 +216,7 @@ function skillNames(list: SkillId[]) { return list.map((x) => C.skills[x]?.name 
     <div v-if="!embedded && activeHere && activeDef" class="panel">
       <div class="row between">
         <div class="row">
-          <span class="big">{{ activeDef.icon }}</span>
+          <span class="big"><Icon :name="activeDef.icon" :seed="activeDef.id" /></span>
           <div>
             <div><b>正在进行：{{ activeDef.name }}</b><span v-if="activeHere.secondaryId" class="muted"> ＋ {{ C.actions[activeHere.secondaryId]?.name }}</span></div>
             <div class="muted small">本次已完成 {{ fmt(activeHere.completed) }} 次 · 耗时 {{ fmtSec(activeHere.interval) }}</div>
@@ -230,19 +230,19 @@ function skillNames(list: SkillId[]) { return list.map((x) => C.skills[x]?.name 
 
     <!-- 技能专属信息面板 -->
     <div v-if="skill === 'woodcutting'" class="panel small">
-      <div v-if="multiTree" class="good">🌲 已解锁双树伐木：砍伐时点击另一棵树的「同时砍伐」，两棵树将各自独立计时。</div>
+      <div v-if="multiTree" class="good"><Icon name="pine" /> 已解锁双树伐木：砍伐时点击另一棵树的「同时砍伐」，两棵树将各自独立计时。</div>
       <div v-else class="muted">在商店购买「双树伐木」升级后可同时砍伐两棵树。</div>
       <div class="muted">每次砍伐有几率获得 <ItemIcon id="bird_nest" :size="18" /> 鸟巢（内含种子），双倍产出同样适用于木材。</div>
     </div>
 
     <div v-if="skill === 'mining'" class="panel small muted">
-      ⛏️ 采矿（非符文精华矿脉）时每次有 <b class="gold">{{ pct(gemChance) }}</b> 几率额外获得宝石。矿脉耗尽后需等待重生，掌握度越高矿脉生命越多、重生越快。
+      <Icon name="pickaxe" /> 采矿（非符文精华矿脉）时每次有 <b class="gold">{{ pct(gemChance) }}</b> 几率额外获得宝石。矿脉耗尽后需等待重生，掌握度越高矿脉生命越多、重生越快。
     </div>
 
     <div v-if="skill === 'firemaking'" class="panel">
       <div class="row between">
         <div>
-          <h3>🔥 篝火</h3>
+          <h3><Icon name="fire" /> 篝火</h3>
           <div v-if="bonfireLeft > 0" class="good small">篝火燃烧中：生火经验 +{{ s.bonfire.bonus }}% · 剩余 {{ fmtMs(bonfireLeft) }}</div>
           <div v-else class="muted small">篝火未点燃。在下方木材卡片上点击「篝火」消耗 10 个木材点燃篝火，持续期间生火经验提高。</div>
         </div>
@@ -251,7 +251,7 @@ function skillNames(list: SkillId[]) { return list.map((x) => C.skills[x]?.name 
     </div>
 
     <div v-if="skill === 'cooking'" class="panel">
-      <h3>🍲 被动烹饪</h3>
+      <h3><Icon name="stew" /> 被动烹饪</h3>
       <div class="muted small mb">主动烹饪时，另外两个烹饪设施可以以 5 倍耗时同时进行被动烹饪（成功率 -10%）。仅在主动烹饪期间运行。</div>
       <div class="cards sm">
         <div v-for="cat in COOK_CATS" :key="cat" class="card">
@@ -271,7 +271,7 @@ function skillNames(list: SkillId[]) { return list.map((x) => C.skills[x]?.name 
 
     <div v-if="skill === 'thieving'" class="panel small">
       <div class="row between">
-        <span>❤️ 当前生命 <b :class="s.hp < maxHp * 0.3 ? 'bad' : ''">{{ fmt(s.hp) }}</b> / {{ fmt(maxHp) }}</span>
+        <span><Icon name="heart" /> 当前生命 <b :class="s.hp < maxHp * 0.3 ? 'bad' : ''">{{ fmt(s.hp) }}</b> / {{ fmt(maxHp) }}</span>
         <span class="muted">偷窃失败会受到伤害并被击晕 3 秒；成功率 = (100 + 潜行) / (100 + 感知)</span>
       </div>
       <div class="muted">潜行 = 偷窃等级 {{ g.level('thieving') }} + 掌握度 + 加成 {{ g.mods.get('thievingStealth') }}</div>
@@ -282,13 +282,13 @@ function skillNames(list: SkillId[]) { return list.map((x) => C.skills[x]?.name 
         <div>
           <div>使用对应技能时有几率发现召唤兽印记；至少拥有 1 个印记才能制作召唤石板。印记等级 ≥ 3 的两只召唤兽同时装备时激活协同效果。</div>
           <div class="muted">当前装备：
-            <template v-if="equippedFams.length"><span v-for="f in equippedFams" :key="f" class="tag">{{ C.familiars[f].icon }} {{ C.familiars[f].name }}</span></template>
+            <template v-if="equippedFams.length"><span v-for="f in equippedFams" :key="f" class="tag"><Icon :name="C.familiars[f]?.icon" :seed="f" /> {{ C.familiars[f].name }}</span></template>
             <span v-else>无</span>
           </div>
         </div>
         <div class="row">
-          <button class="small" @click="showSynergies = !showSynergies">{{ showSynergies ? '隐藏协同' : '🔗 协同效果' }}</button>
-          <button class="small primary" @click="store.go('equipment')">🛡️ 装备石板</button>
+          <button class="small" @click="showSynergies = !showSynergies"><template v-if="showSynergies">隐藏协同</template><template v-else><Icon name="link" /> 协同效果</template></button>
+          <button class="small primary" @click="store.go('equipment')"><Icon name="shield" /> 装备石板</button>
         </div>
       </div>
       <div v-if="showSynergies" class="mt">
@@ -297,8 +297,8 @@ function skillNames(list: SkillId[]) { return list.map((x) => C.skills[x]?.name 
           <tbody>
             <tr v-for="(syn, i) in C.synergies" :key="i">
               <td class="nowrap">
-                {{ C.familiars[syn.a]?.icon }} {{ C.familiars[syn.a]?.name }} <span class="tiny muted">印记 {{ g.markLevel(syn.a) }}</span>
-                ＋ {{ C.familiars[syn.b]?.icon }} {{ C.familiars[syn.b]?.name }} <span class="tiny muted">印记 {{ g.markLevel(syn.b) }}</span>
+                <Icon :name="C.familiars[syn.a]?.icon" :seed="syn.a" /> {{ C.familiars[syn.a]?.name }} <span class="tiny muted">印记 {{ g.markLevel(syn.a) }}</span>
+                ＋ <Icon :name="C.familiars[syn.b]?.icon" :seed="syn.b" /> {{ C.familiars[syn.b]?.name }} <span class="tiny muted">印记 {{ g.markLevel(syn.b) }}</span>
               </td>
               <td>{{ syn.description }}</td>
               <td><span v-if="synergyActive(g, syn)" class="tag good">生效中</span><span v-else class="tag">未激活</span></td>
@@ -311,21 +311,21 @@ function skillNames(list: SkillId[]) { return list.map((x) => C.skills[x]?.name 
     <!-- 分类标签 -->
     <div v-if="categories.length > 1" class="tabs mt">
       <button v-for="c in categories" :key="c" :class="{ on: c === curTab }" @click="tab = c">
-        {{ skill === 'fishing' ? FISHING_AREAS.find((x) => x.id === c)?.icon : skill === 'thieving' ? THIEVING_AREAS.find((x) => x.id === c)?.icon : '' }} {{ categoryName(c) }}
+        <Icon :name="skill === 'fishing' ? FISHING_AREAS.find((x) => x.id === c)?.icon : skill === 'thieving' ? THIEVING_AREAS.find((x) => x.id === c)?.icon : ''" /> {{ categoryName(c) }}
       </button>
     </div>
 
     <div v-if="fishingArea" class="panel small">
       <div class="row between">
-        <b>{{ fishingArea.icon }} {{ fishingArea.name }}</b>
-        <span v-if="areaLocked" class="tag bad">🔒 {{ areaLocked }}</span>
+        <b><Icon :name="fishingArea.icon" :seed="fishingArea.id" /> {{ fishingArea.name }}</b>
+        <span v-if="areaLocked" class="tag bad"><Icon name="lock" /> {{ areaLocked }}</span>
       </div>
       <Requirements :reqs="fishingArea.requirements" />
       <div class="muted">基础杂物几率 {{ pct(fishingArea.junkChance * 100) }}（掌握度越高越低） · 特殊物品几率 {{ pct(specialChance, 2) }}</div>
     </div>
 
     <div v-if="thievingArea" class="panel small row">
-      <b>{{ thievingArea.icon }} {{ thievingArea.name }}</b>
+      <b><Icon :name="thievingArea.icon" :seed="thievingArea.id" /> {{ thievingArea.name }}</b>
       <span class="muted">区域珍宝：</span>
       <ItemIcon :id="thievingArea.unique.id" :size="24" />
       <span>{{ C.items[thievingArea.unique.id]?.name }} · {{ oneIn(thievingArea.unique.chance) }}</span>
@@ -336,7 +336,7 @@ function skillNames(list: SkillId[]) { return list.map((x) => C.skills[x]?.name 
     <div v-if="skill === 'astrology' && cons && consAction" class="panel">
       <div class="row between">
         <div>
-          <h3>{{ cons.icon }} {{ cons.name }}</h3>
+          <h3><Icon :name="cons.icon" :seed="cons.id" /> {{ cons.name }}</h3>
           <div class="muted small">关联技能：{{ skillNames(cons.skills) }} · 掌握度 {{ g.masteryLevel(consAction.id) }}</div>
         </div>
         <div class="row small">
@@ -370,20 +370,20 @@ function skillNames(list: SkillId[]) { return list.map((x) => C.skills[x]?.name 
       <template v-for="a in shown" :key="a.id">
         <!-- 深渊动作（未开启深渊） -->
         <div v-if="abyssHidden(a)" class="card locked">
-          <div class="row"><span class="big">{{ a.icon }}</span><b>{{ a.name }}</b></div>
-          <div class="abyss small">🔒 需要开启深渊之门</div>
+          <div class="row"><span class="big"><Icon :name="a.icon" :seed="a.id" /></span><b>{{ a.name }}</b></div>
+          <div class="abyss small"><Icon name="lock" /> 需要开启深渊之门</div>
         </div>
         <div v-else class="card" :class="{ active: isActive(a) || isSecondary(a), locked: !!lockMsg(a) }">
           <div class="row between nowrap">
             <div class="row nowrap">
-              <span class="big">{{ a.icon }}</span>
+              <span class="big"><Icon :name="a.icon" :seed="a.id" /></span>
               <div>
                 <b>{{ a.name }}</b>
                 <div class="tiny muted">
                   Lv {{ a.level }}<span v-if="a.abyssalLevel" class="abyss"> · 深渊 {{ a.abyssalLevel }}</span>
                   · {{ a.intervalMax ? `${fmtSec(iv(a))}–${fmtSec(ivMax(a))}` : fmtSec(iv(a)) }}
                   · {{ fmt(a.xp) }} XP<span v-if="a.abyssalXp" class="abyss"> · {{ fmt(a.abyssalXp) }} AXP</span>
-                  <span v-if="a.gp"> · 🪙{{ fmt(a.gp) }}</span>
+                  <span v-if="a.gp"> · <Icon name="coin" />{{ fmt(a.gp) }}</span>
                 </div>
               </div>
             </div>
@@ -391,7 +391,7 @@ function skillNames(list: SkillId[]) { return list.map((x) => C.skills[x]?.name 
             <span v-else-if="isSecondary(a)" class="tag good">第二棵树</span>
           </div>
 
-          <div v-if="lockMsg(a)" class="bad small">🔒 {{ lockMsg(a) }}</div>
+          <div v-if="lockMsg(a)" class="bad small"><Icon name="lock" /> {{ lockMsg(a) }}</div>
           <Requirements v-if="a.requirements?.length" :reqs="a.requirements" />
 
           <!-- 召唤兽信息 -->
@@ -402,7 +402,7 @@ function skillNames(list: SkillId[]) { return list.map((x) => C.skills[x]?.name 
             </div>
             <div class="tiny muted">印记来源：{{ skillNames(familiarOf(a).markSkills) }}</div>
             <div class="tiny">
-              <span v-if="familiarOf(a).combat" class="tag">⚔️ 战斗召唤兽 · 最大伤害 {{ familiarOf(a).combat!.maxHit }}</span>
+              <span v-if="familiarOf(a).combat" class="tag"><Icon name="swords" /> 战斗召唤兽 · 最大伤害 {{ familiarOf(a).combat!.maxHit }}</span>
               <span v-for="d in describeMods(familiarOf(a).modifiers)" :key="d" class="tag">{{ d }}</span>
             </div>
           </template>
@@ -412,8 +412,8 @@ function skillNames(list: SkillId[]) { return list.map((x) => C.skills[x]?.name 
             <div class="kv">
               <span>成功率</span><span :class="successChance(a) >= 90 ? 'good' : successChance(a) < 60 ? 'bad' : ''">{{ pct(successChance(a)) }}</span>
               <span>感知</span><span>{{ a.data.perception }}</span>
-              <span>最大伤害</span><span>{{ fmt(a.data.maxHit) }}<span v-if="s.hp <= a.data.maxHit" class="bad tiny"> ⚠️ 当前生命可能不足</span></span>
-              <span v-if="a.data.gpMax > 0">金币</span><span v-if="a.data.gpMax > 0">🪙 1–{{ fmt(a.data.gpMax) }}</span>
+              <span>最大伤害</span><span>{{ fmt(a.data.maxHit) }}<span v-if="s.hp <= a.data.maxHit" class="bad tiny"> <Icon name="warning" /> 当前生命可能不足</span></span>
+              <span v-if="a.data.gpMax > 0">金币</span><span v-if="a.data.gpMax > 0"><Icon name="coin" /> 1–{{ fmt(a.data.gpMax) }}</span>
               <span v-if="a.data.abyssalPiecesMax > 0">深渊碎片</span><span v-if="a.data.abyssalPiecesMax > 0" class="abyss">1–{{ a.data.abyssalPiecesMax }}</span>
             </div>
             <div class="row small">
@@ -482,8 +482,8 @@ function skillNames(list: SkillId[]) { return list.map((x) => C.skills[x]?.name 
             <button v-if="isActive(a)" class="danger small grow" @click="stop">停止</button>
             <button v-else-if="isSecondary(a)" class="small grow" @click="dropSecondary">停止此树</button>
             <button v-else class="primary small grow" :disabled="!!lockMsg(a) || (skill === 'fishing' && !!areaLocked)" @click="start(a)">{{ startLabel(a) }}</button>
-            <button v-if="skill === 'firemaking'" class="small" :disabled="!!lockMsg(a) || bonfireLeft > 0 || g.qty(a.inputs[0]?.id ?? '') < (a.data?.bonfireLogs ?? 10)" @click="bonfire(a)">🔥 篝火（{{ a.data?.bonfireLogs ?? 10 }}）</button>
-            <button v-if="skill === 'astrology'" class="small" :class="{ primary: consAction?.id === a.id }" @click="selectedCons = a.id">✨ 修饰</button>
+            <button v-if="skill === 'firemaking'" class="small" :disabled="!!lockMsg(a) || bonfireLeft > 0 || g.qty(a.inputs[0]?.id ?? '') < (a.data?.bonfireLogs ?? 10)" @click="bonfire(a)"><Icon name="fire" /> 篝火（{{ a.data?.bonfireLogs ?? 10 }}）</button>
+            <button v-if="skill === 'astrology'" class="small" :class="{ primary: consAction?.id === a.id }" @click="selectedCons = a.id"><Icon name="sparkles" /> 修饰</button>
           </div>
         </div>
       </template>

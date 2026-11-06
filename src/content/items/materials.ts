@@ -185,43 +185,43 @@ export const shardId = (t: string) => `shard_${t}`;
 // ---------------------------------------------------------------------------
 // 注册
 // ---------------------------------------------------------------------------
-for (const l of LOGS) addItem({ id: logId(l.id), name: `${l.name}木材`.replace('木木材', '木材'), type: 'log', icon: '🪵', color: l.color, sellPrice: l.sell, category: '木材', expansion: l.exp });
-for (const o of ORES) addItem({ id: oreId(o.id), name: o.isEssence ? o.name : o.name, type: 'ore', icon: o.isEssence ? '💠' : '🪨', color: o.color, sellPrice: o.sell, category: '矿石', expansion: o.exp });
-for (const b of BARS) addItem({ id: barId(b.id), name: `${b.name}锭`, type: 'bar', icon: '🧱', color: b.color, sellPrice: b.sell, category: '金属锭', expansion: b.exp });
-for (const g of GEMS) addItem({ id: gemId(g.id), name: g.name, type: 'gem', icon: '💎', color: g.color, sellPrice: g.sell, category: '宝石', expansion: g.exp, rarity: g.sell >= 1000 ? 1 : 0 });
+for (const l of LOGS) addItem({ id: logId(l.id), name: `${l.name}木材`.replace('木木材', '木材'), type: 'log', icon: 'log', color: l.color, sellPrice: l.sell, category: '木材', expansion: l.exp });
+for (const o of ORES) addItem({ id: oreId(o.id), name: o.isEssence ? o.name : o.name, type: 'ore', icon: o.isEssence ? 'diamond' : 'rock', color: o.color, sellPrice: o.sell, category: '矿石', expansion: o.exp });
+for (const b of BARS) addItem({ id: barId(b.id), name: `${b.name}锭`, type: 'bar', icon: 'brick', color: b.color, sellPrice: b.sell, category: '金属锭', expansion: b.exp });
+for (const g of GEMS) addItem({ id: gemId(g.id), name: g.name, type: 'gem', icon: 'gem', color: g.color, sellPrice: g.sell, category: '宝石', expansion: g.exp, rarity: g.sell >= 1000 ? 1 : 0 });
 for (const f of FISH) {
-  addItem({ id: rawFishId(f.id), name: `生${f.name}`, type: 'fish', icon: '🐟', color: '#7fb3d5', sellPrice: f.sell, category: '鱼类', expansion: f.exp });
-  addItem({ id: cookedFishId(f.id), name: `熟${f.name}`, type: 'food', icon: '🍣', color: '#e59866', sellPrice: Math.round(f.sell * 1.6), category: '食物', expansion: f.exp, healsFor: f.heals });
-  addItem({ id: `burnt_${f.id}`, name: `烤焦的${f.name}`, type: 'junk', icon: '🔥', color: '#4d5656', sellPrice: 0, category: '杂物', expansion: f.exp, description: '烹饪失败的产物，可在城镇换取少量食物。' });
-  addItem({ id: `perfect_${f.id}`, name: `完美${f.name}`, type: 'food', icon: '🍱', color: '#f7dc6f', sellPrice: Math.round(f.sell * 2.5), category: '食物', expansion: f.exp, healsFor: Math.round(f.heals * 1.3), rarity: 1 });
+  addItem({ id: rawFishId(f.id), name: `生${f.name}`, type: 'fish', icon: 'fish', color: '#7fb3d5', sellPrice: f.sell, category: '鱼类', expansion: f.exp });
+  addItem({ id: cookedFishId(f.id), name: `熟${f.name}`, type: 'food', icon: 'sushi', color: '#e59866', sellPrice: Math.round(f.sell * 1.6), category: '食物', expansion: f.exp, healsFor: f.heals });
+  addItem({ id: `burnt_${f.id}`, name: `烤焦的${f.name}`, type: 'junk', icon: 'fire', color: '#4d5656', sellPrice: 0, category: '杂物', expansion: f.exp, description: '烹饪失败的产物，可在城镇换取少量食物。' });
+  addItem({ id: `perfect_${f.id}`, name: `完美${f.name}`, type: 'food', icon: 'bento', color: '#f7dc6f', sellPrice: Math.round(f.sell * 2.5), category: '食物', expansion: f.exp, healsFor: Math.round(f.heals * 1.3), rarity: 1 });
 }
 for (const a of ALLOTMENTS) {
-  addItem({ id: `seed_${a.id}`, name: `${a.name}种子`, type: 'seed', icon: '🌰', color: '#a9dfbf', sellPrice: 1 + Math.floor(a.level / 10), category: '种子' });
-  addItem({ id: `crop_${a.id}`, name: a.name, type: a.heals > 0 ? 'food' : 'produce', icon: a.id === 'wheat' ? '🌾' : a.id === 'strawberry' ? '🍓' : a.id === 'tomato' ? '🍅' : a.id === 'carrot' ? '🥕' : a.id === 'watermelon' ? '🍉' : a.id === 'sweetcorn' ? '🌽' : a.id === 'onion' ? '🧅' : a.id === 'cabbage' ? '🥬' : '🥔', sellPrice: a.sell, category: '作物', healsFor: a.heals || undefined });
+  addItem({ id: `seed_${a.id}`, name: `${a.name}种子`, type: 'seed', icon: 'chestnut', color: '#a9dfbf', sellPrice: 1 + Math.floor(a.level / 10), category: '种子' });
+  addItem({ id: `crop_${a.id}`, name: a.name, type: a.heals > 0 ? 'food' : 'produce', icon: a.id === 'wheat' ? 'wheat' : a.id === 'strawberry' ? 'strawberry' : a.id === 'tomato' ? 'tomato' : a.id === 'carrot' ? 'carrot' : a.id === 'watermelon' ? 'melon' : a.id === 'sweetcorn' ? 'corn' : a.id === 'onion' ? 'onion' : a.id === 'cabbage' ? 'cabbage' : 'potato', sellPrice: a.sell, category: '作物', healsFor: a.heals || undefined });
 }
 for (const h of HERBS) {
-  addItem({ id: `seed_${h.id}`, name: `${h.name}种子`, type: 'seed', icon: '🌰', color: h.color, sellPrice: 2 + Math.floor(h.level / 5), category: '种子', expansion: h.exp });
-  addItem({ id: `herb_${h.id}`, name: h.name, type: 'herb', icon: '🌿', color: h.color, sellPrice: h.sell, category: '草药', expansion: h.exp });
+  addItem({ id: `seed_${h.id}`, name: `${h.name}种子`, type: 'seed', icon: 'chestnut', color: h.color, sellPrice: 2 + Math.floor(h.level / 5), category: '种子', expansion: h.exp });
+  addItem({ id: `herb_${h.id}`, name: h.name, type: 'herb', icon: 'herb', color: h.color, sellPrice: h.sell, category: '草药', expansion: h.exp });
 }
-for (const t of TREES) addItem({ id: `seed_tree_${t.id}`, name: `${t.name}树苗`, type: 'seed', icon: '🌳', color: '#239b56', sellPrice: 10 + t.level, category: '种子' });
-addItem({ id: 'fruit_apple', name: '苹果', type: 'food', icon: '🍎', sellPrice: 8, category: '作物', healsFor: 60 });
-addItem({ id: 'fruit_cherry', name: '樱桃', type: 'food', icon: '🍒', sellPrice: 14, category: '作物', healsFor: 90 });
-for (const b of BONES) addItem({ id: b.id, name: b.name, type: 'bone', icon: '🦴', color: '#f8f9f9', sellPrice: b.sell, category: '骨头', prayerPoints: b.pp, expansion: b.exp });
-addItem({ id: 'void_ashes', name: '虚空骨灰', type: 'bone', icon: '⚱️', color: '#6c3483', sellPrice: 80, category: '骨头', soulPoints: 4, expansion: 'ita' });
-addItem({ id: 'abyssal_ashes', name: '深渊骨灰', type: 'bone', icon: '⚱️', color: '#922b21', sellPrice: 160, category: '骨头', soulPoints: 9, expansion: 'ita' });
-for (const r of RUNES) addItem({ id: runeId(r.id), name: r.name, type: 'rune', icon: '🔷', color: r.color, sellPrice: r.sell, category: '符文', expansion: r.level > 99 ? 'toth' : (r as any).abyssal ? 'ita' : 'base' });
-for (const r of COMBO_RUNES) addItem({ id: runeId(r.id), name: r.name, type: 'rune', icon: '🔶', color: '#a3e4d7', sellPrice: r.sell, category: '符文' });
-for (const s of SHARDS) addItem({ id: shardId(s.id), name: s.name, type: 'shard', icon: '🔹', color: s.color, sellPrice: Math.max(1, Math.floor(s.price / 5)), category: '召唤', expansion: s.id === 'void' ? 'ita' : 'base' });
+for (const t of TREES) addItem({ id: `seed_tree_${t.id}`, name: `${t.name}树苗`, type: 'seed', icon: 'tree', color: '#239b56', sellPrice: 10 + t.level, category: '种子' });
+addItem({ id: 'fruit_apple', name: '苹果', type: 'food', icon: 'apple', sellPrice: 8, category: '作物', healsFor: 60 });
+addItem({ id: 'fruit_cherry', name: '樱桃', type: 'food', icon: 'cherry', sellPrice: 14, category: '作物', healsFor: 90 });
+for (const b of BONES) addItem({ id: b.id, name: b.name, type: 'bone', icon: 'bone', color: '#f8f9f9', sellPrice: b.sell, category: '骨头', prayerPoints: b.pp, expansion: b.exp });
+addItem({ id: 'void_ashes', name: '虚空骨灰', type: 'bone', icon: 'urn', color: '#6c3483', sellPrice: 80, category: '骨头', soulPoints: 4, expansion: 'ita' });
+addItem({ id: 'abyssal_ashes', name: '深渊骨灰', type: 'bone', icon: 'urn', color: '#922b21', sellPrice: 160, category: '骨头', soulPoints: 9, expansion: 'ita' });
+for (const r of RUNES) addItem({ id: runeId(r.id), name: r.name, type: 'rune', icon: 'blue_gem', color: r.color, sellPrice: r.sell, category: '符文', expansion: r.level > 99 ? 'toth' : (r as any).abyssal ? 'ita' : 'base' });
+for (const r of COMBO_RUNES) addItem({ id: runeId(r.id), name: r.name, type: 'rune', icon: 'orange_gem', color: '#a3e4d7', sellPrice: r.sell, category: '符文' });
+for (const s of SHARDS) addItem({ id: shardId(s.id), name: s.name, type: 'shard', icon: 'small_blue_gem', color: s.color, sellPrice: Math.max(1, Math.floor(s.price / 5)), category: '召唤', expansion: s.id === 'void' ? 'ita' : 'base' });
 
 // 动物材料与制作材料
-addItem({ id: 'feather', name: '羽毛', type: 'material', icon: '🪶', sellPrice: 1, category: '材料' });
-addItem({ id: 'cowhide', name: '牛皮', type: 'material', icon: '🐄', color: '#d5dbdb', sellPrice: 2, category: '材料' });
-addItem({ id: 'leather', name: '皮革', type: 'material', icon: '🟫', color: '#a0522d', sellPrice: 8, category: '材料' });
-addItem({ id: 'raw_chicken', name: '生鸡肉', type: 'material', icon: '🍗', sellPrice: 1, category: '食材' });
-addItem({ id: 'raw_beef', name: '生牛肉', type: 'material', icon: '🥩', sellPrice: 1, category: '食材' });
-addItem({ id: 'raw_boar', name: '生野猪肉', type: 'material', icon: '🥓', sellPrice: 3, category: '食材' });
-addItem({ id: 'egg', name: '鸡蛋', type: 'material', icon: '🥚', sellPrice: 2, category: '食材' });
-addItem({ id: 'milk', name: '牛奶', type: 'material', icon: '🥛', sellPrice: 2, category: '食材' });
+addItem({ id: 'feather', name: '羽毛', type: 'material', icon: 'feather', sellPrice: 1, category: '材料' });
+addItem({ id: 'cowhide', name: '牛皮', type: 'material', icon: 'cow', color: '#d5dbdb', sellPrice: 2, category: '材料' });
+addItem({ id: 'leather', name: '皮革', type: 'material', icon: 'leather', color: '#a0522d', sellPrice: 8, category: '材料' });
+addItem({ id: 'raw_chicken', name: '生鸡肉', type: 'material', icon: 'poultry', sellPrice: 1, category: '食材' });
+addItem({ id: 'raw_beef', name: '生牛肉', type: 'material', icon: 'steak', sellPrice: 1, category: '食材' });
+addItem({ id: 'raw_boar', name: '生野猪肉', type: 'material', icon: 'bacon', sellPrice: 3, category: '食材' });
+addItem({ id: 'egg', name: '鸡蛋', type: 'material', icon: 'egg', sellPrice: 2, category: '食材' });
+addItem({ id: 'milk', name: '牛奶', type: 'material', icon: 'milk', sellPrice: 2, category: '食材' });
 export const HIDES = [
   { id: 'green', name: '绿龙皮', level: 50, sell: 40, color: '#27ae60', exp: 'base' as ExpansionId },
   { id: 'blue', name: '蓝龙皮', level: 60, sell: 70, color: '#2e86c1', exp: 'base' as ExpansionId },
@@ -231,32 +231,32 @@ export const HIDES = [
   { id: 'void', name: '虚空兽皮', level: 99, abyssal: 10, sell: 600, color: '#6c3483', exp: 'ita' as ExpansionId },
 ];
 for (const h of HIDES) {
-  addItem({ id: `hide_${h.id}`, name: h.name, type: 'material', icon: '🐉', color: h.color, sellPrice: h.sell, category: '材料', expansion: h.exp });
-  addItem({ id: `dleather_${h.id}`, name: `${h.name}革`, type: 'material', icon: '🟥', color: h.color, sellPrice: Math.round(h.sell * 1.4), category: '材料', expansion: h.exp });
+  addItem({ id: `hide_${h.id}`, name: h.name, type: 'material', icon: 'dragon', color: h.color, sellPrice: h.sell, category: '材料', expansion: h.exp });
+  addItem({ id: `dleather_${h.id}`, name: `${h.name}革`, type: 'material', icon: 'dragon_leather', color: h.color, sellPrice: Math.round(h.sell * 1.4), category: '材料', expansion: h.exp });
 }
-addItem({ id: 'arrow_shafts', name: '箭杆', type: 'material', icon: '🥢', sellPrice: 1, category: '制箭' });
-addItem({ id: 'headless_arrows', name: '无头箭', type: 'material', icon: '➖', sellPrice: 1, category: '制箭' });
-addItem({ id: 'paper', name: '纸张', type: 'material', icon: '📜', sellPrice: 3, category: '材料', expansion: 'aod' });
-addItem({ id: 'ink', name: '墨水', type: 'material', icon: '🖋️', sellPrice: 10, category: '材料', expansion: 'aod' });
-addItem({ id: 'ash', name: '草木灰', type: 'material', icon: '🌫️', sellPrice: 2, category: '材料', description: '生火副产品，可用于堆肥。' });
-addItem({ id: 'charcoal', name: '木炭', type: 'material', icon: '⬛', sellPrice: 6, category: '材料', description: '生火副产品，可在锻造中代替煤。' });
-addItem({ id: 'compost', name: '堆肥', type: 'consumable', icon: '💩', sellPrice: 1, category: '农业', description: '施用后作物成功率 +20%。' });
-addItem({ id: 'weird_gloop', name: '奇异粘液', type: 'consumable', icon: '🧪', color: '#58d68d', sellPrice: 50, category: '农业', description: '施用后作物必定成功且收成翻倍。', rarity: 1 });
-addItem({ id: 'stardust', name: '星尘', type: 'currency', icon: '✨', color: '#f9e79f', sellPrice: 10, category: '占星' });
-addItem({ id: 'golden_stardust', name: '金星尘', type: 'currency', icon: '🌟', color: '#f4d03f', sellPrice: 100, category: '占星', rarity: 1 });
-addItem({ id: 'abyssal_stardust', name: '深渊星尘', type: 'currency', icon: '💫', color: '#a569bd', sellPrice: 200, category: '占星', expansion: 'ita', rarity: 1 });
-addItem({ id: 'mysterious_stone', name: '神秘石', type: 'misc', icon: '🗿', sellPrice: 0, category: '特殊', noSell: true, description: '在采集时偶然发现，集齐后可进入「被遗忘的神殿」。', rarity: 2 });
-addItem({ id: 'bird_nest', name: '鸟巢', type: 'chest', icon: '🪹', sellPrice: 15, category: '宝箱', dropTable: 'dt_bird_nest' });
-addItem({ id: 'treasure_chest', name: '海底宝箱', type: 'chest', icon: '🧰', sellPrice: 50, category: '宝箱', dropTable: 'dt_treasure_chest', rarity: 1 });
-addItem({ id: 'gem_pouch', name: '宝石袋', type: 'chest', icon: '👝', sellPrice: 50, category: '宝箱', dropTable: 'dt_gem_pouch' });
-addItem({ id: 'herb_sack', name: '草药袋', type: 'chest', icon: '🎒', sellPrice: 30, category: '宝箱', dropTable: 'dt_herb_sack' });
-addItem({ id: 'coin_pouch', name: '钱袋', type: 'chest', icon: '💰', sellPrice: 0, category: '宝箱', dropTable: 'dt_coin_pouch' });
+addItem({ id: 'arrow_shafts', name: '箭杆', type: 'material', icon: 'arrow_shaft', sellPrice: 1, category: '制箭' });
+addItem({ id: 'headless_arrows', name: '无头箭', type: 'material', icon: 'headless_arrow', sellPrice: 1, category: '制箭' });
+addItem({ id: 'paper', name: '纸张', type: 'material', icon: 'scroll', sellPrice: 3, category: '材料', expansion: 'aod' });
+addItem({ id: 'ink', name: '墨水', type: 'material', icon: 'pen', sellPrice: 10, category: '材料', expansion: 'aod' });
+addItem({ id: 'ash', name: '草木灰', type: 'material', icon: 'fog', sellPrice: 2, category: '材料', description: '生火副产品，可用于堆肥。' });
+addItem({ id: 'charcoal', name: '木炭', type: 'material', icon: 'coal', sellPrice: 6, category: '材料', description: '生火副产品，可在锻造中代替煤。' });
+addItem({ id: 'compost', name: '堆肥', type: 'consumable', icon: 'slime', sellPrice: 1, category: '农业', description: '施用后作物成功率 +20%。' });
+addItem({ id: 'weird_gloop', name: '奇异粘液', type: 'consumable', icon: 'potion', color: '#58d68d', sellPrice: 50, category: '农业', description: '施用后作物必定成功且收成翻倍。', rarity: 1 });
+addItem({ id: 'stardust', name: '星尘', type: 'currency', icon: 'sparkles', color: '#f9e79f', sellPrice: 10, category: '占星' });
+addItem({ id: 'golden_stardust', name: '金星尘', type: 'currency', icon: 'glow_star', color: '#f4d03f', sellPrice: 100, category: '占星', rarity: 1 });
+addItem({ id: 'abyssal_stardust', name: '深渊星尘', type: 'currency', icon: 'dizzy_star', color: '#a569bd', sellPrice: 200, category: '占星', expansion: 'ita', rarity: 1 });
+addItem({ id: 'mysterious_stone', name: '神秘石', type: 'misc', icon: 'stone_head', sellPrice: 0, category: '特殊', noSell: true, description: '在采集时偶然发现，集齐后可进入「被遗忘的神殿」。', rarity: 2 });
+addItem({ id: 'bird_nest', name: '鸟巢', type: 'chest', icon: 'nest', sellPrice: 15, category: '宝箱', dropTable: 'dt_bird_nest' });
+addItem({ id: 'treasure_chest', name: '海底宝箱', type: 'chest', icon: 'toolbox', sellPrice: 50, category: '宝箱', dropTable: 'dt_treasure_chest', rarity: 1 });
+addItem({ id: 'gem_pouch', name: '宝石袋', type: 'chest', icon: 'pouch', sellPrice: 50, category: '宝箱', dropTable: 'dt_gem_pouch' });
+addItem({ id: 'herb_sack', name: '草药袋', type: 'chest', icon: 'backpack', sellPrice: 30, category: '宝箱', dropTable: 'dt_herb_sack' });
+addItem({ id: 'coin_pouch', name: '钱袋', type: 'chest', icon: 'moneybag', sellPrice: 0, category: '宝箱', dropTable: 'dt_coin_pouch' });
 // 钓鱼杂物
 for (const [id, name] of [['old_boot', '旧靴子'], ['seaweed', '海藻'], ['rusty_can', '生锈的罐头'], ['driftwood', '浮木']] as const)
-  addItem({ id, name, type: 'junk', icon: id === 'seaweed' ? '🌿' : id === 'old_boot' ? '👢' : id === 'driftwood' ? '🪵' : '🥫', sellPrice: 1, category: '杂物' });
-addItem({ id: 'frozen_pearl', name: '冰封珍珠', type: 'misc', icon: '🦪', color: '#d6eaf8', sellPrice: 800, category: '特殊', expansion: 'toth', rarity: 1 });
-addItem({ id: 'herald_sigil', name: '使者徽记', type: 'token', icon: '🔱', color: '#f5b041', sellPrice: 0, noSell: true, category: '特殊', expansion: 'toth', description: '通关使者领域的副本获得，用于提升等级上限。', rarity: 2 });
-addItem({ id: 'abyssal_shard', name: '深渊碎晶', type: 'material', icon: '🟣', color: '#8e44ad', sellPrice: 100, category: '深渊', expansion: 'ita' });
-addItem({ id: 'corrupted_heart', name: '腐化之心', type: 'token', icon: '🖤', color: '#922b21', sellPrice: 0, noSell: true, category: '深渊', expansion: 'ita', description: '深渊终局副本的钥匙。', rarity: 3 });
-addItem({ id: 'map_fragment', name: '地图碎片', type: 'material', icon: '🧩', color: '#d4ac0d', sellPrice: 20, category: '制图', expansion: 'aod' });
-addItem({ id: 'museum_token', name: '博物馆代币', type: 'currency', icon: '🎫', color: '#a1887f', sellPrice: 0, noSell: true, category: '考古', expansion: 'aod' });
+  addItem({ id, name, type: 'junk', icon: id === 'seaweed' ? 'herb' : id === 'old_boot' ? 'tall_boots' : id === 'driftwood' ? 'log' : 'can', sellPrice: 1, category: '杂物' });
+addItem({ id: 'frozen_pearl', name: '冰封珍珠', type: 'misc', icon: 'oyster', color: '#d6eaf8', sellPrice: 800, category: '特殊', expansion: 'toth', rarity: 1 });
+addItem({ id: 'herald_sigil', name: '使者徽记', type: 'token', icon: 'trident', color: '#f5b041', sellPrice: 0, noSell: true, category: '特殊', expansion: 'toth', description: '通关使者领域的副本获得，用于提升等级上限。', rarity: 2 });
+addItem({ id: 'abyssal_shard', name: '深渊碎晶', type: 'material', icon: 'abyssal_piece', color: '#8e44ad', sellPrice: 100, category: '深渊', expansion: 'ita' });
+addItem({ id: 'corrupted_heart', name: '腐化之心', type: 'token', icon: 'dark_heart', color: '#922b21', sellPrice: 0, noSell: true, category: '深渊', expansion: 'ita', description: '深渊终局副本的钥匙。', rarity: 3 });
+addItem({ id: 'map_fragment', name: '地图碎片', type: 'material', icon: 'puzzle', color: '#d4ac0d', sellPrice: 20, category: '制图', expansion: 'aod' });
+addItem({ id: 'museum_token', name: '博物馆代币', type: 'currency', icon: 'ticket', color: '#a1887f', sellPrice: 0, noSell: true, category: '考古', expansion: 'aod' });

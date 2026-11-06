@@ -46,11 +46,11 @@ export function describeObjective(o: ObjectiveDef | { type: string; [k: string]:
 export function rewardParts(r: QuestReward | undefined): string[] {
   if (!r) return [];
   const out: string[] = [];
-  if (r.gp) out.push(`🪙 ${fmt(r.gp)} 金币`);
-  if (r.slayerCoins) out.push(`💀 ${fmt(r.slayerCoins)} 猎杀币`);
-  if (r.abyssalPieces) out.push(`🟣 ${fmt(r.abyssalPieces)} 深渊碎片`);
-  for (const x of r.xp ?? []) out.push(`${C.skills[x.skill]?.icon ?? ''} ${C.skills[x.skill]?.name ?? x.skill} ${fmt(x.amount)} 经验`);
-  if (r.unlockFlag) out.push('🔓 解锁新内容');
+  if (r.gp) out.push(`[[coin]] ${fmt(r.gp)} 金币`);
+  if (r.slayerCoins) out.push(`[[skull]] ${fmt(r.slayerCoins)} 猎杀币`);
+  if (r.abyssalPieces) out.push(`[[abyssal_piece]] ${fmt(r.abyssalPieces)} 深渊碎片`);
+  for (const x of r.xp ?? []) out.push(`[[${C.skills[x.skill]?.icon ?? 'question'}]] ${C.skills[x.skill]?.name ?? x.skill} ${fmt(x.amount)} 经验`);
+  if (r.unlockFlag) out.push('[[unlock]] 解锁新内容');
   return out;
 }
 
@@ -70,7 +70,7 @@ export const SKILL_STAT_LABELS: Record<string, string> = {
 };
 
 export const CURRENCY_LABELS: Record<string, string> = {
-  gp: '🪙 金币', slayerCoins: '💀 猎杀币', abyssalPieces: '🟣 深渊碎片', abyssalSlayerCoins: '🟪 深渊猎杀币', prayerPoints: '🙏 祈祷点', soulPoints: '⚱️ 灵魂点',
+  gp: '[[coin]] 金币', slayerCoins: '[[skull]] 猎杀币', abyssalPieces: '[[abyssal_piece]] 深渊碎片', abyssalSlayerCoins: '[[abyssal_coin]] 深渊猎杀币', prayerPoints: '[[pray]] 祈祷点', soulPoints: '[[urn]] 灵魂点',
 };
 
 export const QUEST_STATUS_LABELS = { locked: '未解锁', available: '可接受', active: '进行中', completed: '已完成' } as const;

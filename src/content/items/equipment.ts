@@ -21,20 +21,20 @@ export const METAL_TIERS: EquipTier[] = [
 
 export interface SmithPiece { key: string; name: string; slot: EquipSlot; bars: number; levelOffset: number; icon: string; twoHanded?: boolean; speed?: number; style?: 'stab' | 'slash' | 'block'; outputQty?: number; isComponent?: boolean }
 export const SMITH_PIECES: SmithPiece[] = [
-  { key: 'dagger', name: '匕首', slot: 'weapon', bars: 1, levelOffset: 0, icon: '🔪', speed: 2200, style: 'stab' },
-  { key: 'sword', name: '长剑', slot: 'weapon', bars: 1, levelOffset: 1, icon: '🗡️', speed: 2400, style: 'stab' },
-  { key: 'scimitar', name: '弯刀', slot: 'weapon', bars: 2, levelOffset: 2, icon: '⚔️', speed: 2400, style: 'slash' },
-  { key: 'battleaxe', name: '战斧', slot: 'weapon', bars: 3, levelOffset: 4, icon: '🪓', twoHanded: true, speed: 3000, style: 'slash' },
-  { key: '2hsword', name: '双手剑', slot: 'weapon', bars: 3, levelOffset: 6, icon: '🗡️', twoHanded: true, speed: 3600, style: 'slash' },
-  { key: 'helmet', name: '头盔', slot: 'helmet', bars: 1, levelOffset: 1, icon: '⛑️' },
-  { key: 'boots', name: '战靴', slot: 'boots', bars: 1, levelOffset: 2, icon: '🥾' },
-  { key: 'gloves', name: '护手', slot: 'gloves', bars: 1, levelOffset: 3, icon: '🧤' },
-  { key: 'shield', name: '盾牌', slot: 'shield', bars: 3, levelOffset: 5, icon: '🛡️' },
-  { key: 'platelegs', name: '板甲护腿', slot: 'legs', bars: 2, levelOffset: 7, icon: '👖' },
-  { key: 'platebody', name: '板甲', slot: 'body', bars: 5, levelOffset: 9, icon: '🦺' },
-  { key: 'arrowtips', name: '箭头', slot: 'quiver', bars: 1, levelOffset: 0, icon: '🔺', outputQty: 15, isComponent: true },
-  { key: 'javhead', name: '标枪头', slot: 'quiver', bars: 1, levelOffset: 3, icon: '🔻', outputQty: 10, isComponent: true },
-  { key: 'bolttips', name: '弩矢头', slot: 'quiver', bars: 1, levelOffset: 4, icon: '🔸', outputQty: 15, isComponent: true },
+  { key: 'dagger', name: '匕首', slot: 'weapon', bars: 1, levelOffset: 0, icon: 'knife', speed: 2200, style: 'stab' },
+  { key: 'sword', name: '长剑', slot: 'weapon', bars: 1, levelOffset: 1, icon: 'dagger', speed: 2400, style: 'stab' },
+  { key: 'scimitar', name: '弯刀', slot: 'weapon', bars: 2, levelOffset: 2, icon: 'swords', speed: 2400, style: 'slash' },
+  { key: 'battleaxe', name: '战斧', slot: 'weapon', bars: 3, levelOffset: 4, icon: 'axe', twoHanded: true, speed: 3000, style: 'slash' },
+  { key: '2hsword', name: '双手剑', slot: 'weapon', bars: 3, levelOffset: 6, icon: 'dagger', twoHanded: true, speed: 3600, style: 'slash' },
+  { key: 'helmet', name: '头盔', slot: 'helmet', bars: 1, levelOffset: 1, icon: 'rescue_helm' },
+  { key: 'boots', name: '战靴', slot: 'boots', bars: 1, levelOffset: 2, icon: 'boots' },
+  { key: 'gloves', name: '护手', slot: 'gloves', bars: 1, levelOffset: 3, icon: 'gloves' },
+  { key: 'shield', name: '盾牌', slot: 'shield', bars: 3, levelOffset: 5, icon: 'shield' },
+  { key: 'platelegs', name: '板甲护腿', slot: 'legs', bars: 2, levelOffset: 7, icon: 'trousers' },
+  { key: 'platebody', name: '板甲', slot: 'body', bars: 5, levelOffset: 9, icon: 'safety_vest' },
+  { key: 'arrowtips', name: '箭头', slot: 'quiver', bars: 1, levelOffset: 0, icon: 'up', outputQty: 15, isComponent: true },
+  { key: 'javhead', name: '标枪头', slot: 'quiver', bars: 1, levelOffset: 3, icon: 'down', outputQty: 10, isComponent: true },
+  { key: 'bolttips', name: '弩矢头', slot: 'quiver', bars: 1, levelOffset: 4, icon: 'small_orange_gem', outputQty: 15, isComponent: true },
 ];
 
 export const equipId = (tier: string, key: string) => `${tier}_${key}`;
@@ -97,13 +97,13 @@ for (const t of METAL_TIERS) {
     });
   }
   // 弹药（由制箭制作）
-  addEquip({ id: `${t.id}_arrows`, name: `${t.name}箭矢`, type: 'ammo', icon: '➶', color: t.color, exp: t.exp, sell: Math.max(1, r(p * 2)), category: '弹药',
+  addEquip({ id: `${t.id}_arrows`, name: `${t.name}箭矢`, type: 'ammo', icon: 'arrow', color: t.color, exp: t.exp, sell: Math.max(1, r(p * 2)), category: '弹药',
     equipment: { slot: 'quiver', isAmmo: true, ammoType: 'arrow', realm: t.realm, requirements: reqs(['ranged'], t.level, t.abyssal), stats: { rangedStrength: r(7 + p * 6), rangedAttack: r(p * 2) } } });
-  addEquip({ id: `${t.id}_bolts`, name: `${t.name}弩矢`, type: 'ammo', icon: '➵', color: t.color, exp: t.exp, sell: Math.max(1, r(p * 3)), category: '弹药',
+  addEquip({ id: `${t.id}_bolts`, name: `${t.name}弩矢`, type: 'ammo', icon: 'bolt_ammo', color: t.color, exp: t.exp, sell: Math.max(1, r(p * 3)), category: '弹药',
     equipment: { slot: 'quiver', isAmmo: true, ammoType: 'bolt', realm: t.realm, requirements: reqs(['ranged'], t.level, t.abyssal), stats: { rangedStrength: r(10 + p * 7.5), rangedAttack: r(p * 2.5) } } });
-  addEquip({ id: `${t.id}_javelin`, name: `${t.name}标枪`, type: 'ammo', icon: '🔱', color: t.color, exp: t.exp, sell: Math.max(1, r(p * 4)), category: '弹药',
+  addEquip({ id: `${t.id}_javelin`, name: `${t.name}标枪`, type: 'ammo', icon: 'trident', color: t.color, exp: t.exp, sell: Math.max(1, r(p * 4)), category: '弹药',
     equipment: { slot: 'quiver', isAmmo: true, ammoType: 'javelin', realm: t.realm, requirements: reqs(['ranged'], t.level, t.abyssal), stats: { rangedStrength: r(12 + p * 9), rangedAttack: r(p * 4) } } });
-  addEquip({ id: `${t.id}_crossbow`, name: `${t.name}弩`, type: 'weapon', icon: '🏹', color: t.color, exp: t.exp, sell: sell(2),
+  addEquip({ id: `${t.id}_crossbow`, name: `${t.name}弩`, type: 'weapon', icon: 'bow', color: t.color, exp: t.exp, sell: sell(2),
     equipment: { slot: 'weapon', twoHanded: true, attackType: 'ranged', ammoType: 'bolt', realm: t.realm, requirements: reqs(['ranged'], t.level, t.abyssal), stats: { attackSpeed: 2800, rangedAttack: r(p * 6), rangedStrength: r(p * 1.5) } } });
 }
 
@@ -114,9 +114,9 @@ export const BOW_LEVELS: Record<string, number> = { normal: 1, oak: 5, willow: 2
 LOGS.forEach((l, i) => {
   const p = [1, 2, 3.5, 4.5, 5.5, 7, 8, 11, 15, 21, 34, 42, 52][i];
   const lvl = BOW_LEVELS[l.id];
-  addEquip({ id: `${l.id}_shortbow`, name: `${l.name.replace('普通', '')}短弓`, type: 'weapon', icon: '🏹', color: l.color, exp: l.exp, sell: r(10 * Math.pow(p, 1.6)), category: '装备',
+  addEquip({ id: `${l.id}_shortbow`, name: `${l.name.replace('普通', '')}短弓`, type: 'weapon', icon: 'bow', color: l.color, exp: l.exp, sell: r(10 * Math.pow(p, 1.6)), category: '装备',
     equipment: { slot: 'weapon', twoHanded: true, attackType: 'ranged', ammoType: 'arrow', realm: l.realm, requirements: reqs(['ranged'], lvl, l.abyssal), stats: { attackSpeed: 2200, rangedAttack: r(p * 5.5) } } });
-  addEquip({ id: `${l.id}_longbow`, name: `${l.name.replace('普通', '')}长弓`, type: 'weapon', icon: '🏹', color: l.color, exp: l.exp, sell: r(14 * Math.pow(p, 1.6)), category: '装备',
+  addEquip({ id: `${l.id}_longbow`, name: `${l.name.replace('普通', '')}长弓`, type: 'weapon', icon: 'bow', color: l.color, exp: l.exp, sell: r(14 * Math.pow(p, 1.6)), category: '装备',
     equipment: { slot: 'weapon', twoHanded: true, attackType: 'ranged', ammoType: 'arrow', realm: l.realm, requirements: reqs(['ranged'], lvl, l.abyssal), stats: { attackSpeed: 2800, rangedAttack: r(p * 7.2), rangedStrength: r(p * 1.2) } } });
 });
 
@@ -131,7 +131,7 @@ export const LEATHER_PIECES = [
   { key: 'body', name: '皮甲', slot: 'body' as EquipSlot, mats: 3, level: 14, def: 3.2 },
 ];
 for (const piece of LEATHER_PIECES) {
-  addEquip({ id: `leather_${piece.key}`, name: `皮革${piece.name}`, type: 'equipment', icon: '🧥', color: '#a0522d', exp: 'base', sell: 15 * piece.mats,
+  addEquip({ id: `leather_${piece.key}`, name: `皮革${piece.name}`, type: 'equipment', icon: 'coat', color: '#a0522d', exp: 'base', sell: 15 * piece.mats,
     equipment: { slot: piece.slot, requirements: [{ skill: 'ranged', level: 1 }], stats: { rangedDefence: r(2 * piece.def), meleeDefence: r(1.5 * piece.def), magicDefence: r(1 * piece.def), rangedAttack: piece.slot === 'gloves' ? 3 : r(piece.def) } } });
 }
 export const DHIDE_PIECES = LEATHER_PIECES.filter((p) => p.key !== 'cowl' && p.key !== 'boots');
@@ -139,7 +139,7 @@ HIDES.forEach((h, i) => {
   const p = [6, 9, 12, 16, 22, 34][i];
   const level = [40, 50, 60, 70, 100, 99][i];
   for (const piece of DHIDE_PIECES) {
-    addEquip({ id: `dhide_${h.id}_${piece.key}`, name: `${h.name}${piece.name}`, type: 'equipment', icon: '🥋', color: h.color, exp: h.exp, sell: r(h.sell * piece.mats * 2.2),
+    addEquip({ id: `dhide_${h.id}_${piece.key}`, name: `${h.name}${piece.name}`, type: 'equipment', icon: 'gi', color: h.color, exp: h.exp, sell: r(h.sell * piece.mats * 2.2),
       equipment: { slot: piece.slot, realm: h.exp === 'ita' ? 'abyssal' : 'melvor', requirements: reqs(['ranged'], level, (h as any).abyssal), stats: {
         rangedDefence: r(p * 2.6 * piece.def), meleeDefence: r(p * 1.8 * piece.def), magicDefence: r(p * 1.6 * piece.def), rangedAttack: r(p * 1.2 * piece.def),
         rangedStrength: piece.slot === 'gloves' ? r(p * 0.8) : 0, damageReduction: piece.slot === 'body' ? Math.min(10, r(p * 0.25)) : piece.slot === 'legs' ? Math.min(6, r(p * 0.15)) : 0,
@@ -161,12 +161,12 @@ export const STAFF_TIERS = [
 ];
 for (const tier of STAFF_TIERS) {
   for (const el of ELEMENTS) {
-    addEquip({ id: `staff_${tier.id}_${el.id}`, name: `${el.name}${tier.name}`, type: 'weapon', icon: '🪄', color: { air: '#d6eaf8', water: '#5dade2', earth: '#a04000', fire: '#e74c3c' }[el.id], exp: tier.exp, sell: r(30 * Math.pow(tier.power, 1.6)),
+    addEquip({ id: `staff_${tier.id}_${el.id}`, name: `${el.name}${tier.name}`, type: 'weapon', icon: 'wand', color: { air: '#d6eaf8', water: '#5dade2', earth: '#a04000', fire: '#e74c3c' }[el.id], exp: tier.exp, sell: r(30 * Math.pow(tier.power, 1.6)),
       equipment: { slot: 'weapon', twoHanded: true, attackType: 'magic', providesRunes: [`rune_${el.id}`], requirements: [{ skill: 'magic', level: tier.magicLevel }],
         stats: { attackSpeed: 2400, magicAttack: r(tier.power * 6), magicDamage: r(tier.power * 1.2), meleeDefence: r(tier.power * 1.5), stabAttack: r(tier.power * 2), meleeStrength: r(tier.power * 1.5) } } });
   }
 }
-addEquip({ id: 'staff_void', name: '虚空法杖', type: 'weapon', icon: '🪄', color: '#6c3483', exp: 'ita', sell: 60000,
+addEquip({ id: 'staff_void', name: '虚空法杖', type: 'weapon', icon: 'wand', color: '#6c3483', exp: 'ita', sell: 60000,
   equipment: { slot: 'weapon', twoHanded: true, attackType: 'magic', realm: 'abyssal', providesRunes: ['rune_void'], requirements: reqs(['magic'], 99, 1), stats: { attackSpeed: 2400, magicAttack: 210, magicDamage: 40, magicDefence: 30, abyssalResistance: 5 } } });
 
 export const ROBE_TIERS = [
@@ -185,7 +185,7 @@ export const ROBE_PIECES = [
 for (const tier of ROBE_TIERS) {
   for (const piece of ROBE_PIECES) {
     const p = tier.power;
-    addEquip({ id: `robe_${tier.id}_${piece.key}`, name: `${tier.name}${piece.name}`, type: 'equipment', icon: '🧙', color: '#7d3c98', exp: tier.exp, sell: r(20 * piece.mats * Math.pow(p, 1.5)),
+    addEquip({ id: `robe_${tier.id}_${piece.key}`, name: `${tier.name}${piece.name}`, type: 'equipment', icon: 'wizard', color: '#7d3c98', exp: tier.exp, sell: r(20 * piece.mats * Math.pow(p, 1.5)),
       equipment: { slot: piece.slot, realm: tier.exp === 'ita' ? 'abyssal' : 'melvor', requirements: reqs(['magic'], tier.level, (tier as any).abyssal), stats: {
         magicAttack: r(p * 1.8 * piece.def), magicDamage: r(p * 0.35 * piece.def), magicDefence: r(p * 2.6 * piece.def), meleeDefence: r(p * 0.6 * piece.def), rangedDefence: r(p * 0.8 * piece.def),
         ...(tier.exp === 'ita' ? { abyssalResistance: r(p * 0.25 * piece.def) } : {}) } } });
@@ -206,14 +206,14 @@ const gemMods: Record<string, { ring: ModifierMap; amulet: ModifierMap; rd: stri
 };
 export const JEWELRY: { id: string; level: number; bar: string; gem?: string; slot: 'ring' | 'amulet'; exp: ExpansionId }[] = [];
 for (const slot of ['ring', 'amulet'] as const) {
-  addEquip({ id: `silver_${slot}`, name: slot === 'ring' ? '银戒指' : '银项链', type: 'equipment', icon: slot === 'ring' ? '💍' : '📿', color: '#d5dbdb', exp: 'base', sell: 60,
+  addEquip({ id: `silver_${slot}`, name: slot === 'ring' ? '银戒指' : '银项链', type: 'equipment', icon: slot === 'ring' ? 'ring' : 'beads', color: '#d5dbdb', exp: 'base', sell: 60,
     equipment: { slot, requirements: [], stats: { magicDefence: 2, magicAttack: 2 }, modifiers: slot === 'ring' ? { 'gpGlobal': 2 } : { 'prayerPreservation': 5 } }, description: slot === 'ring' ? '全局金币 +2%' : '祈祷点节省 +5%' });
   JEWELRY.push({ id: `silver_${slot}`, level: slot === 'ring' ? 5 : 8, bar: 'bar_silver', slot, exp: 'base' });
   JEWELRY_GEMS.forEach((g, i) => {
     const m = gemMods[g.id];
     const id = `${g.id}_${slot}`;
     const p = i + 2;
-    addEquip({ id, name: `${g.name}${slot === 'ring' ? '戒指' : '项链'}`, type: 'equipment', icon: slot === 'ring' ? '💍' : '📿', color: g.color, exp: g.exp, sell: g.sell * 2 + 100,
+    addEquip({ id, name: `${g.name}${slot === 'ring' ? '戒指' : '项链'}`, type: 'equipment', icon: slot === 'ring' ? 'ring' : 'beads', color: g.color, exp: g.exp, sell: g.sell * 2 + 100,
       equipment: { slot, requirements: [], stats: { magicAttack: p * 3, magicDefence: p * 2, magicDamage: slot === 'amulet' ? p : 0 }, modifiers: slot === 'ring' ? m.ring : m.amulet },
       description: slot === 'ring' ? m.rd : m.ad });
     JEWELRY.push({ id, level: [20, 35, 50, 65, 80, 100][i] + (slot === 'amulet' ? 3 : 0), bar: 'bar_gold', gem: `gem_${g.id}`, slot, exp: g.exp });
@@ -255,13 +255,13 @@ export const CAPE_MODS: Partial<Record<SkillId, { mods: ModifierMap; desc: strin
 };
 for (const [skill, cfg] of Object.entries(CAPE_MODS)) {
   const exp: ExpansionId = skill === 'cartography' || skill === 'archaeology' ? 'aod' : skill === 'corruption' || skill === 'harvesting' ? 'ita' : 'base';
-  addEquip({ id: `cape_${skill}`, name: `${C.skills[skill as SkillId]?.name ?? skill}技能披风`, type: 'equipment', icon: '🧣', color: '#f4d03f', exp, sell: 0, noSell: true,
+  addEquip({ id: `cape_${skill}`, name: `${C.skills[skill as SkillId]?.name ?? skill}技能披风`, type: 'equipment', icon: 'scarf', color: '#f4d03f', exp, sell: 0, noSell: true,
     equipment: { slot: 'cape', requirements: [{ skill: skill as SkillId, level: 99 }], stats: { meleeDefence: 9, rangedDefence: 9, magicDefence: 9, damageReduction: 2 }, modifiers: cfg!.mods }, description: cfg!.desc, rarity: 2 });
 }
-addEquip({ id: 'cape_max', name: '全能披风', type: 'equipment', icon: '🎽', color: '#f5b041', exp: 'base', sell: 0, noSell: true, rarity: 3,
+addEquip({ id: 'cape_max', name: '全能披风', type: 'equipment', icon: 'vest', color: '#f5b041', exp: 'base', sell: 0, noSell: true, rarity: 3,
   equipment: { slot: 'cape', requirements: [], stats: { meleeDefence: 15, rangedDefence: 15, magicDefence: 15, damageReduction: 4 }, modifiers: Object.values(CAPE_MODS).reduce((acc, c) => { for (const [k, v] of Object.entries(c!.mods)) acc[k] = (acc[k] || 0) + v; return acc; }, {} as ModifierMap) },
   description: '集合全部技能披风效果，需要所有技能达到 99 级。' });
-addEquip({ id: 'cape_herald', name: '使者至尊披风', type: 'equipment', icon: '🎽', color: '#d4ac0d', exp: 'toth', sell: 0, noSell: true, rarity: 3,
+addEquip({ id: 'cape_herald', name: '使者至尊披风', type: 'equipment', icon: 'vest', color: '#d4ac0d', exp: 'toth', sell: 0, noSell: true, rarity: 3,
   equipment: { slot: 'cape', requirements: [], stats: { meleeDefence: 25, rangedDefence: 25, magicDefence: 25, damageReduction: 6 }, modifiers: { skillXP: 5, masteryXP: 5, maxHit: 5, ...Object.values(CAPE_MODS).reduce((acc, c) => { for (const [k, v] of Object.entries(c!.mods)) acc[k] = (acc[k] || 0) + v; return acc; }, {} as ModifierMap) } },
   description: '需要所有技能达到 120 级（Throne of the Herald）。' });
 
@@ -273,6 +273,6 @@ for (const g of ([
   { id: 'gloves_thieving', name: '偷窃手套', skill: 'thieving', desc: '潜行 +75（消耗充能）', mods: { thievingStealth: 75 } },
   { id: 'gloves_gem', name: '宝石手套', skill: 'mining', desc: '采矿宝石几率 +5%（消耗充能）', mods: { miningGemChance: 5 } },
 ] as { id: string; name: string; skill: string; desc: string; mods: ModifierMap }[])) {
-  addEquip({ id: g.id, name: g.name, type: 'equipment', icon: '🧤', color: '#aab7b8', exp: 'base', sell: 0, noSell: true,
+  addEquip({ id: g.id, name: g.name, type: 'equipment', icon: 'gloves', color: '#aab7b8', exp: 'base', sell: 0, noSell: true,
     equipment: { slot: 'gloves', requirements: [], stats: {}, modifiers: g.mods }, description: g.desc });
 }

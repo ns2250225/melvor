@@ -110,7 +110,7 @@ export function tickFarming(g: Game) {
     const key = `${p.id}:${p.plantedAt}`;
     if (!notified.has(key) && plotStatus(g, p.id).state === 'ready') {
       notified.add(key);
-      g.notify(`${C.items[C.crops[p.cropId].produce].name}已成熟，可以收获`, 'info', '🌾');
+      g.notify(`${C.items[C.crops[p.cropId].produce].name}已成熟，可以收获`, 'info', 'wheat');
     }
   }
 }

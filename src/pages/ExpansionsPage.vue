@@ -26,9 +26,9 @@ const abyssCap = computed(() => { void store.frame; return g.value.abyssalLevelC
 // ---------------------------------------------------------------- 终局目标（副本 ID 或成就 ID）
 function endgameInfo(id: string) {
   const d = C.dungeons[id];
-  if (d) { const n = s.value.dungeonCompletions[id] || 0; return { name: `${d.icon} ${d.name}`, done: n > 0, detail: `通关 ${full(n)} 次` }; }
+  if (d) { const n = s.value.dungeonCompletions[id] || 0; return { name: `[[${d.icon}]] ${d.name}`, done: n > 0, detail: `通关 ${full(n)} 次` }; }
   const a = C.achievements[id];
-  if (a) { const t = s.value.achievements[id]; return { name: `${a.icon} ${a.name}`, done: !!t, detail: t ? '已达成' : a.description }; }
+  if (a) { const t = s.value.achievements[id]; return { name: `[[${a.icon}]] ${a.name}`, done: !!t, detail: t ? '已达成' : a.description }; }
   return { name: id, done: false, detail: '' };
 }
 
@@ -69,7 +69,7 @@ const corrEnabled = computed(() => new Set(s.value.corruption.enabled));
 
 <template>
   <div>
-    <div class="page-title"><span class="icon">🧩</span><h2>扩展内容</h2></div>
+    <div class="page-title"><span class="icon"><Icon name="puzzle" /></span><h2>扩展内容</h2></div>
 
     <div class="cards lg">
       <div v-for="e in EXPANSIONS" :key="e.id" class="card">
@@ -78,20 +78,20 @@ const corrEnabled = computed(() => new Set(s.value.corruption.enabled));
         <div class="small"><span class="muted">依赖：</span>{{ e.dependencies.length ? e.dependencies.map((d) => EXPANSION_NAMES[d]).join('、') : '无' }}</div>
         <div v-if="e.skills.length" class="row small">
           <span class="muted">技能：</span>
-          <span v-for="sid in e.skills" :key="sid" class="tag">{{ C.skills[sid as SkillId]?.icon }} {{ C.skills[sid as SkillId]?.name ?? sid }}</span>
+          <span v-for="sid in e.skills" :key="sid" class="tag"><Icon :name="C.skills[sid as SkillId]?.icon" :seed="sid" /> {{ C.skills[sid as SkillId]?.name ?? sid }}</span>
         </div>
         <div class="small muted">特殊规则</div>
         <ul class="rules small"><li v-for="r in e.specialRules" :key="r">{{ r }}</li></ul>
         <div class="small muted">终局目标</div>
         <div v-for="id in e.endgame" :key="id" class="row between small">
-          <span>{{ endgameInfo(id).name }}</span>
+          <IconText :text="endgameInfo(id).name" />
           <span :class="endgameInfo(id).done ? 'good' : 'muted'">{{ endgameInfo(id).done ? '✓ ' : '' }}{{ endgameInfo(id).detail }}</span>
         </div>
       </div>
     </div>
 
     <div class="panel mt">
-      <h3>🔱 等级上限（Throne of the Herald）</h3>
+      <h3><Icon name="trident" /> 等级上限（Throne of the Herald）</h3>
       <div class="kv">
         <span>当前技能等级上限</span><span class="bold">{{ levelCap }}</span>
         <span>游戏模式基础上限</span><span>{{ C.gameModes[s.player.mode]?.levelCapBase }}</span>
@@ -105,7 +105,7 @@ const corrEnabled = computed(() => new Set(s.value.corruption.enabled));
     </div>
 
     <div class="panel">
-      <h3 class="abyss">🌀 深渊（Into the Abyss）</h3>
+      <h3 class="abyss"><Icon name="vortex" /> 深渊（Into the Abyss）</h3>
       <div v-if="!inAbyss" class="col">
         <div class="bad">深渊之门尚未开启。</div>
         <div class="small muted">在商店购买「{{ C.shop['abyss_gate']?.name ?? '开启深渊之门' }}」（需要通关「暗黑降临」）后解锁深渊领域、深渊等级与技能树。</div>
@@ -116,18 +116,18 @@ const corrEnabled = computed(() => new Set(s.value.corruption.enabled));
         <span>深渊等级上限</span><span class="bold abyss">{{ abyssCap }}</span>
       </div>
       <div class="kv mt">
-        <span>{{ CURRENCY_LABELS.abyssalPieces }}</span><span>{{ fmt(s.currencies.abyssalPieces) }}</span>
-        <span>{{ CURRENCY_LABELS.abyssalSlayerCoins }}</span><span>{{ fmt(s.currencies.abyssalSlayerCoins) }}</span>
-        <span>{{ CURRENCY_LABELS.soulPoints }}</span><span>{{ fmt(s.currencies.soulPoints) }}</span>
+        <span><IconText :text="CURRENCY_LABELS.abyssalPieces" /></span><span>{{ fmt(s.currencies.abyssalPieces) }}</span>
+        <span><IconText :text="CURRENCY_LABELS.abyssalSlayerCoins" /></span><span>{{ fmt(s.currencies.abyssalSlayerCoins) }}</span>
+        <span><IconText :text="CURRENCY_LABELS.soulPoints" /></span><span>{{ fmt(s.currencies.soulPoints) }}</span>
       </div>
     </div>
 
     <div class="panel">
-      <h3>🌳 深渊技能树</h3>
+      <h3><Icon name="tree" /> 深渊技能树</h3>
       <div class="small muted mb">每提升 1 个深渊等级获得 1 技能点。节点需按前置关系依次解锁；重置会返还全部点数，费用 1,000,000 金币。</div>
       <div class="row mb">
         <select v-model="treeSkill">
-          <option v-for="sid in treeSkills" :key="sid" :value="sid">{{ C.skills[sid].icon }} {{ C.skills[sid].name }}</option>
+          <option v-for="sid in treeSkills" :key="sid" :value="sid">{{ C.skills[sid].name }}</option>
         </select>
         <span class="tag abyss">可用点数 {{ sk.treePoints }}</span>
         <span class="tag">已用 {{ spentPoints }}</span>
@@ -152,7 +152,7 @@ const corrEnabled = computed(() => new Set(s.value.corruption.enabled));
     </div>
 
     <div class="panel">
-      <h3>☣️ 腐化</h3>
+      <h3><Icon name="hazard" /> 腐化</h3>
       <div class="small muted mb">启用的腐化效果会施加于深渊敌人身上（削弱敌人），同时提高击败它们获得的腐化经验。腐化等级越高可解锁越多效果。</div>
       <div class="row mb"><span class="tag">腐化等级 {{ corrLevel }}</span><span class="tag">已启用 {{ corrEnabled.size }} 项</span></div>
       <div class="cards">
@@ -168,9 +168,9 @@ const corrEnabled = computed(() => new Set(s.value.corruption.enabled));
     </div>
 
     <div class="panel">
-      <h3>🏁 终局进度</h3>
+      <h3><Icon name="finish_flag" /> 终局进度</h3>
       <div v-for="(d, i) in endgame.dungeons" :key="i" class="row between small">
-        <span>{{ d.name }}</span><span :class="d.done ? 'good' : 'muted'">{{ d.done ? '✓' : '✗' }} {{ d.detail }}</span>
+        <IconText :text="d.name" /><span :class="d.done ? 'good' : 'muted'">{{ d.done ? '✓' : '✗' }} {{ d.detail }}</span>
       </div>
       <div class="sep" />
       <div class="row between small"><span>120 级技能（披风）</span><span>{{ endgame.at120 }} / {{ capeSkills.length }}</span></div>

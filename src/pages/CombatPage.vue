@@ -82,7 +82,7 @@ const tab = ref<Tab>('combat');
 const search = ref('');
 const onlyUnlocked = ref(false);
 const TABS: { id: Tab; name: string }[] = [
-  { id: 'combat', name: '⚔️ 战斗区域' }, { id: 'slayer', name: '💀 猎杀区域' }, { id: 'dungeon', name: '🏰 副本' }, { id: 'abyss', name: '🌀 深渊' },
+  { id: 'combat', name: '[[swords]] 战斗区域' }, { id: 'slayer', name: '[[skull]] 猎杀区域' }, { id: 'dungeon', name: '[[castle]] 副本' }, { id: 'abyss', name: '[[vortex]] 深渊' },
 ];
 function match(name: string, monsters: string[]) {
   const q = search.value.trim().toLowerCase();
@@ -132,25 +132,25 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
 <template>
   <div class="combat-page">
     <div class="page-title">
-      <span class="icon">⚔️</span>
+      <span class="icon"><Icon name="swords" /></span>
       <div class="grow">
         <h2>战斗</h2>
         <div class="muted small">{{ c.active ? `正在 ${areaName} 战斗 · 本次击杀 ${c.killsThisRun}` : '选择区域中的怪物或进入副本开始自动战斗' }}</div>
       </div>
-      <button v-if="c.active" class="danger" @click="stop">🏃 逃跑 / 停止战斗</button>
+      <button v-if="c.active" class="danger" @click="stop"><Icon name="runner" /> 逃跑 / 停止战斗</button>
     </div>
 
     <!-- ================================================================ 战斗面板 -->
     <div v-if="c.active" class="fight">
       <div class="panel">
         <div class="row between">
-          <h3>🧑 {{ s.player.name }}</h3>
-          <span class="tag">{{ ATTACK_TYPE_ICONS[pstats.attackType] }} {{ ATTACK_TYPE_NAMES[pstats.attackType] }}</span>
+          <h3><Icon name="person" /> {{ s.player.name }}</h3>
+          <span class="tag"><Icon :name="ATTACK_TYPE_ICONS[pstats.attackType]" /> {{ ATTACK_TYPE_NAMES[pstats.attackType] }}</span>
         </div>
         <ProgressBar :value="hpPct" color="var(--hp)" :height="16" :label="`${full(s.hp)} / ${full(pstats.maxHp)}`" />
         <div class="tiny muted mt">攻击计时 · {{ fmtSec(Math.max(0, c.playerAttackTimer)) }}</div>
         <ProgressBar :value="playerTimer" color="var(--accent)" :height="6" />
-        <div v-if="pstats.problem" class="bad small mt">⚠ {{ pstats.problem }}</div>
+        <div v-if="pstats.problem" class="bad small mt"><Icon name="warning" /> {{ pstats.problem }}</div>
         <div class="kv mt">
           <span>攻击间隔</span><span>{{ fmtSec(pstats.attackInterval) }}</span>
           <span>命中值</span><span>{{ fmt(pstats.accuracy) }}</span>
@@ -160,7 +160,7 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
           <span>伤害减免</span><span>{{ pct(pstats.damageReduction) }}<span v-if="tri.dr !== 1" class="tiny" :class="tri.dr > 1 ? 'good' : 'bad'">（三角 ×{{ tri.dr }}）</span></span>
           <span>深渊抗性</span><span class="abyss">{{ pstats.abyssalResistance }}</span>
           <span v-if="pstats.summonMaxHit">召唤兽伤害</span><span v-if="pstats.summonMaxHit">{{ pstats.summonMaxHit }}</span>
-          <span v-if="pstats.spell">法术</span><span v-if="pstats.spell">{{ pstats.spell.icon }} {{ pstats.spell.name }}</span>
+          <span v-if="pstats.spell">法术</span><span v-if="pstats.spell"><Icon :name="pstats.spell.icon" :seed="pstats.spell.id" /> {{ pstats.spell.name }}</span>
           <span v-if="pstats.ammoId">弹药</span><span v-if="pstats.ammoId">{{ C.items[pstats.ammoId]?.name }} ×{{ fmt(s.equipmentSets[s.activeSet].quiver?.qty ?? 0) }}</span>
         </div>
         <div v-if="c.playerEffects.length" class="row mt">
@@ -171,10 +171,10 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
       <div class="panel">
         <template v-if="c.enemy && enemyDef && mstats">
           <div class="row between">
-            <h3 class="row nowrap"><span class="micon">{{ enemyDef.icon }}</span> {{ enemyDef.name }} <span class="muted small">Lv {{ enemyDef.level }}</span></h3>
+            <h3 class="row nowrap"><span class="micon"><Icon :name="enemyDef.icon" :seed="enemyDef.id" /></span> {{ enemyDef.name }} <span class="muted small">Lv {{ enemyDef.level }}</span></h3>
             <div class="row">
               <span v-if="enemyDef.isBoss" class="tag bad">首领</span>
-              <span class="tag">{{ ATTACK_TYPE_ICONS[enemyDef.attackType] }} {{ ATTACK_TYPE_NAMES[enemyDef.attackType] }}</span>
+              <span class="tag"><Icon :name="ATTACK_TYPE_ICONS[enemyDef.attackType]" /> {{ ATTACK_TYPE_NAMES[enemyDef.attackType] }}</span>
               <button class="small ghost" @click="detail = enemyDef.id">详情</button>
             </div>
           </div>
@@ -205,33 +205,33 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
             </div>
           </div>
         </template>
-        <div v-else class="empty">🔍 正在寻找敌人… {{ fmtSec(Math.max(0, c.spawnTimer)) }}</div>
+        <div v-else class="empty"><Icon name="search" /> 正在寻找敌人… {{ fmtSec(Math.max(0, c.spawnTimer)) }}</div>
       </div>
     </div>
 
     <div v-if="c.active && dungeon" class="panel">
       <div class="row between">
-        <b>{{ dungeon.icon }} {{ dungeon.name }} · 进度 {{ c.dungeonIndex }} / {{ dungeon.monsters.length }}</b>
+        <b><Icon :name="dungeon.icon" :seed="dungeon.id" /> {{ dungeon.name }} · 进度 {{ c.dungeonIndex }} / {{ dungeon.monsters.length }}</b>
         <span class="small muted">已通关 {{ s.dungeonCompletions[dungeon.id] || 0 }} 次</span>
       </div>
       <ProgressBar :value="c.dungeonIndex / dungeon.monsters.length" color="var(--good)" :height="8" />
       <div v-if="nextMonsters.length" class="row small mt">
         <span class="muted">接下来：</span>
-        <span v-for="(m, i) in nextMonsters" :key="i" class="tag">{{ C.monsters[m]?.icon }} {{ C.monsters[m]?.name }}</span>
+        <span v-for="(m, i) in nextMonsters" :key="i" class="tag"><Icon :name="C.monsters[m]?.icon" :seed="m" /> {{ C.monsters[m]?.name }}</span>
       </div>
     </div>
 
     <!-- ================================================================ 战斗辅助 -->
     <div class="aux">
       <div class="panel">
-        <div class="row between"><h3>🍖 食物</h3><button class="small ghost" @click="store.go('equipment')">管理</button></div>
+        <div class="row between"><h3><Icon name="meat" /> 食物</h3><button class="small ghost" @click="store.go('equipment')">管理</button></div>
         <div class="row">
           <button v-for="(f, i) in foodSlots" :key="i" class="foodslot" :class="{ on: s.selectedFood === i }" @click="selectFood(i)">
             <template v-if="f"><ItemIcon :id="f.id" :qty="f.qty" :size="32" :clickable="false" /> <span class="tiny">+{{ foodHeal(g, f.id) }}</span></template>
             <span v-else class="muted tiny">空栏 {{ i + 1 }}</span>
           </button>
         </div>
-        <button class="good mt" :disabled="!s.food[s.selectedFood]" @click="eat">🍴 进食</button>
+        <button class="good mt" :disabled="!s.food[s.selectedFood]" @click="eat"><Icon name="cutlery" /> 进食</button>
         <div class="small mt">
           <template v-if="autoEat.t > 0">自动进食：生命低于 <b>{{ autoEat.t }}%</b> 时进食至 {{ Math.max(autoEat.t, autoEat.lim) }}%，效率 {{ autoEat.eff || 100 }}%</template>
           <span v-else class="muted">未购买自动进食 · <a href="#" @click.prevent="store.go('shop')">前往商店</a></span>
@@ -239,7 +239,7 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
       </div>
 
       <div class="panel">
-        <h3>🎯 攻击方式（{{ ATTACK_TYPE_NAMES[pstats.attackType] }}）</h3>
+        <h3><Icon name="target" /> 攻击方式（{{ ATTACK_TYPE_NAMES[pstats.attackType] }}）</h3>
         <div class="col">
           <template v-if="pstats.attackType === 'melee'">
             <button v-for="st in MELEE_STYLES" :key="st.id" class="style" :class="{ primary: c.meleeStyle === st.id }" @click="setMelee(st.id)">{{ st.name }} <span class="tiny">→ {{ st.xp }}</span></button>
@@ -255,7 +255,7 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
       </div>
 
       <div class="panel">
-        <h3>✨ 法术与祈祷</h3>
+        <h3><Icon name="sparkles" /> 法术与祈祷</h3>
         <div class="kv">
           <span>战斗法术</span><span>{{ s.magic.spell ? C.spells[s.magic.spell]?.name : '无' }}</span>
           <span>诅咒</span><span>{{ s.magic.curse ? C.spells[s.magic.curse]?.name : '无' }}</span>
@@ -264,16 +264,16 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
           <span>祈祷点</span><span>{{ fmt(s.currencies.prayerPoints) }}<span v-if="g.inAbyss()" class="abyss"> · 灵魂 {{ fmt(s.currencies.soulPoints) }}</span></span>
         </div>
         <div class="row mt">
-          <button class="small" @click="store.go('magic')">🪄 魔法</button>
-          <button class="small" @click="store.go('prayer')">🙏 祈祷</button>
-          <button class="small" @click="store.go('equipment')">🛡️ 装备</button>
-          <button class="small" @click="store.go('slayer')">💀 猎杀</button>
+          <button class="small" @click="store.go('magic')"><Icon name="wand" /> 魔法</button>
+          <button class="small" @click="store.go('prayer')"><Icon name="pray" /> 祈祷</button>
+          <button class="small" @click="store.go('equipment')"><Icon name="shield" /> 装备</button>
+          <button class="small" @click="store.go('slayer')"><Icon name="skull" /> 猎杀</button>
         </div>
       </div>
 
       <div class="panel">
         <div class="row between">
-          <h3>🎁 战利品（{{ c.loot.length }}）</h3>
+          <h3><Icon name="gift" /> 战利品（{{ c.loot.length }}）</h3>
           <button class="small primary" :disabled="!c.loot.length" @click="store.act(() => lootAll(g))">全部拾取</button>
         </div>
         <div v-if="c.loot.length" class="row loot"><ItemIcon v-for="l in c.loot" :key="l.id" :id="l.id" :qty="l.qty" :size="36" /></div>
@@ -284,7 +284,7 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
     </div>
 
     <div v-if="s.settings.showCombatLog && c.log.length" class="panel">
-      <h3>📜 战斗日志</h3>
+      <h3><Icon name="scroll" /> 战斗日志</h3>
       <div class="log">
         <div v-for="(l, i) in c.log" :key="i" class="tiny" :class="LOG_CLASS[l.kind]">{{ l.text }}</div>
       </div>
@@ -293,7 +293,7 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
     <!-- ================================================================ 区域浏览 -->
     <div class="panel">
       <div class="tabs">
-        <button v-for="t in TABS" :key="t.id" :class="{ on: tab === t.id }" @click="tab = t.id">{{ t.name }}</button>
+        <button v-for="t in TABS" :key="t.id" :class="{ on: tab === t.id }" @click="tab = t.id"><IconText :text="t.name" /></button>
       </div>
       <div class="row mb">
         <input v-model="search" placeholder="搜索区域或怪物" class="grow" />
@@ -301,13 +301,13 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
       </div>
 
       <div v-if="tab === 'abyss' && !g.inAbyss()" class="panel locked-note">
-        🔒 深渊领域尚未开启。通关「{{ C.dungeons['dg_chaos']?.name }}」后可在商店购买「开启深渊之门」（Into the Abyss）。
+        <Icon name="lock" /> 深渊领域尚未开启。通关「{{ C.dungeons['dg_chaos']?.name }}」后可在商店购买「开启深渊之门」（Into the Abyss）。
         <button class="small mt" @click="store.go('shop')">前往商店</button>
       </div>
 
       <template v-else>
         <div v-if="tab === 'abyss' && corruptionList.length" class="panel mb">
-          <div class="row between"><b class="abyss">🦠 腐化效果（深渊敌人生成时施加）</b><span class="small muted">腐化 {{ g.level('corruption') }} 级</span></div>
+          <div class="row between"><b class="abyss"><Icon name="germ" /> 腐化效果（深渊敌人生成时施加）</b><span class="small muted">腐化 {{ g.level('corruption') }} 级</span></div>
           <div class="row mt">
             <button v-for="ce in corruptionList" :key="ce.id" class="small" :class="{ primary: s.corruption.enabled.includes(ce.id) }" :disabled="g.level('corruption') < ce.level" :title="ce.description" @click="store.act(() => toggleCorruption(g, ce.id))">
               {{ ce.name }} <span class="tiny">Lv{{ ce.level }}</span>
@@ -318,7 +318,7 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
         <div class="cards lg">
           <div v-for="a in shownAreas" :key="a.id" class="card" :class="{ locked: !!areaErr(a), active: isActiveArea(areaKind(a), a.id) }">
             <div class="row between">
-              <b>{{ a.icon }} {{ a.name }}</b>
+              <b><Icon :name="a.icon" :seed="a.id" /> {{ a.name }}</b>
               <div class="row">
                 <span v-if="EXPANSION_SHORT[a.expansion]" class="tag abyss">{{ EXPANSION_SHORT[a.expansion] }}</span>
                 <span v-if="a.type === 'slayer'" class="tag">猎杀</span>
@@ -334,7 +334,7 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
             <div class="sep" />
             <div v-for="mid in a.monsters" :key="mid" class="mrow row between nowrap">
               <div class="row nowrap grow" @click="detail = mid">
-                <span class="micon">{{ C.monsters[mid]?.icon }}</span>
+                <span class="micon"><Icon :name="C.monsters[mid]?.icon" :seed="mid" /></span>
                 <div class="grow">
                   <div class="small bold">{{ C.monsters[mid]?.name }} <span v-if="C.monsters[mid]?.isBoss" class="tag bad">首领</span></div>
                   <div class="tiny muted">Lv {{ C.monsters[mid]?.level }} · 生命 {{ fmt((C.monsters[mid]?.hitpoints ?? 0) * 10) }} · {{ ATTACK_TYPE_NAMES[C.monsters[mid]?.attackType ?? 'melee'] }} · 击杀 {{ full(s.monsterKills[mid] || 0) }}</div>
@@ -348,7 +348,7 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
 
           <div v-for="d in shownDungeons" :key="d.id" class="card" :class="{ locked: !!dungeonErr(d), active: isActiveArea('dungeon', d.id) }">
             <div class="row between">
-              <b>{{ d.icon }} {{ d.name }}</b>
+              <b><Icon :name="d.icon" :seed="d.id" /> {{ d.name }}</b>
               <div class="row">
                 <span v-if="d.isEndgame" class="tag gold">终局</span>
                 <span v-if="d.noFoodAllowed" class="tag bad">禁止进食</span>
@@ -356,9 +356,9 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
               </div>
             </div>
             <div v-if="d.description" class="tiny muted">{{ d.description }}</div>
-            <div class="small">怪物 {{ d.monsters.length }} 只 · 首领：<a v-if="bossOf(d)" href="#" @click.prevent="detail = bossOf(d)!.id">{{ bossOf(d)!.icon }} {{ bossOf(d)!.name }}（Lv {{ bossOf(d)!.level }}）</a></div>
+            <div class="small">怪物 {{ d.monsters.length }} 只 · 首领：<a v-if="bossOf(d)" href="#" @click.prevent="detail = bossOf(d)!.id"><Icon :name="bossOf(d)!.icon" /> {{ bossOf(d)!.name }}（Lv {{ bossOf(d)!.level }}）</a></div>
             <div class="row tiny">
-              <a v-for="m in uniqueMonsters(d)" :key="m" href="#" class="tag" @click.prevent="detail = m">{{ C.monsters[m]?.icon }} {{ C.monsters[m]?.name }} ×{{ d.monsters.filter((x) => x === m).length }}</a>
+              <a v-for="m in uniqueMonsters(d)" :key="m" href="#" class="tag" @click.prevent="detail = m"><Icon :name="C.monsters[m]?.icon" :seed="m" /> {{ C.monsters[m]?.name }} ×{{ d.monsters.filter((x) => x === m).length }}</a>
             </div>
             <Requirements :reqs="d.requirements" />
             <div class="small muted">通关奖励</div>
@@ -371,7 +371,7 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
                 </div>
               </div>
             </template>
-            <div v-if="d.pet" class="small">🐾 宠物：{{ C.pets[d.pet.id]?.name ?? d.pet.id }} <span class="muted">（通关 {{ d.pet.completions }} 次必得）</span> <span v-if="s.pets[d.pet.id]" class="good">已获得</span></div>
+            <div v-if="d.pet" class="small"><Icon name="paw" /> 宠物：{{ C.pets[d.pet.id]?.name ?? d.pet.id }} <span class="muted">（通关 {{ d.pet.completions }} 次必得）</span> <span v-if="s.pets[d.pet.id]" class="good">已获得</span></div>
             <div v-if="d.unlocks" class="tiny good">解锁：{{ d.unlocks }}</div>
             <div class="row between">
               <span class="small">已通关 <b>{{ s.dungeonCompletions[d.id] || 0 }}</b> 次</span>
@@ -385,10 +385,10 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
     </div>
 
     <!-- ================================================================ 怪物详情 -->
-    <Modal v-if="detailDef && detailStats" :title="`${detailDef.icon} ${detailDef.name}`" wide @close="detail = null">
+    <Modal v-if="detailDef && detailStats" :title="detailDef.name" wide @close="detail = null">
       <div class="row mb">
         <span class="tag">Lv {{ detailDef.level }}</span>
-        <span class="tag">{{ ATTACK_TYPE_ICONS[detailDef.attackType] }} {{ ATTACK_TYPE_NAMES[detailDef.attackType] }}</span>
+        <span class="tag"><Icon :name="ATTACK_TYPE_ICONS[detailDef.attackType]" /> {{ ATTACK_TYPE_NAMES[detailDef.attackType] }}</span>
         <span v-if="detailDef.isBoss" class="tag bad">首领</span>
         <span v-if="detailDef.realm === 'abyssal'" class="tag abyss">深渊</span>
         <span v-if="detailDef.slayerTaskable" class="tag">可作为猎杀目标</span>
@@ -418,7 +418,7 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
         <div class="small bold">特殊攻击</div>
         <div v-for="sa in specialAttacksOf(detailDef.specialAttacks)" :key="sa.id" class="small"><b>{{ sa.name }}</b> <span class="muted">（{{ sa.chance }}%）{{ sa.description }}</span></div>
       </div>
-      <div v-if="detailDef.pet" class="mt small">🐾 宠物：{{ C.pets[detailDef.pet.id]?.name }}（{{ fmtChance(detailDef.pet.chance) }}）<span v-if="s.pets[detailDef.pet.id]" class="good">已获得</span></div>
+      <div v-if="detailDef.pet" class="mt small"><Icon name="paw" /> 宠物：{{ C.pets[detailDef.pet.id]?.name }}（{{ fmtChance(detailDef.pet.chance) }}）<span v-if="s.pets[detailDef.pet.id]" class="good">已获得</span></div>
       <div class="sep" />
       <div class="small bold mb">掉落表<span v-if="detailDef.drops && C.dropTables[detailDef.drops]" class="muted">（每次击杀 {{ C.dropTables[detailDef.drops].rolls ?? 1 }} 次掷骰{{ C.dropTables[detailDef.drops].chance !== undefined ? `，触发率 ${fmtChance(C.dropTables[detailDef.drops].chance!)}` : '' }}）</span></div>
       <div v-if="!detailDrops.length" class="muted small">无掉落</div>
@@ -428,7 +428,7 @@ const LOG_CLASS: Record<string, string> = { player: 'good', enemy: 'bad', info: 
           <td><div class="row nowrap"><ItemIcon :id="r.id" :size="26" /> <span class="small">{{ C.items[r.id]?.name ?? r.id }}</span></div></td>
           <td>{{ r.min === r.max ? r.min : `${r.min}-${r.max}` }}</td>
           <td>{{ fmtChance(r.chance) }}</td>
-          <td>{{ s.itemsFound[r.id] ? '✔' : '—' }}</td>
+          <td>{{ s.itemsFound[r.id] ? '✓' : '—' }}</td>
         </tr>
       </table>
     </Modal>

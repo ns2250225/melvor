@@ -535,7 +535,7 @@ function playerDeath(g: Game) {
   if (mode.permadeath) {
     s.player.dead = true;
     stopCombat(g, '角色死亡（硬核模式）');
-    g.notify('你的硬核角色已经死亡……', 'error', '💀');
+    g.notify('你的硬核角色已经死亡……', 'error', 'skull');
     return;
   }
   // 死亡惩罚：随机失去一件已装备物品
@@ -546,11 +546,11 @@ function playerDeath(g: Game) {
       const slot = g.rng.pick(slots) as keyof typeof set;
       const lost = set[slot]!;
       set[slot] = null;
-      g.notify(`你死亡了，失去了 ${C.items[lost.id].name}${lost.qty > 1 ? ` ×${lost.qty}` : ''}`, 'error', '💀');
+      g.notify(`你死亡了，失去了 ${C.items[lost.id].name}${lost.qty > 1 ? ` ×${lost.qty}` : ''}`, 'error', 'skull');
       g.stat('itemsLostOnDeath');
       g.invalidate();
-    } else g.notify('你死亡了', 'error', '💀');
-  } else g.notify('你死亡了，护佑祈祷保护了你的装备', 'error', '💀');
+    } else g.notify('你死亡了', 'error', 'skull');
+  } else g.notify('你死亡了，护佑祈祷保护了你的装备', 'error', 'skull');
   s.hp = playerMaxHp(g);
   stopCombat(g, '玩家死亡');
 }
@@ -583,7 +583,7 @@ export function assignSlayerTask(g: Game, tierId: string): string | null {
   const monsterId = g.rng.pick(cands);
   const total = g.rng.int(tier.killsMin, tier.killsMax);
   g.state.slayer.task = { monsterId, total, remaining: total, tier: tierId, realm: tier.realm };
-  g.notify(`新猎杀任务：击败 ${C.monsters[monsterId].name} ×${total}`, 'info', '💀');
+  g.notify(`新猎杀任务：击败 ${C.monsters[monsterId].name} ×${total}`, 'info', 'skull');
   return null;
 }
 
@@ -595,7 +595,7 @@ function completeSlayerTask(g: Game) {
   if (task.realm === 'abyssal') s.currencies.abyssalSlayerCoins += bonus; else s.currencies.slayerCoins += bonus;
   s.slayer.tasksCompleted[task.tier] = (s.slayer.tasksCompleted[task.tier] || 0) + 1;
   g.stat('slayerTasks');
-  g.notify(`猎杀任务完成！奖励 ${bonus} 猎杀币`, 'success', '💀');
+  g.notify(`猎杀任务完成！奖励 ${bonus} 猎杀币`, 'success', 'skull');
   s.slayer.task = null;
   if (s.slayer.autoSlayer && s.shop['auto_slayer']) {
     if (!assignSlayerTask(g, task.tier)) goToSlayerTarget(g);

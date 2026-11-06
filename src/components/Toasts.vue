@@ -7,7 +7,7 @@ const store = useGameStore();
   <div class="toasts">
     <TransitionGroup name="t">
       <div v-for="t in store.toasts" :key="t.id" class="toast" :class="t.kind" @click="store.toasts = store.toasts.filter((x) => x.id !== t.id)">
-        <span v-if="t.icon">{{ t.icon }}</span>{{ t.text }}
+        <span v-if="t.icon"><Icon :name="t.icon" /></span>{{ t.text }}
       </div>
     </TransitionGroup>
   </div>

@@ -30,21 +30,21 @@ function goActivity() {
       <div v-else-if="s.combat.active && s.combat.enemy" class="tiny muted ellipsis">{{ C.monsters[s.combat.enemy.monsterId].name }} {{ fmt(s.combat.enemy.hp) }}/{{ fmt(s.combat.enemy.maxHp) }}</div>
     </div>
     <div class="hp" :title="`生命 ${s.hp}/${maxHp}`">
-      <span class="tiny">❤️ {{ fmt(s.hp) }}/{{ fmt(maxHp) }}</span>
+      <span class="tiny"><Icon name="heart" /> {{ fmt(s.hp) }}/{{ fmt(maxHp) }}</span>
       <ProgressBar :value="s.hp / maxHp" color="var(--hp)" :height="5" />
     </div>
     <div class="cur">
-      <span class="tag" title="金币">🪙 {{ fmt(s.currencies.gp) }}</span>
-      <span class="tag hide-sm" title="猎杀币">💀 {{ fmt(s.currencies.slayerCoins) }}</span>
-      <span class="tag hide-sm" title="祈祷点">🙏 {{ fmt(s.currencies.prayerPoints) }}</span>
-      <span v-if="g.inAbyss()" class="tag abyss hide-sm" title="深渊碎片">🟣 {{ fmt(s.currencies.abyssalPieces) }}</span>
-      <span class="tag hide-sm" title="银行容量" :class="{ bad: g.bankUsed() >= g.bankCapacity() }">🏦 {{ g.bankUsed() }}/{{ g.bankCapacity() }}</span>
+      <span class="tag" title="金币"><Icon name="coin" /> {{ fmt(s.currencies.gp) }}</span>
+      <span class="tag hide-sm" title="猎杀币"><Icon name="skull" /> {{ fmt(s.currencies.slayerCoins) }}</span>
+      <span class="tag hide-sm" title="祈祷点"><Icon name="pray" /> {{ fmt(s.currencies.prayerPoints) }}</span>
+      <span v-if="g.inAbyss()" class="tag abyss hide-sm" title="深渊碎片"><Icon name="abyssal_piece" /> {{ fmt(s.currencies.abyssalPieces) }}</span>
+      <span class="tag hide-sm" title="银行容量" :class="{ bad: g.bankUsed() >= g.bankCapacity() }"><Icon name="bank" /> {{ g.bankUsed() }}/{{ g.bankCapacity() }}</span>
       <span class="tiny muted save" :class="{ bad: store.saveStatus === 'error' }" :title="store.saveError">{{ saveText }}</span>
     </div>
   </header>
-  <div v-if="store.anomaly" class="banner warn" @click="store.anomaly = null">⚠️ {{ store.anomaly }}（点击关闭）</div>
-  <div v-if="store.updateAvailable" class="banner" @click="applyUpdate">🔄 发现新版本，点击更新</div>
-  <div v-if="s.bonfire.endsAt > s.clock" class="banner fire">🔥 篝火燃烧中：生火经验 +{{ s.bonfire.bonus }}%，剩余 {{ fmtMs(s.bonfire.endsAt - s.clock) }}</div>
+  <div v-if="store.anomaly" class="banner warn" @click="store.anomaly = null"><Icon name="warning" /> {{ store.anomaly }}（点击关闭）</div>
+  <div v-if="store.updateAvailable" class="banner" @click="applyUpdate"><Icon name="refresh" /> 发现新版本，点击更新</div>
+  <div v-if="s.bonfire.endsAt > s.clock" class="banner fire"><Icon name="fire" /> 篝火燃烧中：生火经验 +{{ s.bonfire.bonus }}%，剩余 {{ fmtMs(s.bonfire.endsAt - s.clock) }}</div>
 </template>
 
 <style scoped>

@@ -47,7 +47,7 @@ function prereqDone(id: string) { return g.value.state.quests[id]?.status === 'c
 
 <template>
   <div>
-    <div class="page-title"><span class="icon">📜</span><h2>任务</h2><span class="muted">已完成 {{ counts.completed }} / {{ counts.all }}</span></div>
+    <div class="page-title"><span class="icon"><Icon name="scroll" /></span><h2>任务</h2><span class="muted">已完成 {{ counts.completed }} / {{ counts.all }}</span></div>
     <ProgressBar class="mb" :value="counts.completed / Math.max(1, counts.all)" color="var(--good)" :height="8" />
     <div class="tabs">
       <button v-for="[f, label] in FILTERS" :key="f" :class="{ on: filter === f }" @click="filter = f">{{ label }}（{{ counts[f] }}）</button>
@@ -86,7 +86,7 @@ function prereqDone(id: string) { return g.value.state.quests[id]?.status === 'c
           <div class="col" style="gap: 4px">
             <div class="small muted">奖励</div>
             <div class="row small">
-              <span v-for="(r, i) in rewardParts(x.q.rewards)" :key="i" class="tag">{{ r }}</span>
+              <span v-for="(r, i) in rewardParts(x.q.rewards)" :key="i" class="tag"><IconText :text="r" /></span>
             </div>
             <ItemList v-if="x.q.rewards.items?.length" :items="x.q.rewards.items" :size="28" />
           </div>

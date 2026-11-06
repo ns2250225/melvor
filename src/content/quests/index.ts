@@ -4,71 +4,71 @@ import type { SkillId, ModifierMap, ExpansionId, QuestDef, AchievementDef } from
 
 // --------------------------------------------------------------------------- 宠物
 const SKILL_PETS: Partial<Record<SkillId, [string, string, ModifierMap, string]>> = {
-  attack: ['小剑灵', '🗡️', { meleeAccuracy: 2 }, '近战命中 +2%'],
-  strength: ['大力蛙', '🐸', { meleeMaxHit: 1 }, '近战伤害 +1%'],
-  defence: ['小乌龟', '🐢', { damageReductionFlat: 1 }, '伤害减免 +1%'],
-  hitpoints: ['心心兔', '🐰', { hpRegen: 20 }, '生命回复 +20%'],
-  ranged: ['小隼', '🐦', { rangedAccuracy: 2 }, '远程命中 +2%'],
-  magic: ['魔法猫', '🐈‍⬛', { magicAccuracy: 2 }, '魔法命中 +2%'],
-  prayer: ['小天使', '👼', { prayerPreservation: 5 }, '祈祷点节省 +5%'],
-  slayer: ['骷髅犬', '🐕', { slayerCoins: 5 }, '猎杀币 +5%'],
-  woodcutting: ['啄木鸟', '🐦', { 'skillXP:woodcutting': 3 }, '伐木经验 +3%'],
-  fishing: ['小企鹅', '🐧', { 'skillXP:fishing': 3 }, '钓鱼经验 +3%'],
-  firemaking: ['火蜥蜴', '🦎', { 'skillXP:firemaking': 3 }, '生火经验 +3%'],
-  cooking: ['小厨鼠', '🐭', { 'skillXP:cooking': 3 }, '烹饪经验 +3%'],
-  mining: ['石头怪', '🪨', { 'skillXP:mining': 3 }, '采矿经验 +3%'],
-  smithing: ['铁砧精', '⚒️', { 'skillXP:smithing': 3 }, '锻造经验 +3%'],
-  thieving: ['小浣熊', '🦝', { 'skillXP:thieving': 3 }, '偷窃经验 +3%'],
-  farming: ['小蜗牛', '🐌', { 'skillXP:farming': 3 }, '农业经验 +3%'],
-  fletching: ['小鹦鹉', '🦜', { 'skillXP:fletching': 3 }, '制箭经验 +3%'],
-  crafting: ['小蜘蛛', '🕷️', { 'skillXP:crafting': 3 }, '制作经验 +3%'],
-  runecrafting: ['符文精', '🌀', { 'skillXP:runecrafting': 3 }, '符文经验 +3%'],
-  herblore: ['小蘑菇', '🍄', { 'skillXP:herblore': 3 }, '药剂经验 +3%'],
-  agility: ['小松鼠', '🐿️', { 'skillXP:agility': 3 }, '敏捷经验 +3%'],
-  summoning: ['召唤灵', '🧚', { 'skillXP:summoning': 3 }, '召唤经验 +3%'],
-  astrology: ['小星星', '⭐', { 'skillXP:astrology': 3 }, '占星经验 +3%'],
-  township: ['小市长', '🎩', { townshipProduction: 3 }, '城镇产出 +3%'],
-  cartography: ['小罗盘', '🧭', { 'skillXP:cartography': 3 }, '制图经验 +3%'],
-  archaeology: ['小鼹鼠', '🦔', { 'skillXP:archaeology': 3 }, '考古经验 +3%'],
-  corruption: ['小魔影', '👾', { 'skillXP:corruption': 3 }, '腐化经验 +3%'],
-  harvesting: ['深渊蚯蚓', '🪱', { 'skillXP:harvesting': 3 }, '收割经验 +3%'],
+  attack: ['小剑灵', 'dagger', { meleeAccuracy: 2 }, '近战命中 +2%'],
+  strength: ['大力蛙', 'frog', { meleeMaxHit: 1 }, '近战伤害 +1%'],
+  defence: ['小乌龟', 'turtle', { damageReductionFlat: 1 }, '伤害减免 +1%'],
+  hitpoints: ['心心兔', 'rabbit', { hpRegen: 20 }, '生命回复 +20%'],
+  ranged: ['小隼', 'bird', { rangedAccuracy: 2 }, '远程命中 +2%'],
+  magic: ['魔法猫', 'black_cat', { magicAccuracy: 2 }, '魔法命中 +2%'],
+  prayer: ['小天使', 'angel', { prayerPreservation: 5 }, '祈祷点节省 +5%'],
+  slayer: ['骷髅犬', 'dog', { slayerCoins: 5 }, '猎杀币 +5%'],
+  woodcutting: ['啄木鸟', 'bird', { 'skillXP:woodcutting': 3 }, '伐木经验 +3%'],
+  fishing: ['小企鹅', 'penguin', { 'skillXP:fishing': 3 }, '钓鱼经验 +3%'],
+  firemaking: ['火蜥蜴', 'lizard', { 'skillXP:firemaking': 3 }, '生火经验 +3%'],
+  cooking: ['小厨鼠', 'mouse', { 'skillXP:cooking': 3 }, '烹饪经验 +3%'],
+  mining: ['石头怪', 'rock', { 'skillXP:mining': 3 }, '采矿经验 +3%'],
+  smithing: ['铁砧精', 'hammer_pick', { 'skillXP:smithing': 3 }, '锻造经验 +3%'],
+  thieving: ['小浣熊', 'raccoon', { 'skillXP:thieving': 3 }, '偷窃经验 +3%'],
+  farming: ['小蜗牛', 'snail', { 'skillXP:farming': 3 }, '农业经验 +3%'],
+  fletching: ['小鹦鹉', 'parrot', { 'skillXP:fletching': 3 }, '制箭经验 +3%'],
+  crafting: ['小蜘蛛', 'spider', { 'skillXP:crafting': 3 }, '制作经验 +3%'],
+  runecrafting: ['符文精', 'vortex', { 'skillXP:runecrafting': 3 }, '符文经验 +3%'],
+  herblore: ['小蘑菇', 'mushroom', { 'skillXP:herblore': 3 }, '药剂经验 +3%'],
+  agility: ['小松鼠', 'squirrel', { 'skillXP:agility': 3 }, '敏捷经验 +3%'],
+  summoning: ['召唤灵', 'fairy', { 'skillXP:summoning': 3 }, '召唤经验 +3%'],
+  astrology: ['小星星', 'star', { 'skillXP:astrology': 3 }, '占星经验 +3%'],
+  township: ['小市长', 'top_hat', { townshipProduction: 3 }, '城镇产出 +3%'],
+  cartography: ['小罗盘', 'compass', { 'skillXP:cartography': 3 }, '制图经验 +3%'],
+  archaeology: ['小鼹鼠', 'hedgehog', { 'skillXP:archaeology': 3 }, '考古经验 +3%'],
+  corruption: ['小魔影', 'invader', { 'skillXP:corruption': 3 }, '腐化经验 +3%'],
+  harvesting: ['深渊蚯蚓', 'worm', { 'skillXP:harvesting': 3 }, '收割经验 +3%'],
 };
 for (const [skill, [name, icon, modifiers, description]] of Object.entries(SKILL_PETS)) {
   const exp: ExpansionId = C.skills[skill as SkillId].expansionId ?? 'base';
   addPet({ id: `pet_${skill}`, name, icon, source: `${C.skills[skill as SkillId].name}技能动作中有几率获得`, sourceType: 'skill', sourceId: skill, modifiers, description, expansion: exp });
 }
 const DPETS: [string, string, string, string, ModifierMap, string][] = [
-  ['pet_coop', '小鸡崽', '🐣', 'dg_coop', { combatGP: 3 }, '战斗金币 +3%'],
-  ['pet_graveyard', '小骷髅', '💀', 'dg_graveyard', { meleeAccuracy: 2 }, '近战命中 +2%'],
-  ['pet_spider', '小蛛蛛', '🕷️', 'dg_spider_forest', { poisonImmunity: 1 }, '免疫中毒'],
-  ['pet_frozen', '小雪人', '⛄', 'dg_frozen_cove', { magicAccuracy: 2 }, '魔法命中 +2%'],
-  ['pet_pirate', '小鹦鹉船长', '🦜', 'dg_pirate_ship', { rangedAccuracy: 2 }, '远程命中 +2%'],
-  ['pet_bandit', '小盗贼', '🥷', 'dg_bandit_hideout', { gpGlobal: 2 }, '全局金币 +2%'],
-  ['pet_volcano', '熔岩宝宝', '🔥', 'dg_volcano', { burnImmunity: 1 }, '免疫燃烧'],
-  ['pet_wizard', '小法师', '🧙', 'dg_wizard_hall', { runePreservation: 5 }, '符文节省 +5%'],
-  ['pet_dragon', '龙宝宝', '🐲', 'dg_dragon_den', { maxHit: 2 }, '最大伤害 +2%'],
-  ['pet_crystal', '水晶精灵', '💎', 'dg_crystal_caves', { damageReductionFlat: 1 }, '伤害减免 +1%'],
-  ['pet_infernal', '小恶魔', '😈', 'dg_infernal', { lifesteal: 1 }, '生命偷取 +1%'],
-  ['pet_elemental', '元素之灵', '🌈', 'dg_elemental', { meleeAccuracy: 2, rangedAccuracy: 2, magicAccuracy: 2 }, '全部命中 +2%'],
-  ['pet_temple', '遗忘之眼', '👁️', 'dg_forgotten_temple', { skillXP: 2 }, '全技能经验 +2%'],
-  ['pet_chaos', '混沌之子', '🦑', 'dg_chaos', { maxHit: 3, damageReductionFlat: 2 }, '最大伤害 +3%，减伤 +2%'],
-  ['pet_herald_gate', '小守门人', '🛡️', 'dg_herald_gate', { damageReductionFlat: 2 }, '伤害减免 +2%'],
-  ['pet_sky', '天穹雏鹰', '🦅', 'dg_sky_citadel', { attackInterval: -2 }, '攻击间隔 -2%'],
-  ['pet_lost_world', '小恐龙', '🦖', 'dg_lost_world', { maxHit: 3 }, '最大伤害 +3%'],
-  ['pet_throne', '小使者', '👑', 'dg_throne', { skillXP: 3, masteryXP: 3 }, '经验与掌握度经验 +3%'],
-  ['pet_void_maw', '虚空小口', '🕳️', 'dg_void_maw', { abyssalResistanceFlat: 2 }, '深渊抗性 +2'],
-  ['pet_shadow_keep', '小暗影', '🌑', 'dg_shadow_keep', { abyssalXP: 3 }, '深渊经验 +3%'],
-  ['pet_abyss_throne', '深渊之子', '😈', 'dg_abyss_throne', { maxHit: 4, abyssalXP: 4 }, '最大伤害 +4%，深渊经验 +4%'],
+  ['pet_coop', '小鸡崽', 'hatchling', 'dg_coop', { combatGP: 3 }, '战斗金币 +3%'],
+  ['pet_graveyard', '小骷髅', 'skull', 'dg_graveyard', { meleeAccuracy: 2 }, '近战命中 +2%'],
+  ['pet_spider', '小蛛蛛', 'spider', 'dg_spider_forest', { poisonImmunity: 1 }, '免疫中毒'],
+  ['pet_frozen', '小雪人', 'snowman', 'dg_frozen_cove', { magicAccuracy: 2 }, '魔法命中 +2%'],
+  ['pet_pirate', '小鹦鹉船长', 'parrot', 'dg_pirate_ship', { rangedAccuracy: 2 }, '远程命中 +2%'],
+  ['pet_bandit', '小盗贼', 'ninja', 'dg_bandit_hideout', { gpGlobal: 2 }, '全局金币 +2%'],
+  ['pet_volcano', '熔岩宝宝', 'fire', 'dg_volcano', { burnImmunity: 1 }, '免疫燃烧'],
+  ['pet_wizard', '小法师', 'wizard', 'dg_wizard_hall', { runePreservation: 5 }, '符文节省 +5%'],
+  ['pet_dragon', '龙宝宝', 'dragon_head', 'dg_dragon_den', { maxHit: 2 }, '最大伤害 +2%'],
+  ['pet_crystal', '水晶精灵', 'gem', 'dg_crystal_caves', { damageReductionFlat: 1 }, '伤害减免 +1%'],
+  ['pet_infernal', '小恶魔', 'imp', 'dg_infernal', { lifesteal: 1 }, '生命偷取 +1%'],
+  ['pet_elemental', '元素之灵', 'rainbow', 'dg_elemental', { meleeAccuracy: 2, rangedAccuracy: 2, magicAccuracy: 2 }, '全部命中 +2%'],
+  ['pet_temple', '遗忘之眼', 'eye', 'dg_forgotten_temple', { skillXP: 2 }, '全技能经验 +2%'],
+  ['pet_chaos', '混沌之子', 'squid', 'dg_chaos', { maxHit: 3, damageReductionFlat: 2 }, '最大伤害 +3%，减伤 +2%'],
+  ['pet_herald_gate', '小守门人', 'shield', 'dg_herald_gate', { damageReductionFlat: 2 }, '伤害减免 +2%'],
+  ['pet_sky', '天穹雏鹰', 'eagle', 'dg_sky_citadel', { attackInterval: -2 }, '攻击间隔 -2%'],
+  ['pet_lost_world', '小恐龙', 'dino', 'dg_lost_world', { maxHit: 3 }, '最大伤害 +3%'],
+  ['pet_throne', '小使者', 'crown', 'dg_throne', { skillXP: 3, masteryXP: 3 }, '经验与掌握度经验 +3%'],
+  ['pet_void_maw', '虚空小口', 'hole', 'dg_void_maw', { abyssalResistanceFlat: 2 }, '深渊抗性 +2'],
+  ['pet_shadow_keep', '小暗影', 'new_moon', 'dg_shadow_keep', { abyssalXP: 3 }, '深渊经验 +3%'],
+  ['pet_abyss_throne', '深渊之子', 'imp', 'dg_abyss_throne', { maxHit: 4, abyssalXP: 4 }, '最大伤害 +4%，深渊经验 +4%'],
 ];
 for (const [id, name, icon, dg, modifiers, description] of DPETS) {
   const d = C.dungeons[dg];
   addPet({ id, name, icon, source: `通关「${d.name}」时有几率获得（${d.pet?.completions ?? 100} 次通关必得）`, sourceType: 'dungeon', sourceId: dg, modifiers, description, expansion: d.expansion });
 }
-addPet({ id: 'pet_golden_chicken', name: '金色小鸡', icon: '🐥', source: '击杀鸡时 1/10000 几率', sourceType: 'monster', sourceId: 'chicken', modifiers: { gpGlobal: 3 }, description: '全局金币 +3%', expansion: 'base' });
+addPet({ id: 'pet_golden_chicken', name: '金色小鸡', icon: 'chick_front', source: '击杀鸡时 1/10000 几率', sourceType: 'monster', sourceId: 'chicken', modifiers: { gpGlobal: 3 }, description: '全局金币 +3%', expansion: 'base' });
 C.monsters['chicken'].pet = { id: 'pet_golden_chicken', chance: 1 / 10000 };
-addPet({ id: 'pet_ruby_dragon', name: '红宝石幼龙', icon: '🐉', source: '击杀红龙时 1/5000 几率', sourceType: 'monster', sourceId: 'red_dragon', modifiers: { rareDropChance: 5 }, description: '稀有掉落 +5%', expansion: 'base' });
+addPet({ id: 'pet_ruby_dragon', name: '红宝石幼龙', icon: 'dragon', source: '击杀红龙时 1/5000 几率', sourceType: 'monster', sourceId: 'red_dragon', modifiers: { rareDropChance: 5 }, description: '稀有掉落 +5%', expansion: 'base' });
 C.monsters['red_dragon'].pet = { id: 'pet_ruby_dragon', chance: 1 / 5000 };
-addPet({ id: 'pet_museum', name: '博物馆馆长', icon: '🧐', source: '向博物馆捐赠 30 件文物', sourceType: 'special', modifiers: { artifactChance: 5 }, description: '文物发现率 +5%', expansion: 'aod' });
+addPet({ id: 'pet_museum', name: '博物馆馆长', icon: 'monocle', source: '向博物馆捐赠 30 件文物', sourceType: 'special', modifiers: { artifactChance: 5 }, description: '文物发现率 +5%', expansion: 'aod' });
 
 // --------------------------------------------------------------------------- 任务
 const q = (d: Omit<QuestDef, 'expansion' | 'requirements'> & Partial<Pick<QuestDef, 'expansion' | 'requirements'>>) => addQuest({ expansion: 'base', requirements: [], ...d });
@@ -129,21 +129,21 @@ for (const sid of C.skillOrder) {
   a({ id: `ach_${sid}_120`, name: `${s.name}传奇`, description: `${s.name}达到 120 级`, category: '终局', icon: s.icon, condition: { type: 'skillLevel', skill: sid, level: 120 }, reward: { gp: 1000000 }, expansion: 'toth' });
   if (s.abyssalEnabled) a({ id: `ach_${sid}_a20`, name: `深渊${s.name}`, description: `${s.name}深渊等级达到 20`, category: '深渊', icon: s.icon, condition: { type: 'abyssalLevel', skill: sid, level: 20 }, reward: { abyssalPieces: 10000 }, expansion: 'ita' });
 }
-for (const lvl of [250, 500, 1000, 1500, 2000, 2500, 3000]) a({ id: `ach_total_${lvl}`, name: `总等级 ${lvl}`, description: `总等级达到 ${lvl}`, category: '技能', icon: '📈', condition: { type: 'totalLevel', level: lvl }, reward: { gp: lvl * 50 }, expansion: lvl > 2500 ? 'toth' : 'base' });
-for (const n of [100, 1000, 10000, 100000]) a({ id: `ach_kills_${n}`, name: `击杀 ${n}`, description: `累计击杀 ${n} 个敌人`, category: '战斗', icon: '⚔️', condition: { type: 'stat', stat: 'monstersKilled', value: n }, reward: { gp: n * 5 } });
+for (const lvl of [250, 500, 1000, 1500, 2000, 2500, 3000]) a({ id: `ach_total_${lvl}`, name: `总等级 ${lvl}`, description: `总等级达到 ${lvl}`, category: '技能', icon: 'trend', condition: { type: 'totalLevel', level: lvl }, reward: { gp: lvl * 50 }, expansion: lvl > 2500 ? 'toth' : 'base' });
+for (const n of [100, 1000, 10000, 100000]) a({ id: `ach_kills_${n}`, name: `击杀 ${n}`, description: `累计击杀 ${n} 个敌人`, category: '战斗', icon: 'swords', condition: { type: 'stat', stat: 'monstersKilled', value: n }, reward: { gp: n * 5 } });
 for (const d of Object.values(C.dungeons)) a({ id: `ach_${d.id}`, name: `征服：${d.name}`, description: `通关「${d.name}」`, category: d.isEndgame ? '终局' : '副本', icon: d.icon, condition: { type: 'dungeon', id: d.id, count: 1 }, reward: { gp: 10000 }, expansion: d.expansion });
 for (const d of Object.values(C.dungeons).filter((x) => x.isEndgame)) a({ id: `ach_${d.id}_10`, name: `宿敌：${d.name}`, description: `通关「${d.name}」10 次`, category: '终局', icon: d.icon, condition: { type: 'dungeon', id: d.id, count: 10 }, reward: { gp: 500000 }, expansion: d.expansion });
-for (const n of [1e5, 1e6, 1e7, 1e8]) a({ id: `ach_gp_${n}`, name: `财富积累 ${n.toLocaleString()}`, description: `累计获得 ${n.toLocaleString()} 金币`, category: '经济', icon: '🪙', condition: { type: 'stat', stat: 'gpEarned', value: n } });
-for (const n of [1, 10, 25]) a({ id: `ach_pets_${n}`, name: `宠物收藏家 ${n}`, description: `获得 ${n} 只宠物`, category: '收藏', icon: '🐾', condition: { type: 'pet', count: n } });
-a({ id: 'ach_pets_all', name: '万兽之主', description: '获得全部宠物', category: '终局', icon: '🦁', condition: { type: 'pet', count: Object.keys(C.pets).length }, reward: { gp: 10000000 } });
-for (const n of [1, 10, 50]) a({ id: `ach_mastery_${n}`, name: `精通 ${n}`, description: `将 ${n} 个动作的掌握度提升至 99`, category: '技能', icon: '🎖️', condition: { type: 'mastery99', count: n } });
-for (const p of [25, 50, 75, 100]) a({ id: `ach_completion_${p}`, name: `完成度 ${p}%`, description: `游戏完成度达到 ${p}%`, category: '终局', icon: '🏆', condition: { type: 'completion', percent: p } });
-a({ id: 'ach_poi_5', name: '探险家', description: '发现 5 个兴趣点', category: '探索', icon: '🧭', condition: { type: 'poi', count: 5 }, expansion: 'aod' });
-a({ id: 'ach_poi_all', name: '制图大师', description: '发现全部兴趣点', category: '探索', icon: '🗺️', condition: { type: 'poi', count: Object.keys(C.pois).length }, expansion: 'aod' });
-a({ id: 'ach_museum_10', name: '收藏家', description: '向博物馆捐赠 10 件文物', category: '探索', icon: '🏛️', condition: { type: 'stat', stat: 'museumDonations', value: 10 }, expansion: 'aod' });
-a({ id: 'ach_death', name: '出师未捷', description: '第一次死亡', category: '隐藏', icon: '💀', hidden: true, condition: { type: 'stat', stat: 'deaths', value: 1 } });
-a({ id: 'ach_burn', name: '黑暗料理', description: '烧焦 100 份食物', category: '隐藏', icon: '🔥', hidden: true, condition: { type: 'stat', stat: 'foodBurnt', value: 100 } });
-a({ id: 'ach_stun', name: '眼冒金星', description: '偷窃失败 100 次', category: '隐藏', icon: '💫', hidden: true, condition: { type: 'stat', stat: 'thievingFails', value: 100 } });
-a({ id: 'ach_stone', name: '神秘之物', description: '发现一块神秘石', category: '隐藏', icon: '🗿', hidden: true, condition: { type: 'collect', item: 'mysterious_stone', count: 1 } });
-a({ id: 'ach_town_50', name: '繁荣城镇', description: '城镇等级达到 50', category: '技能', icon: '🏘️', condition: { type: 'township', level: 50 } });
-a({ id: 'ach_slayer_100', name: '猎杀专家', description: '完成 100 个猎杀任务', category: '战斗', icon: '💀', condition: { type: 'stat', stat: 'slayerTasks', value: 100 } });
+for (const n of [1e5, 1e6, 1e7, 1e8]) a({ id: `ach_gp_${n}`, name: `财富积累 ${n.toLocaleString()}`, description: `累计获得 ${n.toLocaleString()} 金币`, category: '经济', icon: 'coin', condition: { type: 'stat', stat: 'gpEarned', value: n } });
+for (const n of [1, 10, 25]) a({ id: `ach_pets_${n}`, name: `宠物收藏家 ${n}`, description: `获得 ${n} 只宠物`, category: '收藏', icon: 'paw', condition: { type: 'pet', count: n } });
+a({ id: 'ach_pets_all', name: '万兽之主', description: '获得全部宠物', category: '终局', icon: 'lion', condition: { type: 'pet', count: Object.keys(C.pets).length }, reward: { gp: 10000000 } });
+for (const n of [1, 10, 50]) a({ id: `ach_mastery_${n}`, name: `精通 ${n}`, description: `将 ${n} 个动作的掌握度提升至 99`, category: '技能', icon: 'medal', condition: { type: 'mastery99', count: n } });
+for (const p of [25, 50, 75, 100]) a({ id: `ach_completion_${p}`, name: `完成度 ${p}%`, description: `游戏完成度达到 ${p}%`, category: '终局', icon: 'trophy', condition: { type: 'completion', percent: p } });
+a({ id: 'ach_poi_5', name: '探险家', description: '发现 5 个兴趣点', category: '探索', icon: 'compass', condition: { type: 'poi', count: 5 }, expansion: 'aod' });
+a({ id: 'ach_poi_all', name: '制图大师', description: '发现全部兴趣点', category: '探索', icon: 'map', condition: { type: 'poi', count: Object.keys(C.pois).length }, expansion: 'aod' });
+a({ id: 'ach_museum_10', name: '收藏家', description: '向博物馆捐赠 10 件文物', category: '探索', icon: 'temple', condition: { type: 'stat', stat: 'museumDonations', value: 10 }, expansion: 'aod' });
+a({ id: 'ach_death', name: '出师未捷', description: '第一次死亡', category: '隐藏', icon: 'skull', hidden: true, condition: { type: 'stat', stat: 'deaths', value: 1 } });
+a({ id: 'ach_burn', name: '黑暗料理', description: '烧焦 100 份食物', category: '隐藏', icon: 'fire', hidden: true, condition: { type: 'stat', stat: 'foodBurnt', value: 100 } });
+a({ id: 'ach_stun', name: '眼冒金星', description: '偷窃失败 100 次', category: '隐藏', icon: 'dizzy_star', hidden: true, condition: { type: 'stat', stat: 'thievingFails', value: 100 } });
+a({ id: 'ach_stone', name: '神秘之物', description: '发现一块神秘石', category: '隐藏', icon: 'stone_head', hidden: true, condition: { type: 'collect', item: 'mysterious_stone', count: 1 } });
+a({ id: 'ach_town_50', name: '繁荣城镇', description: '城镇等级达到 50', category: '技能', icon: 'village', condition: { type: 'township', level: 50 } });
+a({ id: 'ach_slayer_100', name: '猎杀专家', description: '完成 100 个猎杀任务', category: '战斗', icon: 'skull', condition: { type: 'stat', stat: 'slayerTasks', value: 100 } });

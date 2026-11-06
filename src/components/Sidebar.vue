@@ -13,37 +13,38 @@ const groups: { title: string; skills: SkillId[] }[] = [
 ];
 const combatSkills: SkillId[] = ['attack', 'strength', 'defence', 'hitpoints', 'ranged', 'magic', 'prayer', 'slayer', 'corruption'];
 const sys: { id: PageId; name: string; icon: string }[] = [
-  { id: 'bank', name: '银行', icon: '🏦' }, { id: 'shop', name: '商店', icon: '🛒' }, { id: 'quests', name: '任务', icon: '📜' },
-  { id: 'achievements', name: '成就', icon: '🏆' }, { id: 'pets', name: '宠物', icon: '🐾' }, { id: 'collection', name: '图鉴', icon: '📖' },
-  { id: 'expansions', name: '扩展内容', icon: '🌌' }, { id: 'statistics', name: '统计', icon: '📊' }, { id: 'settings', name: '设置', icon: '⚙️' }, { id: 'saves', name: '存档', icon: '💾' },
+  { id: 'bank', name: '银行', icon: 'bank' }, { id: 'shop', name: '商店', icon: 'cart' }, { id: 'quests', name: '任务', icon: 'scroll' },
+  { id: 'achievements', name: '成就', icon: 'trophy' }, { id: 'pets', name: '宠物', icon: 'paw' }, { id: 'collection', name: '图鉴', icon: 'book' },
+  { id: 'expansions', name: '扩展内容', icon: 'galaxy' }, { id: 'statistics', name: '统计', icon: 'chart' }, { id: 'settings', name: '设置', icon: 'gear' }, { id: 'saves', name: '存档', icon: 'save' },
 ];
 const activeSkill = computed(() => g.value.state.activeAction?.skill);
-function lvl(id: SkillId) { const s = g.value.state.skills[id]; return s.unlocked ? s.level : '🔒'; }
+function lvl(id: SkillId) { const s = g.value.state.skills[id]; return s.unlocked ? s.level : 'lock'; }
 function isOn(p: PageId, skill?: SkillId) { return store.page === p && (!skill || store.skillPage === skill); }
 </script>
 
 <template>
   <nav class="sidebar" :class="{ open: store.navOpen }">
-    <div class="brand" @click="store.go('overview')">⚔️ <span>Idle Realms</span></div>
+    <div class="brand" @click="store.go('overview')"><Icon name="swords" /> <span>Idle Realms</span></div>
     <div class="scroll navscroll">
-      <a class="nav" :class="{ on: isOn('overview') }" @click="store.go('overview')">🏠 总览</a>
+      <a class="nav" :class="{ on: isOn('overview') }" @click="store.go('overview')"><Icon name="home" /> 总览</a>
       <div class="gtitle">战斗</div>
-      <a class="nav" :class="{ on: isOn('combat'), running: g.state.combat.active }" @click="store.go('combat')">⚔️ 战斗 <span class="lv">{{ g.state.combat.active ? '●' : '' }}</span></a>
-      <a class="nav" :class="{ on: isOn('slayer') }" @click="store.go('slayer')">💀 猎杀任务 <span class="lv">{{ lvl('slayer') }}</span></a>
-      <a class="nav" :class="{ on: isOn('equipment') }" @click="store.go('equipment')">🛡️ 装备</a>
-      <a class="nav" :class="{ on: isOn('magic') }" @click="store.go('magic')">🔮 魔法 <span class="lv">{{ lvl('magic') }}</span></a>
-      <a class="nav" :class="{ on: isOn('prayer') }" @click="store.go('prayer')">🙏 祈祷 <span class="lv">{{ lvl('prayer') }}</span></a>
+      <a class="nav" :class="{ on: isOn('combat'), running: g.state.combat.active }" @click="store.go('combat')"><Icon name="swords" /> 战斗 <span class="lv">{{ g.state.combat.active ? '●' : '' }}</span></a>
+      <a class="nav" :class="{ on: isOn('slayer') }" @click="store.go('slayer')"><Icon name="skull" /> 猎杀任务 <span class="lv">{{ lvl('slayer') }}</span></a>
+      <a class="nav" :class="{ on: isOn('equipment') }" @click="store.go('equipment')"><Icon name="shield" /> 装备</a>
+      <a class="nav" :class="{ on: isOn('magic') }" @click="store.go('magic')"><Icon name="crystal_ball" /> 魔法 <span class="lv">{{ lvl('magic') }}</span></a>
+      <a class="nav" :class="{ on: isOn('prayer') }" @click="store.go('prayer')"><Icon name="pray" /> 祈祷 <span class="lv">{{ lvl('prayer') }}</span></a>
       <div class="combat-levels">
-        <span v-for="sid in combatSkills" :key="sid" v-show="C.skills[sid]" class="cl" :title="C.skills[sid].name">{{ C.skills[sid].icon }}{{ lvl(sid) }}</span>
+        <span v-for="sid in combatSkills" :key="sid" v-show="C.skills[sid]" class="cl" :title="C.skills[sid].name"><Icon :name="C.skills[sid]?.icon" :seed="sid" />{{ lvl(sid) }}</span>
       </div>
       <template v-for="grp in groups" :key="grp.title">
         <div class="gtitle">{{ grp.title }}</div>
         <a v-for="sid in grp.skills" :key="sid" class="nav" :class="{ on: isOn('skill', sid), running: activeSkill === sid, locked: !g.state.skills[sid].unlocked }" @click="store.go('skill', sid)">
-          {{ C.skills[sid].icon }} {{ C.skills[sid].name }} <span class="lv">{{ lvl(sid) }}</span>
+          <Icon :name="C.skills[sid]?.icon" :seed="sid" /> {{ C.skills[sid].name }} <span class="lv">{{ lvl(sid) }}</span>
         </a>
       </template>
       <div class="gtitle">系统</div>
-      <a v-for="p in sys" :key="p.id" class="nav" :class="{ on: isOn(p.id) }" @click="store.go(p.id)">{{ p.icon }} {{ p.name }}</a>
+      <a v-for="p in sys" :key="p.id" class="nav" :class="{ on: isOn(p.id) }" @click="store.go(p.id)"><Icon :name="p.icon" /> {{ p.name }}</a>
+      <a class="nav" href="./wiki.html" target="_blank" rel="noopener"><Icon name="books" /> 游戏百科 <span class="lv">↗</span></a>
     </div>
   </nav>
   <div v-if="store.navOpen" class="scrim" @click="store.navOpen = false" />

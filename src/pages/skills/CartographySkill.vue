@@ -8,6 +8,7 @@ import { allHexes, hexKey, hexDist, poisAt, canSurveyHex, hexLevelReq, setSurvey
 import { scaledInterval, mapBonus } from '@/game/production/actions';
 import { describeMods } from '@/game/ui/skillHelpers';
 import { fmt, fmtSec, pct } from '@/app/format';
+import { iconInner } from '@/app/icons';
 import SkillHeader from '@/components/SkillHeader.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 import ProductionSkill from './ProductionSkill.vue';
@@ -107,7 +108,7 @@ const section = ref<'map' | 'craft' | 'maps' | 'pois'>('map');
     <div class="panel">
       <div class="row between">
         <div>
-          <h3>🧭 勘测</h3>
+          <h3><Icon name="compass" /> 勘测</h3>
           <div class="small muted">
             已勘测 {{ surveyedCount }} / {{ HEXES.length }} 格 · 每次勘测 {{ fmtSec(surveyInterval) }}，获得 {{ fmt(surveyGain) }} 勘测进度
           </div>
@@ -125,10 +126,10 @@ const section = ref<'map' | 'craft' | 'maps' | 'pois'>('map');
     </div>
 
     <div class="tabs mt">
-      <button :class="{ on: section === 'map' }" @click="section = 'map'">🗺️ 世界地图</button>
-      <button :class="{ on: section === 'pois' }" @click="section = 'pois'">📍 兴趣点（{{ discoveredPois.length }}）</button>
-      <button :class="{ on: section === 'craft' }" @click="section = 'craft'">📜 纸墨制作</button>
-      <button :class="{ on: section === 'maps' }" @click="section = 'maps'">🗺️ 发掘地图</button>
+      <button :class="{ on: section === 'map' }" @click="section = 'map'"><Icon name="map" /> 世界地图</button>
+      <button :class="{ on: section === 'pois' }" @click="section = 'pois'"><Icon name="pin" /> 兴趣点（{{ discoveredPois.length }}）</button>
+      <button :class="{ on: section === 'craft' }" @click="section = 'craft'"><Icon name="scroll" /> 纸墨制作</button>
+      <button :class="{ on: section === 'maps' }" @click="section = 'maps'"><Icon name="map" /> 发掘地图</button>
     </div>
 
     <div v-if="section === 'map'" class="panel">
@@ -145,8 +146,8 @@ const section = ref<'map' | 'craft' | 'maps' | 'pois'>('map');
             <polygon :points="points(v.x, v.y, SIZE * 0.96)" :fill="fill(v)" :fill-opacity="opacity(v)"
               :stroke="selected === v.key ? 'var(--text)' : v.can ? 'var(--accent)' : 'var(--border)'" :stroke-width="selected === v.key ? 1.4 : 0.6" />
             <polygon v-if="!v.surveyed && hexProgress(v) > 0" :points="points(v.x, v.y, SIZE * 0.9 * hexProgress(v))" fill="var(--good)" fill-opacity="0.6" />
-            <text v-if="v.pois.length" :x="v.x" :y="v.y + 3" text-anchor="middle" font-size="9">{{ v.pois[0].icon }}</text>
-            <text v-else-if="v.dist === 0" :x="v.x" :y="v.y + 3" text-anchor="middle" font-size="8">🏠</text>
+            <svg v-if="v.pois.length" :x="v.x - 5.5" :y="v.y - 5.5" width="11" height="11" viewBox="-2 -2 68 68" style="pointer-events: none" v-html="iconInner(v.pois[0].icon, v.pois[0].id)" />
+            <svg v-else-if="v.dist === 0" :x="v.x - 5" :y="v.y - 5" width="10" height="10" viewBox="-2 -2 68 68" style="pointer-events: none" v-html="iconInner('home')" />
           </g>
         </svg>
       </div>
@@ -161,7 +162,7 @@ const section = ref<'map' | 'craft' | 'maps' | 'pois'>('map');
           <span>勘测进度</span><span>{{ pct(hexProgress(selView) * 100) }}</span>
         </div>
         <div v-if="!selView.surveyed && selErr" class="small bad">{{ selErr }}</div>
-        <div v-for="pid in selView.pois" :key="pid.id" class="small">{{ C.pois[pid.id].icon }} <b>{{ C.pois[pid.id].name }}</b> <span class="muted">{{ C.pois[pid.id].description }}</span></div>
+        <div v-for="pid in selView.pois" :key="pid.id" class="small"><Icon :name="C.pois[pid.id]?.icon" :seed="pid.id" /> <b>{{ C.pois[pid.id].name }}</b> <span class="muted">{{ C.pois[pid.id].description }}</span></div>
         <button v-if="selView.can && cs.target !== selView.key" class="small primary mt" @click="targetHex(selView.key)">设为勘测目标</button>
       </div>
       <div v-else class="small muted mt">点击地图上的六角格查看详情；点击可勘测的格子会将其设为勘测目标。</div>
@@ -171,11 +172,11 @@ const section = ref<'map' | 'craft' | 'maps' | 'pois'>('map');
       <div v-if="!discoveredPois.length" class="empty">尚未发现任何兴趣点。勘测地图以发现发掘点、瞭望塔、宝藏与地标。</div>
       <div class="cards">
         <div v-for="p in discoveredPois" :key="p.id" class="card">
-          <div class="row between nowrap"><b>{{ p.icon }} {{ p.name }}</b><span class="tag">{{ KIND[p.kind] ?? p.kind }}</span></div>
+          <div class="row between nowrap"><b><Icon :name="p.icon" :seed="p.id" /> {{ p.name }}</b><span class="tag">{{ KIND[p.kind] ?? p.kind }}</span></div>
           <div class="small muted">{{ p.description }}</div>
           <div class="tiny muted">位置 ({{ p.hex[0] }},{{ p.hex[1] }})</div>
           <div v-if="p.modifiers" class="row tiny"><span v-for="d in describeMods(p.modifiers)" :key="d" class="tag good">{{ d }}</span></div>
-          <button v-if="p.kind === 'digSite'" class="small" @click="store.go('skill', 'archaeology')">⛏️ 前往考古</button>
+          <button v-if="p.kind === 'digSite'" class="small" @click="store.go('skill', 'archaeology')"><Icon name="pickaxe" /> 前往考古</button>
         </div>
       </div>
     </div>
@@ -185,12 +186,12 @@ const section = ref<'map' | 'craft' | 'maps' | 'pois'>('map');
     </div>
 
     <div v-else class="panel">
-      <div class="small muted mb">为已发现的发掘点制作地图。地图提供考古发掘次数（充能），更高品阶的地图提供更多充能与文物几率加成。持有：📜 纸张 {{ fmt(g.qty('paper')) }} · 🖋️ 墨水 {{ fmt(g.qty('ink')) }}</div>
+      <div class="small muted mb">为已发现的发掘点制作地图。地图提供考古发掘次数（充能），更高品阶的地图提供更多充能与文物几率加成。持有：<Icon name="scroll" /> 纸张 {{ fmt(g.qty('paper')) }} · <Icon name="pen" /> 墨水 {{ fmt(g.qty('ink')) }}</div>
       <div v-if="!sites.length" class="empty">尚未发现任何发掘点</div>
       <div class="cards lg">
         <div v-for="site in sites" :key="site.id" class="card">
           <div class="row between nowrap">
-            <b>{{ site.icon }} {{ site.name }}</b>
+            <b><Icon :name="site.icon" :seed="site.id" /> {{ site.name }}</b>
             <span class="tiny muted">考古 {{ site.level }}<span v-if="site.abyssalLevel" class="abyss"> · 深渊 {{ site.abyssalLevel }}</span></span>
           </div>
           <div class="small">
@@ -201,7 +202,7 @@ const section = ref<'map' | 'craft' | 'maps' | 'pois'>('map');
           <div v-for="t in MAP_TIERS" :key="t.tier" class="row between tier">
             <div class="small">
               <b>{{ t.name }}</b>
-              <div class="tiny muted">📜 {{ t.paper }}<template v-if="t.ink"> · 🖋️ {{ t.ink }}</template> · {{ t.charges }} 次 · +{{ t.bonus }}%</div>
+              <div class="tiny muted"><Icon name="scroll" /> {{ t.paper }}<template v-if="t.ink"> · <Icon name="pen" /> {{ t.ink }}</template> · {{ t.charges }} 次 · +{{ t.bonus }}%</div>
               <div v-if="mapCheck(site.id, t.tier)" class="tiny bad">{{ mapCheck(site.id, t.tier) }}</div>
             </div>
             <button class="small primary" :disabled="!!mapCheck(site.id, t.tier)" @click="make(site.id, t.tier)">制作</button>

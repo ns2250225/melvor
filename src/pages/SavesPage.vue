@@ -127,7 +127,7 @@ async function del() {
 
 <template>
   <div>
-    <div class="page-title"><span class="icon">💾</span><h2>存档管理</h2></div>
+    <div class="page-title"><span class="icon"><Icon name="save" /></span><h2>存档管理</h2></div>
 
     <div class="panel">
       <h3>保存</h3>
@@ -155,7 +155,7 @@ async function del() {
       <h3>导入存档</h3>
       <textarea v-model="importText" placeholder="粘贴导出的存档文本（Base64 或 JSON）…" />
       <div class="row mt">
-        <label class="btn">📂 选择文件<input type="file" accept=".txt,.json,text/plain,application/json" style="display: none" @change="onFile" /></label>
+        <label class="btn"><Icon name="folder" /> 选择文件<input type="file" accept=".txt,.json,text/plain,application/json" style="display: none" @change="onFile" /></label>
         <ConfirmButton label="导入并覆盖当前角色" confirm-text="确认覆盖当前角色？" :disabled="!importText.trim() || importing" @confirm="doImport(false)" />
         <button :disabled="!importText.trim() || importing" @click="doImport(true)">导入为新角色</button>
       </div>

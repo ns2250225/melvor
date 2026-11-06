@@ -18,7 +18,7 @@ function open(e: MouseEvent) { if (props.clickable && it.value) { e.stopPropagat
 
 <template>
   <div class="item-icon" :class="{ clickable, dim }" :style="style" :title="it ? `${it.name}${qty !== null ? ' ×' + qty : ''}` : id" @click="open">
-    <span class="emoji">{{ it?.icon ?? '❓' }}</span>
+    <Icon class="emoji" :name="it?.icon ?? 'question'" :seed="id" :tint="it?.color" size="80%" />
     <span v-if="qty !== null" class="qty">{{ fmt(qty) }}</span>
   </div>
 </template>
@@ -28,6 +28,6 @@ function open(e: MouseEvent) { if (props.clickable && it.value) { e.stopPropagat
 .item-icon.clickable { cursor: pointer; }
 .item-icon.clickable:hover { filter: brightness(1.15); }
 .item-icon.dim { opacity: 0.4; }
-.emoji { line-height: 1; }
+.emoji { line-height: 0; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35)); }
 .qty { position: absolute; right: 2px; bottom: 0; font-size: 11px; font-weight: 700; text-shadow: 0 0 3px #000, 0 0 2px #000; color: #fff; }
 </style>

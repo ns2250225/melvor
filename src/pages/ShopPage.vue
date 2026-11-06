@@ -58,7 +58,7 @@ const curEnough = (k: (typeof CUR_KEYS)[number], v: number) => s.value.currencie
 <template>
   <div>
     <div class="page-title">
-      <span class="icon">🛒</span>
+      <span class="icon"><Icon name="cart" /></span>
       <div class="grow">
         <h2>商店</h2>
         <div class="muted small">购买永久升级、材料、装备与扩展内容</div>
@@ -66,11 +66,11 @@ const curEnough = (k: (typeof CUR_KEYS)[number], v: number) => s.value.currencie
     </div>
 
     <div class="panel row">
-      <span class="tag gold">{{ CURRENCY_LABELS.gp }} {{ fmt(s.currencies.gp) }}</span>
-      <span class="tag">{{ CURRENCY_LABELS.slayerCoins }} {{ fmt(s.currencies.slayerCoins) }}</span>
-      <span class="tag abyss">{{ CURRENCY_LABELS.abyssalPieces }} {{ fmt(s.currencies.abyssalPieces) }}</span>
-      <span class="tag abyss">{{ CURRENCY_LABELS.abyssalSlayerCoins }} {{ fmt(s.currencies.abyssalSlayerCoins) }}</span>
-      <span class="tag">🏦 银行 {{ g.bankUsed() }} / {{ g.bankCapacity() }}</span>
+      <span class="tag gold"><IconText :text="CURRENCY_LABELS.gp" /> {{ fmt(s.currencies.gp) }}</span>
+      <span class="tag"><IconText :text="CURRENCY_LABELS.slayerCoins" /> {{ fmt(s.currencies.slayerCoins) }}</span>
+      <span class="tag abyss"><IconText :text="CURRENCY_LABELS.abyssalPieces" /> {{ fmt(s.currencies.abyssalPieces) }}</span>
+      <span class="tag abyss"><IconText :text="CURRENCY_LABELS.abyssalSlayerCoins" /> {{ fmt(s.currencies.abyssalSlayerCoins) }}</span>
+      <span class="tag"><Icon name="bank" /> 银行 {{ g.bankUsed() }} / {{ g.bankCapacity() }}</span>
     </div>
 
     <div class="panel">
@@ -87,7 +87,7 @@ const curEnough = (k: (typeof CUR_KEYS)[number], v: number) => s.value.currencie
         <div v-for="{ d, qty, cost, err, up } in items" :key="d.id" class="card" :class="{ locked: !!err && !maxed(d) && !g.meetsAll(d.requirements), active: maxed(d) }">
           <div class="row nowrap">
             <ItemIcon v-if="d.grants?.length" :id="d.grants[0].id" :size="42" />
-            <span v-else class="bigicon">{{ d.icon }}</span>
+            <span v-else class="bigicon"><Icon :name="d.icon" :seed="d.id" /></span>
             <div class="grow">
               <div class="row between">
                 <b>{{ d.name }}</b>
@@ -106,7 +106,7 @@ const curEnough = (k: (typeof CUR_KEYS)[number], v: number) => s.value.currencie
           <Requirements :reqs="d.requirements" />
           <div class="row small cost">
             <span class="muted">费用{{ qty > 1 ? `（×${qty}）` : '' }}：</span>
-            <span v-for="p in costParts(cost)" :key="p.k" :class="curEnough(p.k, p.v) ? '' : 'bad'">{{ CURRENCY_LABELS[p.k] }} {{ fmt(p.v) }}</span>
+            <span v-for="p in costParts(cost)" :key="p.k" :class="curEnough(p.k, p.v) ? '' : 'bad'"><IconText :text="CURRENCY_LABELS[p.k]" /> {{ fmt(p.v) }}</span>
             <span v-if="!costParts(cost).length && !cost.items.length" class="good">免费</span>
           </div>
           <ItemList v-if="cost.items.length" :items="cost.items" check :size="24" />

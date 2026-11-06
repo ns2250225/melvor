@@ -275,7 +275,7 @@ export class Game {
       const after = this.masteryLevel(actionId);
       if (after > before) {
         this.events.emit('masteryLevelUp', { skill, actionId, level: after });
-        if (after === 99) this.notify(`${C.actions[actionId]?.name ?? actionId} 掌握度达到 99！`, 'success', '🎖️');
+        if (after === 99) this.notify(`${C.actions[actionId]?.name ?? actionId} 掌握度达到 99！`, 'success', 'medal');
       }
     }
     this.addPoolXp(skill, xp * 0.25);

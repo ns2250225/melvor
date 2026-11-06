@@ -41,7 +41,7 @@ const dungeons = computed(() => Object.entries(s.value.dungeonCompletions).filte
 
 <template>
   <div>
-    <div class="page-title"><span class="icon">📊</span><h2>统计</h2></div>
+    <div class="page-title"><span class="icon"><Icon name="chart" /></span><h2>统计</h2></div>
 
     <div class="panel">
       <h3>综合</h3>
@@ -69,7 +69,7 @@ const dungeons = computed(() => Object.entries(s.value.dungeonCompletions).filte
           <thead><tr><th>技能</th><th v-for="c in skillCols" :key="c" class="right">{{ SKILL_STAT_LABELS[c] ?? c }}</th></tr></thead>
           <tbody>
             <tr v-for="r in skillRows" :key="r.sid">
-              <td style="white-space: nowrap">{{ C.skills[r.sid]?.icon }} {{ C.skills[r.sid]?.name ?? r.sid }}</td>
+              <td style="white-space: nowrap"><Icon :name="C.skills[r.sid]?.icon" :seed="r.sid" /> {{ C.skills[r.sid]?.name ?? r.sid }}</td>
               <td v-for="c in skillCols" :key="c" class="right">{{ cell(c, r.st[c]) }}</td>
             </tr>
           </tbody>
@@ -84,7 +84,7 @@ const dungeons = computed(() => Object.entries(s.value.dungeonCompletions).filte
         <table v-else>
           <tbody>
             <tr v-for="[id, n] in topKills" :key="id">
-              <td>{{ C.monsters[id]?.icon }} {{ C.monsters[id]?.name ?? id }}</td><td class="right">{{ full(n) }}</td>
+              <td><Icon :name="C.monsters[id]?.icon" :seed="id" /> {{ C.monsters[id]?.name ?? id }}</td><td class="right">{{ full(n) }}</td>
             </tr>
           </tbody>
         </table>
@@ -95,7 +95,7 @@ const dungeons = computed(() => Object.entries(s.value.dungeonCompletions).filte
         <table v-else>
           <tbody>
             <tr v-for="[id, n] in dungeons" :key="id">
-              <td>{{ C.dungeons[id]?.icon }} {{ C.dungeons[id]?.name ?? id }}</td><td class="right">{{ full(n) }}</td>
+              <td><Icon :name="C.dungeons[id]?.icon" :seed="id" /> {{ C.dungeons[id]?.name ?? id }}</td><td class="right">{{ full(n) }}</td>
             </tr>
           </tbody>
         </table>

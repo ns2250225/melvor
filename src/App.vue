@@ -41,7 +41,7 @@ const dead = computed(() => !!store.game?.state.player.dead);
   <CharacterSelect v-if="!store.game" />
   <div v-else-if="dead" class="center-screen">
     <div class="panel box center">
-      <div style="font-size: 64px">💀</div>
+      <div style="font-size: 64px"><Icon name="skull" /></div>
       <h2>硬核角色已死亡</h2>
       <p class="muted">{{ store.game.state.player.name }} 在硬核模式中阵亡。根据永久死亡规则，该角色无法继续游戏。</p>
       <div class="row" style="justify-content: center">
@@ -52,7 +52,7 @@ const dead = computed(() => !!store.game?.state.player.dead);
   </div>
   <div v-else-if="store.lockedOut" class="center-screen">
     <div class="panel box center">
-      <div style="font-size: 48px">🔒</div>
+      <div style="font-size: 48px"><Icon name="lock" /></div>
       <h2>游戏正在其他标签页运行</h2>
       <p class="muted">为防止重复结算与存档冲突，同一角色只能在一个标签页中运行。请关闭其他标签页后重新进入。</p>
       <button @click="store.exitToMenu()">返回角色列表</button>

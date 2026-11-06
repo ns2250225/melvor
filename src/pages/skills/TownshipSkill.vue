@@ -40,12 +40,12 @@ function provides(b: TownshipBuildingDef): string[] {
     if (k === 'production' || k === 'consumption') continue;
     if (typeof v === 'number' && v) out.push(`${RES_STAT[k] ?? k} ${v > 0 ? '+' : ''}${v}`);
   }
-  for (const [r, v] of Object.entries(b.provides.production ?? {})) out.push(`产出 ${C.townshipResources[r]?.icon ?? ''}${C.townshipResources[r]?.name ?? r} +${v}`);
-  for (const [r, v] of Object.entries(b.provides.consumption ?? {})) out.push(`消耗 ${C.townshipResources[r]?.icon ?? ''}${C.townshipResources[r]?.name ?? r} -${v}`);
+  for (const [r, v] of Object.entries(b.provides.production ?? {})) out.push(`产出 [[${C.townshipResources[r]?.icon}]] ${C.townshipResources[r]?.name ?? r} +${v}`);
+  for (const [r, v] of Object.entries(b.provides.consumption ?? {})) out.push(`消耗 [[${C.townshipResources[r]?.icon}]] ${C.townshipResources[r]?.name ?? r} -${v}`);
   return out;
 }
 function costText(b: TownshipBuildingDef) {
-  return Object.entries(b.cost).map(([r, v]) => ({ r, v: v ?? 0, have: r === 'gp' ? g.value.state.currencies.gp : t.value.resources[r] || 0, label: r === 'gp' ? '🪙 金币' : `${C.townshipResources[r]?.icon ?? ''} ${C.townshipResources[r]?.name ?? r}` }));
+  return Object.entries(b.cost).map(([r, v]) => ({ r, v: v ?? 0, have: r === 'gp' ? g.value.state.currencies.gp : t.value.resources[r] || 0, label: r === 'gp' ? '[[coin]] 金币' : `[[${C.townshipResources[r]?.icon}]] ${C.townshipResources[r]?.name ?? r}` }));
 }
 
 // 捐献 / 兑换
@@ -60,8 +60,8 @@ function convertUnits(resId: string, units: number) { store.act(() => convert(g.
 
     <div class="panel">
       <div class="row between">
-        <h3>🏘️ 城镇概览</h3>
-        <span class="tag">{{ season.icon }} {{ season.name }}</span>
+        <h3><Icon name="village" /> 城镇概览</h3>
+        <span class="tag"><Icon :name="season.icon" :seed="season.id" /> {{ season.name }}</span>
       </div>
       <div class="stats">
         <div><span class="muted small">人口</span><b>{{ fmt(t.population) }} / {{ fmt(est.totals.population) }}</b></div>
@@ -71,7 +71,7 @@ function convertUnits(resId: string, units: number) { store.act(() => convert(g.
         <div><span class="muted small">健康</span><b>{{ fmt(t.health) }}</b></div>
         <div><span class="muted small">信仰</span><b>{{ fmt(t.worship) }}</b></div>
         <div><span class="muted small">仓储上限</span><b>{{ fmt(t.storage) }}</b></div>
-        <div><span class="muted small">每次税收</span><b class="gold">🪙 {{ fmt(est.tax) }}</b></div>
+        <div><span class="muted small">每次税收</span><b class="gold"><Icon name="coin" /> {{ fmt(est.tax) }}</b></div>
       </div>
       <div class="mt">
         <div class="row between small">
@@ -83,13 +83,13 @@ function convertUnits(resId: string, units: number) { store.act(() => convert(g.
     </div>
 
     <div class="panel">
-      <h3>📦 资源</h3>
+      <h3><Icon name="box" /> 资源</h3>
       <div class="scroll">
         <table>
           <thead><tr><th>资源</th><th>库存</th><th>每次结算</th></tr></thead>
           <tbody>
             <tr v-for="r in resources" :key="r.id">
-              <td>{{ r.icon }} {{ r.name }}</td>
+              <td><Icon :name="r.icon" :seed="r.id" /> {{ r.name }}</td>
               <td>{{ fmt(t.resources[r.id] || 0) }} <span class="muted tiny">/ {{ fmt(t.storage) }}</span></td>
               <td :class="(est.net[r.id] || 0) > 0 ? 'good' : (est.net[r.id] || 0) < 0 ? 'bad' : 'muted'">{{ (est.net[r.id] || 0) > 0 ? '+' : '' }}{{ fmt(est.net[r.id] || 0) }}</td>
             </tr>
@@ -99,40 +99,40 @@ function convertUnits(resId: string, units: number) { store.act(() => convert(g.
     </div>
 
     <div class="tabs mt">
-      <button :class="{ on: section === 'build' }" @click="section = 'build'">🏗️ 土地与建筑</button>
-      <button :class="{ on: section === 'deity' }" @click="section = 'deity'">⛩️ 信仰</button>
-      <button :class="{ on: section === 'trade' }" @click="section = 'trade'">🔄 捐献与兑换</button>
-      <button :class="{ on: section === 'tasks' }" @click="section = 'tasks'">📋 城镇任务</button>
+      <button :class="{ on: section === 'build' }" @click="section = 'build'"><Icon name="construction" /> 土地与建筑</button>
+      <button :class="{ on: section === 'deity' }" @click="section = 'deity'"><Icon name="shrine" /> 信仰</button>
+      <button :class="{ on: section === 'trade' }" @click="section = 'trade'"><Icon name="refresh" /> 捐献与兑换</button>
+      <button :class="{ on: section === 'tasks' }" @click="section = 'tasks'"><Icon name="clipboard" /> 城镇任务</button>
     </div>
 
     <template v-if="section === 'build'">
       <div class="tabs">
         <button v-for="b in BIOMES" :key="b.id" :class="{ on: biome === b.id }" @click="biome = b.id">
-          {{ b.icon }} {{ b.name }} <span class="tiny">{{ used(b.id) }}/{{ t.land[b.id] || 0 }}</span>
+          <Icon :name="b.icon" :seed="b.id" /> {{ b.name }} <span class="tiny">{{ used(b.id) }}/{{ t.land[b.id] || 0 }}</span>
         </button>
       </div>
       <div class="panel">
         <div class="row between">
           <div>
-            <b>{{ biomeDef.icon }} {{ biomeDef.name }}</b>
+            <b><Icon :name="biomeDef.icon" :seed="biomeDef.id" /> {{ biomeDef.name }}</b>
             <div class="small muted">已用土地 {{ used(biome) }} / 拥有 {{ t.land[biome] || 0 }}</div>
             <div v-if="g.level('township') < biomeDef.level" class="small bad">需要城镇 {{ biomeDef.level }} 级</div>
           </div>
-          <button class="primary" :disabled="g.level('township') < biomeDef.level || g.state.currencies.gp < lc(biome)" @click="store.act(() => buyLand(g, biome))">购买土地（🪙 {{ full(lc(biome)) }}）</button>
+          <button class="primary" :disabled="g.level('township') < biomeDef.level || g.state.currencies.gp < lc(biome)" @click="store.act(() => buyLand(g, biome))">购买土地（<Icon name="coin" /> {{ full(lc(biome)) }}）</button>
         </div>
       </div>
       <div class="cards lg mt">
         <div v-for="b in biomeBuildings" :key="b.id" class="card" :class="{ locked: g.level('township') < b.level }">
           <div class="row between nowrap">
-            <b>{{ b.icon }} {{ b.name }}</b>
+            <b><Icon :name="b.icon" :seed="b.id" /> {{ b.name }}</b>
             <span class="tiny muted">Lv {{ b.level }} · 本地 {{ countIn(b.id) }} · 总计 {{ buildingCount(g, b.id) }}/{{ b.maxCount }}</span>
           </div>
           <div class="row tiny">
-            <span v-for="p in provides(b)" :key="p" class="tag">{{ p }}</span>
+            <span v-for="p in provides(b)" :key="p" class="tag"><IconText :text="p" /></span>
           </div>
           <div class="row tiny">
             <span class="muted">费用：</span>
-            <span v-for="c in costText(b)" :key="c.r" :class="c.have >= c.v ? '' : 'bad'">{{ c.label }} {{ fmt(c.v) }}</span>
+            <span v-for="c in costText(b)" :key="c.r" :class="c.have >= c.v ? '' : 'bad'"><IconText :text="c.label" /> {{ fmt(c.v) }}</span>
           </div>
           <div class="tiny muted">建造经验 {{ b.xp }}</div>
           <div v-if="check(b.id)" class="tiny bad">{{ check(b.id) }}</div>
@@ -145,7 +145,7 @@ function convertUnits(resId: string, units: number) { store.act(() => convert(g.
     </template>
 
     <div v-else-if="section === 'deity'" class="panel">
-      <h3>⛩️ 信仰</h3>
+      <h3><Icon name="shrine" /> 信仰</h3>
       <div class="small muted mb">选择供奉的神明。神明的技能加成始终生效；当城镇信仰 ≥ 20 时，还会提升对应城镇资源产出。当前信仰 {{ t.worship }}。</div>
       <div class="cards">
         <div v-for="d in DEITIES" :key="d.id" class="card" :class="{ active: t.deity === d.id }">
@@ -163,7 +163,7 @@ function convertUnits(resId: string, units: number) { store.act(() => convert(g.
 
     <template v-else-if="section === 'trade'">
       <div class="panel">
-        <h3>📥 捐献物品</h3>
+        <h3><Icon name="import" /> 捐献物品</h3>
         <div class="small muted mb">将银行物品捐献给城镇，转换为对应的城镇资源（1:1，受仓储上限限制）。</div>
         <div class="cards sm">
           <div v-for="d in donatable" :key="d.id" class="card" :class="{ locked: g.qty(d.id) <= 0 }">
@@ -171,7 +171,7 @@ function convertUnits(resId: string, units: number) { store.act(() => convert(g.
               <ItemIcon :id="d.id" :qty="g.qty(d.id)" :size="34" />
               <div class="small">
                 <div>{{ C.items[d.id]?.name }}</div>
-                <div class="muted tiny">→ {{ d.res.icon }} {{ d.res.name }}</div>
+                <div class="muted tiny">→ <Icon :name="d.res.icon" :seed="d.res.id" /> {{ d.res.name }}</div>
               </div>
             </div>
             <div class="row">
@@ -182,13 +182,13 @@ function convertUnits(resId: string, units: number) { store.act(() => convert(g.
         </div>
       </div>
       <div class="panel">
-        <h3>📤 兑换资源</h3>
+        <h3><Icon name="export" /> 兑换资源</h3>
         <div class="small muted mb">将城镇资源兑换为银行物品。</div>
         <div class="cards sm">
           <template v-for="r in resources" :key="r.id">
             <div v-if="r.convertsTo && r.convertRatio" class="card">
               <div class="row nowrap">
-                <span class="big">{{ r.icon }}</span>
+                <span class="big"><Icon :name="r.icon" :seed="r.id" /></span>
                 <div class="small">
                   <div>{{ r.name }} <span class="muted">（{{ fmt(t.resources[r.id] || 0) }}）</span></div>
                   <div class="muted tiny">{{ r.convertRatio }} → 1 {{ C.items[r.convertsTo]?.name }}</div>
@@ -206,16 +206,16 @@ function convertUnits(resId: string, units: number) { store.act(() => convert(g.
     </template>
 
     <div v-else class="panel">
-      <h3>📋 城镇任务</h3>
+      <h3><Icon name="clipboard" /> 城镇任务</h3>
       <div class="col">
         <div v-for="task in TOWNSHIP_TASKS" :key="task.id" class="row between task">
           <div class="grow">
             <b>{{ task.name }}</b>
             <ItemList :items="task.requires" check :size="26" show-name />
             <div class="tiny muted">
-              奖励：<span v-if="task.reward.gp">🪙 {{ full(task.reward.gp) }} </span>
+              奖励：<span v-if="task.reward.gp"><Icon name="coin" /> {{ full(task.reward.gp) }} </span>
               <span v-if="task.reward.xp">· 城镇经验 {{ full(task.reward.xp) }} </span>
-              <span v-for="(v, r) in task.reward.resources ?? {}" :key="r">· {{ C.townshipResources[r]?.icon }}{{ C.townshipResources[r]?.name }} {{ v }} </span>
+              <span v-for="(v, r) in task.reward.resources ?? {}" :key="r">· <Icon :name="C.townshipResources[r]?.icon" :seed="r" />{{ C.townshipResources[r]?.name }} {{ v }} </span>
               <span v-for="i in task.reward.items ?? []" :key="i.id">· {{ C.items[i.id]?.name }} ×{{ i.qty }} </span>
             </div>
           </div>
